@@ -161,11 +161,10 @@
             int area = cv::floodFill(source, mask, seed, cv::Scalar(255,0,0),
                                  &ccomp, cv::Scalar(loDiff, loDiff, loDiff), cv::Scalar(upDiff, upDiff, upDiff), connectivity);
         }
-                //cvWaitKey(0);
         
         //Check new floodfill mask match for a correct patch.
         //Get all points detected for get Minimal rotated Rect
-        std::vector<Point> pointsInterest;
+        std::vector<cv::Point> pointsInterest;
         cv::Mat_<uchar>::iterator itMask= mask.begin<uchar>();
         cv::Mat_<uchar>::iterator end= mask.end<uchar>();
         for( ; itMask!=end; ++itMask)
