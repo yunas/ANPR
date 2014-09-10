@@ -1,13 +1,15 @@
 //
 //  ImageProcessor.h
-//  ANPR
+//  OpenCVTest
 //
-//  Created by Christian Roman on 29/08/13.
-//  Copyright (c) 2013 Christian Roman. All rights reserved.
+//  Created by Muhammad Rashid on 08/09/2014.
+//  Copyright (c) 2014 Muhammad Rashid. All rights reserved.
 //
 
-#ifndef ANPR_ImageProcessor_h
-#define ANPR_ImageProcessor_h
+#ifndef __OpenCVTest__ImageProcessor__
+#define __OpenCVTest__ImageProcessor__
+
+#include <iostream>
 
 class ImageProcessor {
     typedef struct{
@@ -25,4 +27,5 @@ public:
     cv::Mat rotateImage(const cv::Mat& source, double angle);
 };
 
-#endif
+
+#endif /* defined(__OpenCVTest__ImageProcessor__) */

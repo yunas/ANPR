@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "ImageProcessorImplementation.h"
 
 @interface ViewController () {
     
@@ -16,12 +17,21 @@
 
 @end
 
-@implementation ViewController
+@implementation ViewController {
+    ImageProcessorImplementation *processor;
+    
+    UIImage *resultImage;
+    UIImage *sourceImage;
+    
+    NSUInteger processingstep;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    
+    processor = [[ImageProcessorImplementation alloc] init];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -32,6 +42,19 @@
 
 - (IBAction)processandsave:(id)sender {
     
-//    cv::Mat source = [inputImage.image CVMat];
+    // For first time our source image will be input image.
+    if (sourceImage == nil) {
+        sourceImage = [inputImage image];
+    }
+    // We will be using source image for further processing.
+    [self operation];
 }
+
+- (void)operation {
+    
+    resultImage = [processor LocalizeImageFromSource:sourceImage];
+    
+    outputImage.image = resultImage;
+}
+
 @end

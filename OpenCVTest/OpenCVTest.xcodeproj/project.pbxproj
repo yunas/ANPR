@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		5C5A9EE619B89A610080DCEC /* 5445BSX.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5C5A9EE519B89A610080DCEC /* 5445BSX.JPG */; };
 		5C5A9EE919B8A10D0080DCEC /* UIImage+OpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C5A9EE819B8A10D0080DCEC /* UIImage+OpenCV.mm */; };
-		5C5A9EEB19B8A2750080DCEC /* ImageProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C5A9EEA19B8A2750080DCEC /* ImageProcessor.cpp */; };
 		5C5A9EF019B8A4620080DCEC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EEF19B8A4620080DCEC /* libz.dylib */; };
 		5C5A9EF219B8A4770080DCEC /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EF119B8A4770080DCEC /* libc++.dylib */; };
 		5C5A9EF319B8A4890080DCEC /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EED19B8A44F0080DCEC /* ImageIO.framework */; };
@@ -29,6 +28,10 @@
 		5CA3028219B6EA9500A1337A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026419B6EA9500A1337A /* UIKit.framework */; };
 		5CA3028A19B6EA9500A1337A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CA3028819B6EA9500A1337A /* InfoPlist.strings */; };
 		5CA3028C19B6EA9500A1337A /* OpenCVTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA3028B19B6EA9500A1337A /* OpenCVTestTests.m */; };
+		5CBD8F9E19BD87BD00D5F218 /* ImageProcessorImplementation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */; };
+		5CBD8FA119BD8C4300D5F218 /* ImageProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD8F9F19BD8C4300D5F218 /* ImageProcessor.cpp */; };
+		5CFEF54A19BEB90000A97C39 /* vehicle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEF54919BEB90000A97C39 /* vehicle.jpg */; };
+		5CFEF54C19BF1D0900A97C39 /* 12.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEF54B19BF1D0900A97C39 /* 12.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,8 +48,6 @@
 		5C5A9EE519B89A610080DCEC /* 5445BSX.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 5445BSX.JPG; sourceTree = "<group>"; };
 		5C5A9EE719B8A10D0080DCEC /* UIImage+OpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+OpenCV.h"; sourceTree = "<group>"; };
 		5C5A9EE819B8A10D0080DCEC /* UIImage+OpenCV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+OpenCV.mm"; sourceTree = "<group>"; };
-		5C5A9EEA19B8A2750080DCEC /* ImageProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageProcessor.cpp; sourceTree = "<group>"; };
-		5C5A9EEC19B8A2AA0080DCEC /* ImageProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageProcessor.h; sourceTree = "<group>"; };
 		5C5A9EED19B8A44F0080DCEC /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		5C5A9EEF19B8A4620080DCEC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5C5A9EF119B8A4770080DCEC /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
@@ -71,6 +72,12 @@
 		5CA3028719B6EA9500A1337A /* OpenCVTestTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OpenCVTestTests-Info.plist"; sourceTree = "<group>"; };
 		5CA3028919B6EA9500A1337A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5CA3028B19B6EA9500A1337A /* OpenCVTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenCVTestTests.m; sourceTree = "<group>"; };
+		5CBD8F9C19BD87BD00D5F218 /* ImageProcessorImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageProcessorImplementation.h; sourceTree = "<group>"; };
+		5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageProcessorImplementation.mm; sourceTree = "<group>"; };
+		5CBD8F9F19BD8C4300D5F218 /* ImageProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageProcessor.cpp; sourceTree = "<group>"; };
+		5CBD8FA019BD8C4300D5F218 /* ImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageProcessor.h; sourceTree = "<group>"; };
+		5CFEF54919BEB90000A97C39 /* vehicle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = vehicle.jpg; sourceTree = "<group>"; };
+		5CFEF54B19BF1D0900A97C39 /* 12.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 12.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,8 +147,6 @@
 		5CA3026619B6EA9500A1337A /* OpenCVTest */ = {
 			isa = PBXGroup;
 			children = (
-				5C5A9EEC19B8A2AA0080DCEC /* ImageProcessor.h */,
-				5C5A9EEA19B8A2750080DCEC /* ImageProcessor.cpp */,
 				5C5A9EE719B8A10D0080DCEC /* UIImage+OpenCV.h */,
 				5C5A9EE819B8A10D0080DCEC /* UIImage+OpenCV.mm */,
 				5CA3026F19B6EA9500A1337A /* AppDelegate.h */,
@@ -149,8 +154,14 @@
 				5CA3027219B6EA9500A1337A /* Main.storyboard */,
 				5CA3027519B6EA9500A1337A /* ViewController.h */,
 				5CA3027619B6EA9500A1337A /* ViewController.m */,
+				5CBD8F9C19BD87BD00D5F218 /* ImageProcessorImplementation.h */,
+				5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */,
+				5CBD8F9F19BD8C4300D5F218 /* ImageProcessor.cpp */,
+				5CBD8FA019BD8C4300D5F218 /* ImageProcessor.h */,
+				5CFEF54919BEB90000A97C39 /* vehicle.jpg */,
 				5CA3027819B6EA9500A1337A /* Images.xcassets */,
 				5C5A9EE519B89A610080DCEC /* 5445BSX.JPG */,
+				5CFEF54B19BF1D0900A97C39 /* 12.jpg */,
 				5CA3026719B6EA9500A1337A /* Supporting Files */,
 			);
 			path = OpenCVTest;
@@ -264,6 +275,8 @@
 				5CA3027919B6EA9500A1337A /* Images.xcassets in Resources */,
 				5C5A9EE619B89A610080DCEC /* 5445BSX.JPG in Resources */,
 				5CA3026B19B6EA9500A1337A /* InfoPlist.strings in Resources */,
+				5CFEF54C19BF1D0900A97C39 /* 12.jpg in Resources */,
+				5CFEF54A19BEB90000A97C39 /* vehicle.jpg in Resources */,
 				5CA3027419B6EA9500A1337A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,9 +296,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CBD8FA119BD8C4300D5F218 /* ImageProcessor.cpp in Sources */,
 				5C5A9EE919B8A10D0080DCEC /* UIImage+OpenCV.mm in Sources */,
+				5CBD8F9E19BD87BD00D5F218 /* ImageProcessorImplementation.mm in Sources */,
 				5CA3027719B6EA9500A1337A /* ViewController.m in Sources */,
-				5C5A9EEB19B8A2750080DCEC /* ImageProcessor.cpp in Sources */,
 				5CA3027119B6EA9500A1337A /* AppDelegate.m in Sources */,
 				5CA3026D19B6EA9500A1337A /* main.m in Sources */,
 			);
