@@ -8,7 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface ImageProcessorImplementation : NSObject
+
++ (UIImage *)getLocalisedImageFromSource:(UIImage*)src imageName:(NSString*)name;
 
 - (UIImage*)LocalizeImageFromSource:(UIImage *)image;
 

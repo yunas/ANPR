@@ -24,11 +24,15 @@
     UIImage *sourceImage;
     
     NSUInteger processingstep;
+    
+    NSUInteger count;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    count = 1;
     
     processor = [[ImageProcessorImplementation alloc] init];
     
@@ -43,16 +47,21 @@
 - (IBAction)processandsave:(id)sender {
     
     // For first time our source image will be input image.
-    if (sourceImage == nil) {
-        sourceImage = [inputImage image];
+    if (count <= 14) {
+        sourceImage = [UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg",count]];
+        
+        inputImage.image = sourceImage;
+        
+        [self operation:[NSString stringWithFormat:@"%d",count]];
     }
     // We will be using source image for further processing.
-    [self operation];
+    
+    count++;
 }
 
-- (void)operation {
+- (void)operation:(NSString*)name {
     
-    resultImage = [processor LocalizeImageFromSource:sourceImage];
+    resultImage = [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name]; //[processor LocalizeImageFromSource:sourceImage];
     
     outputImage.image = resultImage;
 }

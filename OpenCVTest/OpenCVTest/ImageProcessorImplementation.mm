@@ -8,6 +8,11 @@
 
 #import "ImageProcessorImplementation.h"
 #import "UIImage+OpenCV.h"
+#import <opencv2/imgproc/imgproc.hpp>
+
+#include "DetectRegions.h"
+
+using namespace std;
 
 @implementation ImageProcessorImplementation
 
@@ -20,17 +25,61 @@
     return filePath;
 }
 
+- (cv::Mat)grayImage:(cv::Mat)sourceImage {
+    
+    cv::Mat gray;
+    if (sourceImage.channels() == 3)
+        cv::cvtColor(sourceImage, gray, cv::COLOR_BGR2GRAY);
+    else if (sourceImage.channels() == 4)
+        cv::cvtColor(sourceImage, gray, cv::COLOR_BGRA2GRAY);
+    else if(sourceImage.channels() == 1)
+        gray = sourceImage;
+    return gray;
+}
+
++ (UIImage *)getLocalisedImageFromSource:(UIImage*)image imageName:(NSString *)name {
+    
+    cv::Mat input_image = [image CVMat];
+    
+    DetectRegions detectRegions;
+    detectRegions.setFilename("12");
+    detectRegions.saveRegions = false;
+    detectRegions.showSteps = false;
+    
+    vector<Plate> output = detectRegions.run(input_image);
+    
+    UIImage *outImage = nil;
+    
+    NSData *data = nil;
+    NSString* filePath = nil;
+    
+    for (int i=0; i<output.size(); i++) {
+        Plate rect = output[i];
+        
+        outImage = [UIImage imageWithCVMat:rect.plateImg];
+        
+        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        
+        filePath = [documentsPath stringByAppendingFormat:@"/%@_%d.jpg",name,i];
+        
+        data = UIImageJPEGRepresentation(outImage, 1);
+        
+        [data writeToFile:filePath atomically:YES];
+    }
+    
+    return outImage;
+}
+
 - (UIImage*)LocalizeImageFromSource:(UIImage *)src {
 
     UIImage *filtered = nil;
     NSData *data = nil;
     NSString* filePath = nil;
-    
     cv::Mat source = [src CVMat];
     
     cv::Mat img_gray;
-    cvtColor(source, img_gray, cv::COLOR_BGR2GRAY);
-    blur(img_gray, img_gray, cv::Size(5,5));
+    img_gray = [self grayImage:source];  //cvtColor(source, img_gray, cv::COLOR_BGR2GRAY);
+//    blur(img_gray, img_gray, cv::Size(5,5));
     
     filtered=[UIImage imageWithCVMat:img_gray];
     
@@ -89,9 +138,8 @@
     cv::Mat img_close_2;
     morphologyEx(img_blur, img_close_2, cv::MORPH_CLOSE, element);
     
-    // This is causing crash.
     cv::Mat img_threshold;
-    threshold(img_gray, img_threshold, 0.0, 255.0, cv::THRESH_BINARY+cv::THRESH_OTSU);
+    threshold(img_close_2, img_threshold, 0.0, 255.0, cv::THRESH_BINARY+cv::THRESH_OTSU);
     
     /*
      Find possible regions of number plate in image.
@@ -104,8 +152,8 @@
     std::vector<std::vector<cv::Point> >::iterator itc = contours.begin();
     std::vector<cv::RotatedRect> rects;
 
-    while (itc != contours.end())
-    {
+    while (itc != contours.end()) {
+        
         cv::RotatedRect mr = cv::minAreaRect(cv::Mat(*itc));
         
         float area = fabs(cv::contourArea(*itc));
@@ -122,11 +170,13 @@
     
     // Draw blue contours on a white image
     cv::Mat result;
-    source.copyTo(result);
+    img_gray.copyTo(result);
     cv::drawContours(result,contours,
                      -1, // draw all contours
                      cv::Scalar(255,0,0), // in blue
                      1); // with a thickness of 1
+    
+    
     
     for(int i=0; i< rects.size(); i++){
         
@@ -148,7 +198,7 @@
         int connectivity = 4;
         int newMaskVal = 255;
         int NumSeeds = 10;
-        Rect ccomp;
+        cv::Rect ccomp;
         int flags = connectivity + (newMaskVal << 8 ) + cv::FLOODFILL_FIXED_RANGE + cv::FLOODFILL_MASK_ONLY;
         for(int j=0; j<NumSeeds; j++){
             cv::Point seed;
@@ -156,10 +206,9 @@
             seed.y=rects[i].center.y+rand()%(int)minSize-(minSize/2);
             circle(result, seed, 1, cv::Scalar(0,255,255), -1);
             
-            floodFill(source, mask, seed, cv::Scalar(255,0,0));
-            
-            int area = cv::floodFill(source, mask, seed, cv::Scalar(255,0,0),
-                                 &ccomp, cv::Scalar(loDiff, loDiff, loDiff), cv::Scalar(upDiff, upDiff, upDiff), connectivity);
+            int area = cv::floodFill(img_gray, mask, seed, cv::Scalar(255,0,0));
+
+//            int area = cv::floodFill(img_gray, mask, seed, cv::Scalar(255,0,0), &ccomp, cv::Scalar(loDiff, loDiff, loDiff), cv::Scalar(upDiff, upDiff, upDiff), flags);
         }
         
         //Check new floodfill mask match for a correct patch.
@@ -167,11 +216,16 @@
         std::vector<cv::Point> pointsInterest;
         cv::Mat_<uchar>::iterator itMask= mask.begin<uchar>();
         cv::Mat_<uchar>::iterator end= mask.end<uchar>();
-        for( ; itMask!=end; ++itMask)
-            if(*itMask==255)
+        for( ; itMask!=end; ++itMask) {
+            
+            cout << &itMask <<endl;
+            
+            if(*itMask==255) {
                 pointsInterest.push_back(itMask.pos());
+            }
+        }
         
-        cv::RotatedRect minRect = cv::minAreaRect(pointsInterest);
+        cv::RotatedRect minRect = cv::minAreaRect(cv::Mat(pointsInterest));
         
         if(verifySizes(minRect)){
             // rotated rectangle drawing
@@ -188,7 +242,7 @@
             
             //Create and rotate image
             cv::Mat img_rotated;
-            warpAffine(source, img_rotated, rotmat, source.size(), cv::INTER_CUBIC);
+            warpAffine(img_gray, img_rotated, rotmat, img_gray.size(), cv::INTER_CUBIC);
             
             //Crop image
             cv::Size rect_size=minRect.size;
@@ -205,15 +259,13 @@
             cvtColor(resultResized, grayResult, cv::COLOR_BGR2GRAY);
             blur(grayResult, grayResult, cv::Size(3,3));
             grayResult=histeq(grayResult);
+            filtered=[UIImage imageWithCVMat:grayResult];
 //            output.push_back(Plate(grayResult,minRect.boundingRect()));
         }
     }
     
     
     
-    
-    
-    filtered=[UIImage imageWithCVMat:img_threshold];
     // Saving image step by step. Sobel
     filePath = [self filePath:@"img_dst"];
     data = UIImageJPEGRepresentation(filtered,1);

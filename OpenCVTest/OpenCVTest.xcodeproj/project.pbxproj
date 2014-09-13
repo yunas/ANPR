@@ -7,6 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5C198ECC19C1D606001EBF92 /* DetectRegions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C198EC819C1D606001EBF92 /* DetectRegions.cpp */; };
+		5C198ECD19C1D606001EBF92 /* Plate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C198ECA19C1D606001EBF92 /* Plate.cpp */; };
+		5C1C88FA19C315450015A08E /* highrez01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C88C719C315450015A08E /* highrez01.jpg */; };
+		5C1C890A19C32DCD0015A08E /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C88FC19C32DCD0015A08E /* 1.jpg */; };
+		5C1C890B19C32DCD0015A08E /* 10.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C88FD19C32DCD0015A08E /* 10.jpg */; };
+		5C1C890C19C32DCD0015A08E /* 11.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C88FE19C32DCD0015A08E /* 11.jpg */; };
+		5C1C890D19C32DCD0015A08E /* 12.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C88FF19C32DCD0015A08E /* 12.jpg */; };
+		5C1C890E19C32DCD0015A08E /* 13.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890019C32DCD0015A08E /* 13.jpg */; };
+		5C1C890F19C32DCD0015A08E /* 14.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890119C32DCD0015A08E /* 14.jpg */; };
+		5C1C891019C32DCD0015A08E /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890219C32DCD0015A08E /* 2.jpg */; };
+		5C1C891119C32DCD0015A08E /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890319C32DCD0015A08E /* 3.jpg */; };
+		5C1C891219C32DCD0015A08E /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890419C32DCD0015A08E /* 4.jpg */; };
+		5C1C891319C32DCD0015A08E /* 5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890519C32DCD0015A08E /* 5.jpg */; };
+		5C1C891419C32DCD0015A08E /* 6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890619C32DCD0015A08E /* 6.jpg */; };
+		5C1C891519C32DCD0015A08E /* 7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890719C32DCD0015A08E /* 7.jpg */; };
+		5C1C891619C32DCD0015A08E /* 8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890819C32DCD0015A08E /* 8.jpg */; };
+		5C1C891719C32DCD0015A08E /* 9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890919C32DCD0015A08E /* 9.jpg */; };
+		5C38BAA619C1B70C0083CE87 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */; };
 		5C5A9EE619B89A610080DCEC /* 5445BSX.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5C5A9EE519B89A610080DCEC /* 5445BSX.JPG */; };
 		5C5A9EE919B8A10D0080DCEC /* UIImage+OpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C5A9EE819B8A10D0080DCEC /* UIImage+OpenCV.mm */; };
 		5C5A9EF019B8A4620080DCEC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EEF19B8A4620080DCEC /* libz.dylib */; };
@@ -45,6 +63,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5C198EC819C1D606001EBF92 /* DetectRegions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetectRegions.cpp; sourceTree = "<group>"; };
+		5C198EC919C1D606001EBF92 /* DetectRegions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetectRegions.h; sourceTree = "<group>"; };
+		5C198ECA19C1D606001EBF92 /* Plate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Plate.cpp; sourceTree = "<group>"; };
+		5C198ECB19C1D606001EBF92 /* Plate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Plate.h; sourceTree = "<group>"; };
+		5C1C88C719C315450015A08E /* highrez01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = highrez01.jpg; sourceTree = "<group>"; };
+		5C1C88FC19C32DCD0015A08E /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
+		5C1C88FD19C32DCD0015A08E /* 10.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 10.jpg; sourceTree = "<group>"; };
+		5C1C88FE19C32DCD0015A08E /* 11.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 11.jpg; sourceTree = "<group>"; };
+		5C1C88FF19C32DCD0015A08E /* 12.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 12.jpg; sourceTree = "<group>"; };
+		5C1C890019C32DCD0015A08E /* 13.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 13.jpg; sourceTree = "<group>"; };
+		5C1C890119C32DCD0015A08E /* 14.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 14.jpg; sourceTree = "<group>"; };
+		5C1C890219C32DCD0015A08E /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
+		5C1C890319C32DCD0015A08E /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
+		5C1C890419C32DCD0015A08E /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 4.jpg; sourceTree = "<group>"; };
+		5C1C890519C32DCD0015A08E /* 5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 5.jpg; sourceTree = "<group>"; };
+		5C1C890619C32DCD0015A08E /* 6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 6.jpg; sourceTree = "<group>"; };
+		5C1C890719C32DCD0015A08E /* 7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 7.jpg; sourceTree = "<group>"; };
+		5C1C890819C32DCD0015A08E /* 8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 8.jpg; sourceTree = "<group>"; };
+		5C1C890919C32DCD0015A08E /* 9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 9.jpg; sourceTree = "<group>"; };
+		5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5C5A9EE519B89A610080DCEC /* 5445BSX.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 5445BSX.JPG; sourceTree = "<group>"; };
 		5C5A9EE719B8A10D0080DCEC /* UIImage+OpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+OpenCV.h"; sourceTree = "<group>"; };
 		5C5A9EE819B8A10D0080DCEC /* UIImage+OpenCV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+OpenCV.mm"; sourceTree = "<group>"; };
@@ -85,6 +123,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C38BAA619C1B70C0083CE87 /* SystemConfiguration.framework in Frameworks */,
 				5C5A9EF519B8A4950080DCEC /* CoreMedia.framework in Frameworks */,
 				5C5A9EF319B8A4890080DCEC /* ImageIO.framework in Frameworks */,
 				5C5A9EF719B8A7DE0080DCEC /* opencv2.framework in Frameworks */,
@@ -109,6 +148,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C198EC719C1D606001EBF92 /* ImageProcessing */ = {
+			isa = PBXGroup;
+			children = (
+				5C198EC819C1D606001EBF92 /* DetectRegions.cpp */,
+				5C198EC919C1D606001EBF92 /* DetectRegions.h */,
+				5C198ECA19C1D606001EBF92 /* Plate.cpp */,
+				5C198ECB19C1D606001EBF92 /* Plate.h */,
+			);
+			path = ImageProcessing;
+			sourceTree = "<group>";
+		};
+		5C1C88FB19C32DCD0015A08E /* GPlates */ = {
+			isa = PBXGroup;
+			children = (
+				5C1C88FC19C32DCD0015A08E /* 1.jpg */,
+				5C1C88FD19C32DCD0015A08E /* 10.jpg */,
+				5C1C88FE19C32DCD0015A08E /* 11.jpg */,
+				5C1C88FF19C32DCD0015A08E /* 12.jpg */,
+				5C1C890019C32DCD0015A08E /* 13.jpg */,
+				5C1C890119C32DCD0015A08E /* 14.jpg */,
+				5C1C890219C32DCD0015A08E /* 2.jpg */,
+				5C1C890319C32DCD0015A08E /* 3.jpg */,
+				5C1C890419C32DCD0015A08E /* 4.jpg */,
+				5C1C890519C32DCD0015A08E /* 5.jpg */,
+				5C1C890619C32DCD0015A08E /* 6.jpg */,
+				5C1C890719C32DCD0015A08E /* 7.jpg */,
+				5C1C890819C32DCD0015A08E /* 8.jpg */,
+				5C1C890919C32DCD0015A08E /* 9.jpg */,
+			);
+			path = GPlates;
+			sourceTree = "<group>";
+		};
 		5CA3025419B6EA9400A1337A = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +202,7 @@
 		5CA3025F19B6EA9400A1337A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */,
 				5C5A9EF619B8A7DE0080DCEC /* opencv2.framework */,
 				5C5A9EF419B8A4950080DCEC /* CoreMedia.framework */,
 				5C5A9EF119B8A4770080DCEC /* libc++.dylib */,
@@ -147,10 +219,12 @@
 		5CA3026619B6EA9500A1337A /* OpenCVTest */ = {
 			isa = PBXGroup;
 			children = (
+				5C1C88FB19C32DCD0015A08E /* GPlates */,
 				5C5A9EE719B8A10D0080DCEC /* UIImage+OpenCV.h */,
 				5C5A9EE819B8A10D0080DCEC /* UIImage+OpenCV.mm */,
 				5CA3026F19B6EA9500A1337A /* AppDelegate.h */,
 				5CA3027019B6EA9500A1337A /* AppDelegate.m */,
+				5C198EC719C1D606001EBF92 /* ImageProcessing */,
 				5CA3027219B6EA9500A1337A /* Main.storyboard */,
 				5CA3027519B6EA9500A1337A /* ViewController.h */,
 				5CA3027619B6EA9500A1337A /* ViewController.m */,
@@ -159,6 +233,7 @@
 				5CBD8F9F19BD8C4300D5F218 /* ImageProcessor.cpp */,
 				5CBD8FA019BD8C4300D5F218 /* ImageProcessor.h */,
 				5CFEF54919BEB90000A97C39 /* vehicle.jpg */,
+				5C1C88C719C315450015A08E /* highrez01.jpg */,
 				5CA3027819B6EA9500A1337A /* Images.xcassets */,
 				5C5A9EE519B89A610080DCEC /* 5445BSX.JPG */,
 				5CFEF54B19BF1D0900A97C39 /* 12.jpg */,
@@ -272,10 +347,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C1C891619C32DCD0015A08E /* 8.jpg in Resources */,
+				5C1C891419C32DCD0015A08E /* 6.jpg in Resources */,
+				5C1C891119C32DCD0015A08E /* 3.jpg in Resources */,
+				5C1C890F19C32DCD0015A08E /* 14.jpg in Resources */,
 				5CA3027919B6EA9500A1337A /* Images.xcassets in Resources */,
+				5C1C891019C32DCD0015A08E /* 2.jpg in Resources */,
+				5C1C890E19C32DCD0015A08E /* 13.jpg in Resources */,
+				5C1C88FA19C315450015A08E /* highrez01.jpg in Resources */,
 				5C5A9EE619B89A610080DCEC /* 5445BSX.JPG in Resources */,
+				5C1C891719C32DCD0015A08E /* 9.jpg in Resources */,
 				5CA3026B19B6EA9500A1337A /* InfoPlist.strings in Resources */,
+				5C1C891319C32DCD0015A08E /* 5.jpg in Resources */,
+				5C1C891219C32DCD0015A08E /* 4.jpg in Resources */,
+				5C1C891519C32DCD0015A08E /* 7.jpg in Resources */,
+				5C1C890B19C32DCD0015A08E /* 10.jpg in Resources */,
+				5C1C890C19C32DCD0015A08E /* 11.jpg in Resources */,
 				5CFEF54C19BF1D0900A97C39 /* 12.jpg in Resources */,
+				5C1C890A19C32DCD0015A08E /* 1.jpg in Resources */,
+				5C1C890D19C32DCD0015A08E /* 12.jpg in Resources */,
 				5CFEF54A19BEB90000A97C39 /* vehicle.jpg in Resources */,
 				5CA3027419B6EA9500A1337A /* Main.storyboard in Resources */,
 			);
@@ -296,10 +386,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C198ECD19C1D606001EBF92 /* Plate.cpp in Sources */,
 				5CBD8FA119BD8C4300D5F218 /* ImageProcessor.cpp in Sources */,
 				5C5A9EE919B8A10D0080DCEC /* UIImage+OpenCV.mm in Sources */,
 				5CBD8F9E19BD87BD00D5F218 /* ImageProcessorImplementation.mm in Sources */,
 				5CA3027719B6EA9500A1337A /* ViewController.m in Sources */,
+				5C198ECC19C1D606001EBF92 /* DetectRegions.cpp in Sources */,
 				5CA3027119B6EA9500A1337A /* AppDelegate.m in Sources */,
 				5CA3026D19B6EA9500A1337A /* main.m in Sources */,
 			);
@@ -361,9 +453,11 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -378,13 +472,19 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_SHADOW = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-fvisibility=hidden";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -399,9 +499,11 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = NO;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -410,12 +512,18 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_SHADOW = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				OTHER_LDFLAGS = "-fvisibility=hidden";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -434,6 +542,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OpenCVTest/OpenCVTest-Prefix.pch";
 				INFOPLIST_FILE = "OpenCVTest/OpenCVTest-Info.plist";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -452,6 +561,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OpenCVTest/OpenCVTest-Prefix.pch";
 				INFOPLIST_FILE = "OpenCVTest/OpenCVTest-Info.plist";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
