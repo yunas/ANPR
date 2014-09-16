@@ -36,6 +36,7 @@
     
     processor = [[ImageProcessorImplementation alloc] init];
     
+//    [ImageProcessorImplementation trainSVM];
 }
 
 - (void)didReceiveMemoryWarning
@@ -46,13 +47,14 @@
 
 - (IBAction)processandsave:(id)sender {
     
+    
     // For first time our source image will be input image.
     if (count <= 14) {
-        sourceImage = [UIImage imageNamed:[NSString stringWithFormat:@"%d.jpg",count]];
+        sourceImage = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.jpg",count]];
         
         inputImage.image = sourceImage;
         
-        [self operation:[NSString stringWithFormat:@"%d",count]];
+        [self operation:[NSString stringWithFormat:@"l%d",count]];
     }
     // We will be using source image for further processing.
     

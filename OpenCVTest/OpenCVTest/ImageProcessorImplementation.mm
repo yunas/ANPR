@@ -11,21 +11,217 @@
 #import <opencv2/imgproc/imgproc.hpp>
 
 #include "DetectRegions.h"
+#include "HarissDetector.h"
 
 using namespace std;
 
+
 @implementation ImageProcessorImplementation
+
+#pragma mark - Class methods
+
++ (UIImage *)getLocalisedImageFromSource:(UIImage*)image imageName:(NSString *)name {
+
+    // input image
+    cv::Mat input_image = [image CVMat];
+
+    DetectRegions detectRegions;
+    detectRegions.setFilename("12");
+    detectRegions.saveRegions = false;
+    detectRegions.showSteps = false;
+    
+    vector<Plate> posible_regions = detectRegions.run(input_image);
+    
+    
+    UIImage *outImage = nil;
+    
+    NSData *data = nil;
+    NSString* filePath = nil;
+    
+    for (int i=0; i<posible_regions.size(); i++) {
+        Plate rect = posible_regions[i];
+        
+        outImage = [UIImage imageWithCVMat:rect.plateImg];
+        
+        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        
+        filePath = [documentsPath stringByAppendingFormat:@"/%@_%d_0.jpg",name,i];
+        
+        data = UIImageJPEGRepresentation(outImage, 1);
+        
+        [data writeToFile:filePath atomically:YES];
+    }
+    
+    //SVM for each plate region to get valid car plates
+    //Read file storage.
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *docs = [paths objectAtIndex:0];
+//    NSString *vocabPath = [docs stringByAppendingPathComponent:@"SVM.xml"];
+    
+    NSString *vocabPath = [[NSBundle mainBundle] pathForResource:@"SVM.xml" ofType:nil];
+    FileStorage fs([vocabPath UTF8String], FileStorage::READ);
+    Mat SVM_TrainingData;
+    Mat SVM_Classes;
+    fs["TrainingData"] >> SVM_TrainingData;
+    fs["classes"] >> SVM_Classes;
+    //Set SVM params
+    
+    CvSVMParams SVM_params;
+    SVM_params.svm_type = CvSVM::C_SVC;
+    SVM_params.kernel_type = CvSVM::LINEAR;
+    SVM_params.degree = 0;
+    SVM_params.gamma = 1;
+    SVM_params.coef0 = 0;
+    SVM_params.C = 1;
+    SVM_params.nu = 0;
+    SVM_params.p = 0;
+    SVM_params.term_crit = cvTermCriteria(CV_TERMCRIT_ITER, 1000, 0.01);
+    //Train SVM
+    CvSVM svmClassifier(SVM_TrainingData, SVM_Classes, Mat(), Mat(), SVM_params);
+    
+    //For each possible plate, classify with svm if it's a plate or no
+    vector<Plate> plates;
+    for(int i=0; i< posible_regions.size()-1; i++)
+    {
+        Mat img=posible_regions[i].plateImg;
+        Mat p= img.reshape(1, 1);
+        p.convertTo(p, CV_32FC1);
+        
+        int response = (int)svmClassifier.predict( p );
+        if(response==1)
+            plates.push_back(posible_regions[i]);
+    }
+    
+    for (int i=0; i<plates.size(); i++) {
+        Plate rect = plates[i];
+        
+        outImage = [UIImage imageWithCVMat:rect.plateImg];
+        
+        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        
+        filePath = [documentsPath stringByAppendingFormat:@"/%@_%d_svm.jpg",name,i];
+        
+        data = UIImageJPEGRepresentation(outImage, 1);
+        
+        [data writeToFile:filePath atomically:YES];
+    }
+    
+    return outImage;
+}
+
++ (UIImage *)harissCornerDetector:(UIImage*)source {
+    
+    cv::Mat input_image = [source CVMat];
+    
+    HarissDetector hariss;
+    cv::Mat outPut = hariss.cornerHarris_demo(input_image);
+    
+    UIImage *outPutImage = [UIImage imageWithCVMat:outPut];
+    
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSString *filePath = [documentsPath stringByAppendingPathComponent:@"hariss.jpg"];
+    
+    NSData *data = UIImageJPEGRepresentation(outPutImage, 1);
+    [data writeToFile:filePath atomically:YES];
+    
+    return outPutImage;
+}
+
++ (UIImage *)ShiTomasiCornerDetector:(UIImage*)source {
+    cv::Mat input_image = [source CVMat];
+    
+    
+    HarissDetector hariss;
+    
+    cv::Mat output = hariss.goodFeaturesToTrack_Demo(input_image);
+    
+    UIImage *outPutImage = [UIImage imageWithCVMat:output];
+    
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSString *filePath = [documentsPath stringByAppendingPathComponent:@"shi.jpg"];
+    
+    NSData *data = UIImageJPEGRepresentation(outPutImage, 1);
+    [data writeToFile:filePath atomically:YES];
+    
+    return outPutImage;
+    
+}
+
++ (BOOL)trainSVM {
+    
+    int numPlates = 48;
+    int numNoPlates = 29;
+    
+    cv::Mat classes; // = Mat(numPlates+numNoPlates, 1, CV_32FC1);
+    cv::Mat trainingData; // = Mat(numPlates+numNoPlates, 144*33, CV_32FC1 );
+    
+    cv::Mat trainingImages;
+    std::vector<int> trainingLabels;
+    
+    for (int i=1; i<= numPlates; i++) {
+        
+        NSString *plateNumber = [NSString stringWithFormat:@"%d.jpg",i];
+        
+        cv::Mat img_gray = [[self class] trainingPlate:plateNumber];
+        
+        img_gray= img_gray.reshape(1, 1);
+        trainingImages.push_back(img_gray);
+        trainingLabels.push_back(1);
+        
+        img_gray.release();
+    }
+    
+    for (int i=1; i<=numNoPlates; i++) {
+        
+        NSString *plateNumber = [NSString stringWithFormat:@"n%d.jpg",i];
+        
+        cv::Mat img_gray = [[self class] trainingPlate:plateNumber];
+        
+        img_gray= img_gray.reshape(1, 1);
+        trainingImages.push_back(img_gray);
+        trainingLabels.push_back(0);
+    }
+    
+    Mat(trainingImages).copyTo(trainingData);
+    //trainingData = trainingData.reshape(1,trainingData.rows);
+    trainingData.convertTo(trainingData, CV_32FC1);
+    Mat(trainingLabels).copyTo(classes);
+    
+    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    NSString *filePath = [path stringByAppendingPathComponent:@"SVM.xml"];
+    FileStorage fs([filePath UTF8String], FileStorage::WRITE);
+    fs << "TrainingData" << trainingData;
+    fs << "classes" << classes;
+    fs.release();
+    
+    return YES;
+}
+
++ (Mat)trainingPlate:(NSString*)platenumber {
+    
+    UIImage *image = [UIImage imageNamed:platenumber];
+    
+    cv::Mat src = [image CVMat];
+    cv::Mat img_gray = [[self class] grayImage:src];
+
+    return img_gray;
+}
+
+#pragma mark - instance methods
+
 
 - (NSString*)filePath:(NSString*)name {
     
     NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
-    NSString *filePath = [documentsPath stringByAppendingFormat:@"/%@.jpg",name];
+    NSString *filePath = [documentsPath stringByAppendingFormat:@"/l%@.jpg",name];
     
     return filePath;
 }
 
-- (cv::Mat)grayImage:(cv::Mat)sourceImage {
++ (cv::Mat)grayImage:(cv::Mat)sourceImage {
     
     cv::Mat gray;
     if (sourceImage.channels() == 3)
@@ -34,40 +230,8 @@ using namespace std;
         cv::cvtColor(sourceImage, gray, cv::COLOR_BGRA2GRAY);
     else if(sourceImage.channels() == 1)
         gray = sourceImage;
+    
     return gray;
-}
-
-+ (UIImage *)getLocalisedImageFromSource:(UIImage*)image imageName:(NSString *)name {
-    
-    cv::Mat input_image = [image CVMat];
-    
-    DetectRegions detectRegions;
-    detectRegions.setFilename("12");
-    detectRegions.saveRegions = false;
-    detectRegions.showSteps = false;
-    
-    vector<Plate> output = detectRegions.run(input_image);
-    
-    UIImage *outImage = nil;
-    
-    NSData *data = nil;
-    NSString* filePath = nil;
-    
-    for (int i=0; i<output.size(); i++) {
-        Plate rect = output[i];
-        
-        outImage = [UIImage imageWithCVMat:rect.plateImg];
-        
-        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        
-        filePath = [documentsPath stringByAppendingFormat:@"/%@_%d.jpg",name,i];
-        
-        data = UIImageJPEGRepresentation(outImage, 1);
-        
-        [data writeToFile:filePath atomically:YES];
-    }
-    
-    return outImage;
 }
 
 - (UIImage*)LocalizeImageFromSource:(UIImage *)src {
@@ -78,7 +242,7 @@ using namespace std;
     cv::Mat source = [src CVMat];
     
     cv::Mat img_gray;
-    img_gray = [self grayImage:source];  //cvtColor(source, img_gray, cv::COLOR_BGR2GRAY);
+    img_gray = [[self class] grayImage:source];  //cvtColor(source, img_gray, cv::COLOR_BGR2GRAY);
 //    blur(img_gray, img_gray, cv::Size(5,5));
     
     filtered=[UIImage imageWithCVMat:img_gray];
@@ -206,9 +370,9 @@ using namespace std;
             seed.y=rects[i].center.y+rand()%(int)minSize-(minSize/2);
             circle(result, seed, 1, cv::Scalar(0,255,255), -1);
             
-            int area = cv::floodFill(img_gray, mask, seed, cv::Scalar(255,0,0));
+//            int area = cv::floodFill(img_gray, mask, seed, cv::Scalar(255,0,0));
 
-//            int area = cv::floodFill(img_gray, mask, seed, cv::Scalar(255,0,0), &ccomp, cv::Scalar(loDiff, loDiff, loDiff), cv::Scalar(upDiff, upDiff, upDiff), flags);
+            cv::floodFill(img_gray, mask, seed, cv::Scalar(255,0,0), &ccomp, cv::Scalar(loDiff, loDiff, loDiff), cv::Scalar(upDiff, upDiff, upDiff), flags);
         }
         
         //Check new floodfill mask match for a correct patch.
@@ -247,7 +411,7 @@ using namespace std;
             //Crop image
             cv::Size rect_size=minRect.size;
             if(r < 1)
-                cv::swap(rect_size.width, rect_size.height);
+                swap(rect_size.width, rect_size.height);
             cv::Mat img_crop;
             getRectSubPix(img_rotated, rect_size, minRect.center, img_crop);
             

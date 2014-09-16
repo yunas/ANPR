@@ -84,8 +84,9 @@ vector<Plate> DetectRegions::segment(Mat input){
     else if(input.channels() == 1)
         img_gray = input;
     
-    cvtColor(input, img_gray, cv::COLOR_BGR2GRAY);
-    blur(img_gray, img_gray, Size(5,5));    
+//    cvtColor(input, img_gray, cv::COLOR_BGR2GRAY);
+   
+    blur(img_gray, img_gray, Size(5,5));
 
     //Finde vertical lines. Car plates have high density of vertical lines
     Mat img_sobel;
@@ -149,7 +150,7 @@ vector<Plate> DetectRegions::segment(Mat input){
         int upDiff = 30;
         int connectivity = 4;
         int newMaskVal = 255;
-        int NumSeeds = 10;
+        int NumSeeds = 20;
         Rect ccomp;
         int flags = connectivity + (newMaskVal << 8 ) + FLOODFILL_FIXED_RANGE + FLOODFILL_MASK_ONLY;
         for(int j=0; j<NumSeeds; j++){
@@ -157,9 +158,10 @@ vector<Plate> DetectRegions::segment(Mat input){
             seed.x=rects[i].center.x+rand()%(int)minSize-(minSize/2);
             seed.y=rects[i].center.y+rand()%(int)minSize-(minSize/2);
             circle(result, seed, 1, Scalar(0,255,255), -1);
+            
             floodFill(input, mask, seed, Scalar(255,0,0), &ccomp, Scalar(loDiff, loDiff, loDiff), Scalar(upDiff, upDiff, upDiff), flags);
         }
-
+        
         //Check new floodfill mask match for a correct patch.
         //Get all points detected for get Minimal rotated Rect
         vector<Point> pointsInterest;

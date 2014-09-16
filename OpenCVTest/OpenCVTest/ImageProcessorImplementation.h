@@ -8,14 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface ImageProcessorImplementation : NSObject
 
 + (UIImage *)getLocalisedImageFromSource:(UIImage*)src imageName:(NSString*)name;
++ (UIImage *)harissCornerDetector:(UIImage*)source;
++ (UIImage *)ShiTomasiCornerDetector:(UIImage*)source;
 
 - (UIImage*)LocalizeImageFromSource:(UIImage *)image;
 
 - (UIImage*)dilationOfSource:(UIImage *)src;
 - (UIImage*)erosionOfSource:(UIImage *)src;
+
++ (BOOL)trainSVM;
 
 @end
