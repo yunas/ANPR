@@ -26,6 +26,8 @@
 		5C1C891619C32DCD0015A08E /* l8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890819C32DCD0015A08E /* l8.jpg */; };
 		5C1C891719C32DCD0015A08E /* l9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890919C32DCD0015A08E /* l9.jpg */; };
 		5C38BAA619C1B70C0083CE87 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */; };
+		5C5441E119C9809C009D1445 /* OCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C5441DE19C9809C009D1445 /* OCR.cpp */; };
+		5C5441E219C9809C009D1445 /* trainOCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C5441E019C9809C009D1445 /* trainOCR.cpp */; };
 		5C5A9EE619B89A610080DCEC /* 5445BSX.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5C5A9EE519B89A610080DCEC /* 5445BSX.JPG */; };
 		5C5A9EE919B8A10D0080DCEC /* UIImage+OpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C5A9EE819B8A10D0080DCEC /* UIImage+OpenCV.mm */; };
 		5C5A9EF019B8A4620080DCEC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EEF19B8A4620080DCEC /* libz.dylib */; };
@@ -165,6 +167,9 @@
 		5C1C890819C32DCD0015A08E /* l8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l8.jpg; sourceTree = "<group>"; };
 		5C1C890919C32DCD0015A08E /* l9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l9.jpg; sourceTree = "<group>"; };
 		5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		5C5441DE19C9809C009D1445 /* OCR.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OCR.cpp; sourceTree = "<group>"; };
+		5C5441DF19C9809C009D1445 /* OCR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCR.h; sourceTree = "<group>"; };
+		5C5441E019C9809C009D1445 /* trainOCR.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = trainOCR.cpp; sourceTree = "<group>"; };
 		5C5A9EE519B89A610080DCEC /* 5445BSX.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 5445BSX.JPG; sourceTree = "<group>"; };
 		5C5A9EE719B8A10D0080DCEC /* UIImage+OpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+OpenCV.h"; sourceTree = "<group>"; };
 		5C5A9EE819B8A10D0080DCEC /* UIImage+OpenCV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+OpenCV.mm"; sourceTree = "<group>"; };
@@ -437,6 +442,9 @@
 			isa = PBXGroup;
 			children = (
 				5C198EC819C1D606001EBF92 /* DetectRegions.cpp */,
+				5C5441DE19C9809C009D1445 /* OCR.cpp */,
+				5C5441DF19C9809C009D1445 /* OCR.h */,
+				5C5441E019C9809C009D1445 /* trainOCR.cpp */,
 				5C198EC919C1D606001EBF92 /* DetectRegions.h */,
 				5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */,
 				5C08A6EE19C716C900ACC4B7 /* HarissDetector.h */,
@@ -748,12 +756,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C5441E119C9809C009D1445 /* OCR.cpp in Sources */,
 				5C198ECD19C1D606001EBF92 /* Plate.cpp in Sources */,
 				5CBD8FA119BD8C4300D5F218 /* ImageProcessor.cpp in Sources */,
 				5C5A9EE919B8A10D0080DCEC /* UIImage+OpenCV.mm in Sources */,
 				5C08A6EF19C716C900ACC4B7 /* HarissDetector.cpp in Sources */,
 				5CBD8F9E19BD87BD00D5F218 /* ImageProcessorImplementation.mm in Sources */,
 				5CEC104C19C8215E00BDFCF4 /* TrainSVM.cpp in Sources */,
+				5C5441E219C9809C009D1445 /* trainOCR.cpp in Sources */,
 				5CA3027719B6EA9500A1337A /* ViewController.m in Sources */,
 				5C198ECC19C1D606001EBF92 /* DetectRegions.cpp in Sources */,
 				5CA3027119B6EA9500A1337A /* AppDelegate.m in Sources */,
