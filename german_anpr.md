@@ -4,11 +4,14 @@
 **1. Size of plate is 520x112 (mm)**  
 **2. Type face (font) : FE-Schrift (“fälschungserschwerende Schrift”, tamper-hindering script).**  
 **Maximum number of digits are 8**  
-**Background coulour is white**  
+**Background colour is white**  
 **Text colour Black**  
-**Border colour areound plate is Black**
+**Border colour around plate is Black**
 
 ## Steps for ANPR
+**1. Plate detection**  
+**2. Plate recognition**  
+**3. Character recognition**
 
 ###1. Plate detection
 In this step number plate is detect in given image. Following steps are performed in this step.
