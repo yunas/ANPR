@@ -32,8 +32,8 @@ using namespace std;
     vector<Plate> posible_regions = detectRegions.run(input_image);
     
     UIImage *outImage = nil;
-    NSData *data = nil;
-    NSString* filePath = nil;
+//    NSData *data = nil;
+//    NSString* filePath = nil;
     
     for (int i=0; i<posible_regions.size(); i++) {
         
