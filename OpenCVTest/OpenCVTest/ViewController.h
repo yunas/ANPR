@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MWPhotoBrowser.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<MWPhotoBrowserDelegate>
 
 @end
