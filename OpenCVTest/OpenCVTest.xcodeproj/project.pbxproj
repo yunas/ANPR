@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4534C94019CAE8B800E563BC /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4534C93F19CAE8B800E563BC /* opencv2.framework */; };
 		5C08A6EF19C716C900ACC4B7 /* HarissDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */; };
 		5C198ECC19C1D606001EBF92 /* DetectRegions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C198EC819C1D606001EBF92 /* DetectRegions.cpp */; };
 		5C198ECD19C1D606001EBF92 /* Plate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C198ECA19C1D606001EBF92 /* Plate.cpp */; };
@@ -34,7 +35,6 @@
 		5C5A9EF219B8A4770080DCEC /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EF119B8A4770080DCEC /* libc++.dylib */; };
 		5C5A9EF319B8A4890080DCEC /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EED19B8A44F0080DCEC /* ImageIO.framework */; };
 		5C5A9EF519B8A4950080DCEC /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EF419B8A4950080DCEC /* CoreMedia.framework */; };
-		5C5A9EF719B8A7DE0080DCEC /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EF619B8A7DE0080DCEC /* opencv2.framework */; };
 		5CA3026119B6EA9400A1337A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026019B6EA9400A1337A /* Foundation.framework */; };
 		5CA3026319B6EA9400A1337A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026219B6EA9400A1337A /* CoreGraphics.framework */; };
 		5CA3026519B6EA9500A1337A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026419B6EA9500A1337A /* UIKit.framework */; };
@@ -146,6 +146,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4534C93F19CAE8B800E563BC /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HarissDetector.cpp; sourceTree = "<group>"; };
 		5C08A6EE19C716C900ACC4B7 /* HarissDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HarissDetector.h; sourceTree = "<group>"; };
 		5C198EC819C1D606001EBF92 /* DetectRegions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetectRegions.cpp; sourceTree = "<group>"; };
@@ -178,7 +179,6 @@
 		5C5A9EEF19B8A4620080DCEC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5C5A9EF119B8A4770080DCEC /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		5C5A9EF419B8A4950080DCEC /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		5C5A9EF619B8A7DE0080DCEC /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		5CA3025D19B6EA9400A1337A /* OpenCVTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenCVTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CA3026019B6EA9400A1337A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5CA3026219B6EA9400A1337A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -296,7 +296,7 @@
 				5C38BAA619C1B70C0083CE87 /* SystemConfiguration.framework in Frameworks */,
 				5C5A9EF519B8A4950080DCEC /* CoreMedia.framework in Frameworks */,
 				5C5A9EF319B8A4890080DCEC /* ImageIO.framework in Frameworks */,
-				5C5A9EF719B8A7DE0080DCEC /* opencv2.framework in Frameworks */,
+				4534C94019CAE8B800E563BC /* opencv2.framework in Frameworks */,
 				5C5A9EF219B8A4770080DCEC /* libc++.dylib in Frameworks */,
 				5C5A9EF019B8A4620080DCEC /* libz.dylib in Frameworks */,
 				5CA3026319B6EA9400A1337A /* CoreGraphics.framework in Frameworks */,
@@ -372,8 +372,8 @@
 		5CA3025F19B6EA9400A1337A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4534C93F19CAE8B800E563BC /* opencv2.framework */,
 				5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */,
-				5C5A9EF619B8A7DE0080DCEC /* opencv2.framework */,
 				5C5A9EF419B8A4950080DCEC /* CoreMedia.framework */,
 				5C5A9EF119B8A4770080DCEC /* libc++.dylib */,
 				5C5A9EEF19B8A4620080DCEC /* libz.dylib */,
