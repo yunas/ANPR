@@ -19,8 +19,8 @@ DetectRegions::DetectRegions(){
     showSteps=false;
     saveRegions=false;
     aspectRatio = 4.6429;
-    minArea = 15;
-    maxArea = 125;
+    minArea = 25;
+    maxArea = 150;
 }
 
 bool DetectRegions::verifySizes(RotatedRect mr){
@@ -212,7 +212,10 @@ vector<Plate> DetectRegions::segment(Mat input){
     
     for (int i = 0; i < size; i++) {
         Plate rect = output[i];
-        rectangle(result, rect.position, Scalar(255,0,0), 3);
+
+        cout<<rect.position<<endl;
+        
+        rectangle(result, rect.position, Scalar(0,255,0), 3);
     }
     
     output.push_back(Plate(result, Rect(Point(0,0), result.size())));

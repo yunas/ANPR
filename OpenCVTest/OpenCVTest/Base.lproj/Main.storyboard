@@ -21,6 +21,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.97647058819999999" green="0.4039215686" blue="0.1176470588" alpha="0.90000000000000002" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="5MA-ou-uyy"/>
                                     <constraint firstAttribute="width" constant="64" id="V8k-Qh-JYR"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -29,15 +30,15 @@
                                     <action selector="processandsave:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="bju-3R-mht"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="l1.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="2P2-LX-2Y9">
-                                <rect key="frame" x="10" y="90" width="300" height="250"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="l1.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="2P2-LX-2Y9">
+                                <rect key="frame" x="10" y="85" width="300" height="280"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="250" id="TNt-gQ-FvG"/>
+                                    <constraint firstAttribute="height" constant="280" id="wP4-DD-wzy"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pfU-BC-1o1">
-                                <rect key="frame" x="10" y="350" width="300" height="198"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pfU-BC-1o1">
+                                <rect key="frame" x="10" y="385" width="300" height="163"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w9p-3c-RDK">
@@ -53,27 +54,27 @@
                                     <action selector="takePhoto:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="pOC-fF-Ngb"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="2Mo-MA-GFi">
-                                <rect key="frame" x="142" y="197" width="37" height="37"/>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="2Mo-MA-GFi">
+                                <rect key="frame" x="142" y="216" width="37" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="color" red="0.97647058819999999" green="0.4039215686" blue="0.1176470588" alpha="0.90000000000000002" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="2P2-LX-2Y9" firstAttribute="centerY" secondItem="2Mo-MA-GFi" secondAttribute="centerY" id="6IH-UX-2IW"/>
                             <constraint firstItem="w9p-3c-RDK" firstAttribute="centerY" secondItem="0B7-sL-J8b" secondAttribute="centerY" id="6V5-in-xAc"/>
                             <constraint firstAttribute="trailing" secondItem="0B7-sL-J8b" secondAttribute="trailing" constant="30" id="Ajf-cD-87q"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="pfU-BC-1o1" secondAttribute="bottom" constant="20" id="Bpm-Rn-8pQ"/>
+                            <constraint firstAttribute="centerY" secondItem="2Mo-MA-GFi" secondAttribute="centerY" constant="50" id="FbT-Go-gsH"/>
                             <constraint firstItem="2P2-LX-2Y9" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="10" id="Ip4-yn-4ur"/>
                             <constraint firstAttribute="trailing" secondItem="2P2-LX-2Y9" secondAttribute="trailing" constant="10" id="QYT-eI-0FS"/>
-                            <constraint firstItem="2P2-LX-2Y9" firstAttribute="top" secondItem="0B7-sL-J8b" secondAttribute="bottom" constant="20" id="VXS-Tr-XpR"/>
-                            <constraint firstItem="pfU-BC-1o1" firstAttribute="top" secondItem="2P2-LX-2Y9" secondAttribute="bottom" constant="10" id="W6n-iJ-XtC"/>
+                            <constraint firstItem="2P2-LX-2Y9" firstAttribute="top" secondItem="0B7-sL-J8b" secondAttribute="bottom" constant="15" id="VXS-Tr-XpR"/>
+                            <constraint firstItem="pfU-BC-1o1" firstAttribute="top" secondItem="2P2-LX-2Y9" secondAttribute="bottom" constant="20" id="W6n-iJ-XtC"/>
+                            <constraint firstAttribute="centerX" secondItem="2Mo-MA-GFi" secondAttribute="centerX" id="Xn3-VB-0w7"/>
                             <constraint firstItem="0B7-sL-J8b" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="20" id="Xuf-w3-shv"/>
                             <constraint firstAttribute="trailing" secondItem="pfU-BC-1o1" secondAttribute="trailing" constant="10" id="fCi-Vc-yBL"/>
                             <constraint firstItem="w9p-3c-RDK" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="30" id="ou2-XT-63D"/>
                             <constraint firstItem="pfU-BC-1o1" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="10" id="q7T-wR-HmA"/>
-                            <constraint firstItem="2P2-LX-2Y9" firstAttribute="centerX" secondItem="2Mo-MA-GFi" secondAttribute="centerX" id="y3c-Rg-dwy"/>
                         </constraints>
                     </view>
                     <connections>
