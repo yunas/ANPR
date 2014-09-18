@@ -40,7 +40,7 @@
 
 -(void) initCustomView{
     photos = [NSMutableArray new];
-    for(int i = 1; i <= 14 ; i++){
+    for(int i = 1; i <= 13 ; i++){
         NSString *urlStr = [NSString stringWithFormat:@"l%d.jpg",i];
         MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
         [photo setCaption:[NSString stringWithFormat:@"%d",i]];
@@ -131,9 +131,6 @@
         [actionSheet showInView:self.view];
     } else {
         [self openLibrary];
-        
-//        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-//        [self presentViewController:imagePicker animated:YES completion:nil];
     }
 }
 
@@ -186,7 +183,7 @@
 
     if (rotatedImage) {
         sourceImage = nil;
-        sourceImage= rotatedImage; //[UIImage imageWithCGImage:ref];
+        sourceImage= rotatedImage;
     }
 
     [inputImageView setImage:sourceImage];
@@ -207,8 +204,6 @@
         }
         
         else if (buttonIndex == 1)
-//            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-//
             [self openLibrary];
     } else
         [self dismissViewControllerAnimated:YES completion:nil];

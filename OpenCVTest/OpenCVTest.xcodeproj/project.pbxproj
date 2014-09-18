@@ -59,7 +59,6 @@
 		5C1C890C19C32DCD0015A08E /* l11.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C88FE19C32DCD0015A08E /* l11.jpg */; };
 		5C1C890D19C32DCD0015A08E /* l12.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C88FF19C32DCD0015A08E /* l12.jpg */; };
 		5C1C890E19C32DCD0015A08E /* l13.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890019C32DCD0015A08E /* l13.jpg */; };
-		5C1C890F19C32DCD0015A08E /* l14.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890119C32DCD0015A08E /* l14.jpg */; };
 		5C1C891019C32DCD0015A08E /* l2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890219C32DCD0015A08E /* l2.jpg */; };
 		5C1C891119C32DCD0015A08E /* l3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890319C32DCD0015A08E /* l3.jpg */; };
 		5C1C891219C32DCD0015A08E /* l4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C1C890419C32DCD0015A08E /* l4.jpg */; };
@@ -287,7 +286,6 @@
 		5C1C88FE19C32DCD0015A08E /* l11.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l11.jpg; sourceTree = "<group>"; };
 		5C1C88FF19C32DCD0015A08E /* l12.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l12.jpg; sourceTree = "<group>"; };
 		5C1C890019C32DCD0015A08E /* l13.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l13.jpg; sourceTree = "<group>"; };
-		5C1C890119C32DCD0015A08E /* l14.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l14.jpg; sourceTree = "<group>"; };
 		5C1C890219C32DCD0015A08E /* l2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l2.jpg; sourceTree = "<group>"; };
 		5C1C890319C32DCD0015A08E /* l3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l3.jpg; sourceTree = "<group>"; };
 		5C1C890419C32DCD0015A08E /* l4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l4.jpg; sourceTree = "<group>"; };
@@ -620,7 +618,6 @@
 				5C1C88FE19C32DCD0015A08E /* l11.jpg */,
 				5C1C88FF19C32DCD0015A08E /* l12.jpg */,
 				5C1C890019C32DCD0015A08E /* l13.jpg */,
-				5C1C890119C32DCD0015A08E /* l14.jpg */,
 				5C1C890219C32DCD0015A08E /* l2.jpg */,
 				5C1C890319C32DCD0015A08E /* l3.jpg */,
 				5C1C890419C32DCD0015A08E /* l4.jpg */,
@@ -947,7 +944,6 @@
 				5CEC10E619C83CE100BDFCF4 /* 48.jpg in Resources */,
 				5CEC10C019C83CE100BDFCF4 /* 13.jpg in Resources */,
 				5CEC10B319C83CE100BDFCF4 /* n28.jpg in Resources */,
-				5C1C890F19C32DCD0015A08E /* l14.jpg in Resources */,
 				5CEC10E219C83CE100BDFCF4 /* 44.jpg in Resources */,
 				5CEC10B719C83CE100BDFCF4 /* n5.jpg in Resources */,
 				5CA3027919B6EA9500A1337A /* Images.xcassets in Resources */,
