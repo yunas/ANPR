@@ -15,12 +15,11 @@
 
 using namespace std;
 
-
 @implementation ImageProcessorImplementation
 
 #pragma mark - Class methods
 
-+ (UIImage *)getLocalisedImageFromSource:(UIImage*)image imageName:(NSString *)name {
++ (void)getLocalisedImageFromSource:(UIImage*)image imageName:(NSString *)name result:(ImageProcessingDone)block {
 
     // input image
     cv::Mat input_image = [image CVMat];
@@ -32,25 +31,26 @@ using namespace std;
     
     vector<Plate> posible_regions = detectRegions.run(input_image);
     
-    
     UIImage *outImage = nil;
-    
     NSData *data = nil;
     NSString* filePath = nil;
     
     for (int i=0; i<posible_regions.size(); i++) {
+        
         Plate rect = posible_regions[i];
         
         outImage = [UIImage imageWithCVMat:rect.plateImg];
         
-        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        
-        filePath = [documentsPath stringByAppendingFormat:@"/%@_%d_0.jpg",name,i];
-        
-        data = UIImageJPEGRepresentation(outImage, 1);
-        
-        [data writeToFile:filePath atomically:YES];
+//        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+//        
+//        filePath = [documentsPath stringByAppendingFormat:@"/%@_%d_0.jpg",name,i];
+//        
+//        data = UIImageJPEGRepresentation(outImage, 1);
+//        
+//        [data writeToFile:filePath atomically:YES];
     }
+    
+//    return outImage;
     
     //SVM for each plate region to get valid car plates
     //Read file storage.
@@ -97,16 +97,16 @@ using namespace std;
         
         outImage = [UIImage imageWithCVMat:rect.plateImg];
         
-        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        
-        filePath = [documentsPath stringByAppendingFormat:@"/%@_%d_svm.jpg",name,i];
-        
-        data = UIImageJPEGRepresentation(outImage, 1);
-        
-        [data writeToFile:filePath atomically:YES];
+//        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+//        
+//        filePath = [documentsPath stringByAppendingFormat:@"/%@_%d_svm.jpg",name,i];
+//        
+//        data = UIImageJPEGRepresentation(outImage, 1);
+//        
+//        [data writeToFile:filePath atomically:YES];
     }
     
-    return outImage;
+    block(outImage);
 }
 
 + (UIImage *)harissCornerDetector:(UIImage*)source {

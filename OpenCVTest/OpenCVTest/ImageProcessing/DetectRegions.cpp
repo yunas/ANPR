@@ -84,8 +84,6 @@ vector<Plate> DetectRegions::segment(Mat input){
     else if(input.channels() == 1)
         img_gray = input;
     
-//    cvtColor(input, img_gray, cv::COLOR_BGR2GRAY);
-   
     blur(img_gray, img_gray, Size(5,5));
 
     //Finde vertical lines. Car plates have high density of vertical lines

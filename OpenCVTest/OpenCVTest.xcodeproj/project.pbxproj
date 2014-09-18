@@ -49,6 +49,7 @@
 		5CA3028219B6EA9500A1337A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026419B6EA9500A1337A /* UIKit.framework */; };
 		5CA3028A19B6EA9500A1337A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CA3028819B6EA9500A1337A /* InfoPlist.strings */; };
 		5CA3028C19B6EA9500A1337A /* OpenCVTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA3028B19B6EA9500A1337A /* OpenCVTestTests.m */; };
+		5CB8A7B919CAAE3000FBAF9A /* UIImage+operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CB8A7B819CAAE3000FBAF9A /* UIImage+operation.m */; };
 		5CBD8F9E19BD87BD00D5F218 /* ImageProcessorImplementation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */; };
 		5CBD8FA119BD8C4300D5F218 /* ImageProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD8F9F19BD8C4300D5F218 /* ImageProcessor.cpp */; };
 		5CEC104C19C8215E00BDFCF4 /* TrainSVM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC104A19C8215E00BDFCF4 /* TrainSVM.cpp */; };
@@ -197,6 +198,8 @@
 		5CA3028719B6EA9500A1337A /* OpenCVTestTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OpenCVTestTests-Info.plist"; sourceTree = "<group>"; };
 		5CA3028919B6EA9500A1337A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5CA3028B19B6EA9500A1337A /* OpenCVTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenCVTestTests.m; sourceTree = "<group>"; };
+		5CB8A7B719CAAE3000FBAF9A /* UIImage+operation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+operation.h"; path = "GPlates/UIImage+operation.h"; sourceTree = "<group>"; };
+		5CB8A7B819CAAE3000FBAF9A /* UIImage+operation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+operation.m"; path = "GPlates/UIImage+operation.m"; sourceTree = "<group>"; };
 		5CBD8F9C19BD87BD00D5F218 /* ImageProcessorImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageProcessorImplementation.h; sourceTree = "<group>"; };
 		5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageProcessorImplementation.mm; sourceTree = "<group>"; };
 		5CBD8F9F19BD8C4300D5F218 /* ImageProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageProcessor.cpp; sourceTree = "<group>"; };
@@ -386,6 +389,8 @@
 		5CA3026619B6EA9500A1337A /* OpenCVTest */ = {
 			isa = PBXGroup;
 			children = (
+				5CB8A7B719CAAE3000FBAF9A /* UIImage+operation.h */,
+				5CB8A7B819CAAE3000FBAF9A /* UIImage+operation.m */,
 				5C1C88FB19C32DCD0015A08E /* GPlates */,
 				5C5A9EE719B8A10D0080DCEC /* UIImage+OpenCV.h */,
 				5C5A9EE819B8A10D0080DCEC /* UIImage+OpenCV.mm */,
@@ -756,6 +761,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5CB8A7B919CAAE3000FBAF9A /* UIImage+operation.m in Sources */,
 				5C5441E119C9809C009D1445 /* OCR.cpp in Sources */,
 				5C198ECD19C1D606001EBF92 /* Plate.cpp in Sources */,
 				5CBD8FA119BD8C4300D5F218 /* ImageProcessor.cpp in Sources */,
@@ -835,7 +841,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammad Atif Azad (Q478KPG3UD)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -859,6 +865,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-fvisibility=hidden";
+				PROVISIONING_PROFILE = "F4B581FB-F3CE-4BF0-871C-9B00AC2A2D29";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -881,7 +888,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammad Atif Azad (Q478KPG3UD)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -898,6 +905,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				OTHER_LDFLAGS = "-fvisibility=hidden";
+				PROVISIONING_PROFILE = "F4B581FB-F3CE-4BF0-871C-9B00AC2A2D29";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -916,6 +924,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OpenCVTest/OpenCVTest-Prefix.pch";
 				INFOPLIST_FILE = "OpenCVTest/OpenCVTest-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -935,6 +944,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OpenCVTest/OpenCVTest-Prefix.pch";
 				INFOPLIST_FILE = "OpenCVTest/OpenCVTest-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

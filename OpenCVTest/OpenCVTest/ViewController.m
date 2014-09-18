@@ -8,11 +8,16 @@
 
 #import "ViewController.h"
 #import "ImageProcessorImplementation.h"
+#include "UIImage+operation.h"
 
-@interface ViewController () {
+
+@interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
     
-    __weak IBOutlet UIImageView *inputImage;
-    __weak IBOutlet UIImageView *outputImage;
+    __weak IBOutlet UIImageView *inputImageView;
+    __weak IBOutlet UIImageView *outputImageView;
+    
+    UIImagePickerController *imagePicker;
+    __weak IBOutlet UIActivityIndicatorView *activityIndicatorView;
 }
 
 @end
@@ -39,20 +44,54 @@
 //    [ImageProcessorImplementation trainSVM];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    sourceImage = inputImageView.image;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)takePhoto:(id)sender {
+    
+    outputImageView.image = nil;
+    
+    if (!imagePicker) {
+        imagePicker = [UIImagePickerController new];
+    }
+
+    [imagePicker setDelegate:self];
+    imagePicker.allowsEditing = YES;
+    imagePicker.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Take a photo or choose existing photo."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Cancel"
+                                                   destructiveButtonTitle:nil
+                                                        otherButtonTitles:@"Take photo", @"Choose Existing", nil];
+        [actionSheet showInView:self.view];
+    } else {
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }
+}
+
 - (IBAction)processandsave:(id)sender {
     
+    [self operation:@"numberplate.jpg"];
+    
+    return;
     
     // For first time our source image will be input image.
     if (count <= 14) {
         sourceImage = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.jpg",count]];
         
-        inputImage.image = sourceImage;
+        inputImageView.image = sourceImage;
         
         [self operation:[NSString stringWithFormat:@"l%d",count]];
     }
@@ -63,9 +102,56 @@
 
 - (void)operation:(NSString*)name {
     
-    resultImage = [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name]; //[processor LocalizeImageFromSource:sourceImage];
+    [activityIndicatorView startAnimating];
     
-    outputImage.image = resultImage;
+    [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name result:^(UIImage *image) {
+
+     dispatch_async(dispatch_get_main_queue(), ^{
+         resultImage = image;
+         outputImageView.image = resultImage;
+         [activityIndicatorView stopAnimating];
+     });
+    }];
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+
+    UIImage *originalImage=[info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage *rotatedImage;
+
+    if (originalImage.imageOrientation!=UIImageOrientationUp)
+        rotatedImage = [originalImage rotate:originalImage.imageOrientation];
+    else
+        rotatedImage = originalImage;
+
+    if (rotatedImage) {
+        sourceImage = nil;
+        sourceImage= rotatedImage; //[UIImage imageWithCGImage:ref];
+    }
+
+    [inputImageView setImage:sourceImage];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    if(buttonIndex != actionSheet.cancelButtonIndex){
+        if (buttonIndex == 0)
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        else if (buttonIndex == 1)
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    } else
+        [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

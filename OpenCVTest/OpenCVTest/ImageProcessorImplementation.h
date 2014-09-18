@@ -8,9 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ImageProcessorImplementation : NSObject
+typedef void(^ImageProcessingDone)(UIImage *image);
 
-+ (UIImage *)getLocalisedImageFromSource:(UIImage*)src imageName:(NSString*)name;
+@interface ImageProcessorImplementation : NSObject
+{
+    ImageProcessingDone completionBlock;
+}
+
++ (void)getLocalisedImageFromSource:(UIImage*)src imageName:(NSString*)name result:(ImageProcessingDone)block;
 + (UIImage *)harissCornerDetector:(UIImage*)source;
 + (UIImage *)ShiTomasiCornerDetector:(UIImage*)source;
 
