@@ -136,7 +136,7 @@
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Take photo", @"Choose From Photo library", @"Choose Existing", @"Choose New data set", nil];
+                                                        otherButtonTitles:@"Take photo", @"Choose From Photo library", @"Choose Existing", nil];
         actionSheet.tag = 200;
     } else {
         
@@ -144,7 +144,7 @@
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Choose From Photo library", @"Choose Existing", @"Choose New data set", nil];
+                                                        otherButtonTitles:@"Choose From Photo library", @"Choose Existing", nil];
         actionSheet.tag = 100;
     }
     [actionSheet showInView:self.view];
