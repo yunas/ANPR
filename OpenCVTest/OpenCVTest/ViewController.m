@@ -136,7 +136,7 @@
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Take photo", @"Choose Existing", @"Choose New data set", nil];
+                                                        otherButtonTitles:@"Take photo", @"Choose From Photo library", @"Choose Existing", @"Choose New data set", nil];
         actionSheet.tag = 200;
     } else {
         
@@ -144,9 +144,8 @@
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Choose Existing", @"Choose New data set", nil];
+                                                        otherButtonTitles:@"Choose From Photo library", @"Choose Existing", @"Choose New data set", nil];
         actionSheet.tag = 100;
-//        [self openLibrary];
     }
     [actionSheet showInView:self.view];
 }
@@ -224,23 +223,36 @@
     if (actionSheet.tag == 100 && buttonIndex != actionSheet.cancelButtonIndex) {
      
         if (buttonIndex == 0){
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary|UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+            [self presentViewController:imagePicker animated:YES completion:nil];
+        }
+        else if (buttonIndex == 1) {
             newData = NO;
+            [self openLibrary];
         }
-        else {
+        else if (buttonIndex == 2){
             newData = YES;
+            [self openLibrary];
         }
-        [self openLibrary];
     }
     else if(actionSheet.tag == 200 && buttonIndex != actionSheet.cancelButtonIndex){
         if (buttonIndex == 0){
             [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
             [self presentViewController:imagePicker animated:YES completion:nil];
         }
-        else {
-            newData = (buttonIndex==1)?NO:YES;
+        else if (buttonIndex == 1) {
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary|UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+            [self presentViewController:imagePicker animated:YES completion:nil];
+        }
+        else if (buttonIndex == 2){
+            newData = NO;
             [self openLibrary];
         }
-        
+        else if (buttonIndex == 3) {
+            newData = YES;
+            [self openLibrary];
+        }
+
     } else
         [self dismissViewControllerAnimated:YES completion:nil];
 }
