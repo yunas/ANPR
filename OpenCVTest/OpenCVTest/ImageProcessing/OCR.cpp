@@ -335,6 +335,8 @@ void OCR::train(Mat TrainData, Mat classes, int nlayers){
 
 int OCR::classify(Mat f){
     int result=-1;
+    result = 0;
+    
     Mat output(1, numCharacters, CV_32FC1);
     ann.predict(f, output);
     Point maxLoc;

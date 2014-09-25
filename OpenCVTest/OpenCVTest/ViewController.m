@@ -10,7 +10,6 @@
 #import "ImageProcessorImplementation.h"
 #include "UIImage+operation.h"
 
-
 @interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
     
     __weak IBOutlet UIImageView *inputImageView;
@@ -20,6 +19,8 @@
     __weak IBOutlet UIActivityIndicatorView *activityIndicatorView;
     
     NSMutableArray *photos;
+    NSMutableArray *NewPhotos;
+    BOOL newData;
 }
 
 @end
@@ -40,13 +41,21 @@
 
 -(void) initCustomView{
     photos = [NSMutableArray new];
-    for(int i = 1; i <= 14 ; i++){
+    for(int i = 1; i <= 13 ; i++){
         NSString *urlStr = [NSString stringWithFormat:@"l%d.jpg",i];
         MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
         [photo setCaption:[NSString stringWithFormat:@"%d",i]];
         [photos addObject:photo];
     }
     
+    
+    NewPhotos = [NSMutableArray new];
+    for(int i = 14; i <= 125 ; i++){
+        NSString *urlStr = [NSString stringWithFormat:@"l%d.jpg",i];
+        MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
+        [photo setCaption:[NSString stringWithFormat:@"%d",i]];
+        [NewPhotos addObject:photo];
+    }
 }
 
 
@@ -87,9 +96,6 @@
     browser.displaySelectionButtons = NO;
     browser.alwaysShowControls = YES;
     browser.zoomPhotosToFill = YES;
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-    browser.wantsFullScreenLayout = YES;
-#endif
     browser.enableGrid = YES;
     browser.startOnGrid = YES;
     browser.enableSwipeToDismiss = YES;
@@ -122,19 +128,26 @@
     imagePicker.allowsEditing = YES;
     imagePicker.modalPresentationStyle = UIModalPresentationFullScreen;
     
+    UIActionSheet *actionSheet = nil;
+    
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Take a photo or choose existing photo."
+        
+        actionSheet = [[UIActionSheet alloc] initWithTitle:@"Take a photo or choose existing photo."
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Take photo", @"Choose Existing", nil];
-        [actionSheet showInView:self.view];
+                                                        otherButtonTitles:@"Take photo", @"Choose From Photo library", @"Choose Existing", @"Choose New data set", nil];
+        actionSheet.tag = 200;
     } else {
-        [self openLibrary];
         
-//        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-//        [self presentViewController:imagePicker animated:YES completion:nil];
+        actionSheet = [[UIActionSheet alloc] initWithTitle:@"Take a photo or choose existing photo."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Cancel"
+                                                   destructiveButtonTitle:nil
+                                                        otherButtonTitles:@"Choose From Photo library", @"Choose Existing", @"Choose New data set", nil];
+        actionSheet.tag = 100;
     }
+    [actionSheet showInView:self.view];
 }
 
 - (IBAction)processandsave:(id)sender {
@@ -144,7 +157,7 @@
     return;
     
     // For first time our source image will be input image.
-    if (count <= 14) {
+    if (count <= 125) {
         sourceImage = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.jpg",count]];
         
         inputImageView.image = sourceImage;
@@ -162,11 +175,18 @@
     
     [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name result:^(UIImage *image) {
 
-     dispatch_async(dispatch_get_main_queue(), ^{
-         resultImage = image;
-         outputImageView.image = resultImage;
+        dispatch_async(dispatch_get_main_queue(), ^{
+         
+         if (image) {
+             resultImage = image;
+             outputImageView.image = resultImage;
+         }
+         else {
+             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"No Number plate detected." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+             [alert show];
+         }
          [activityIndicatorView stopAnimating];
-     });
+        });
     }];
 }
 
@@ -186,7 +206,7 @@
 
     if (rotatedImage) {
         sourceImage = nil;
-        sourceImage= rotatedImage; //[UIImage imageWithCGImage:ref];
+        sourceImage= rotatedImage;
     }
 
     [inputImageView setImage:sourceImage];
@@ -200,16 +220,39 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
-    if(buttonIndex != actionSheet.cancelButtonIndex){
+    if (actionSheet.tag == 100 && buttonIndex != actionSheet.cancelButtonIndex) {
+     
+        if (buttonIndex == 0){
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary|UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+            [self presentViewController:imagePicker animated:YES completion:nil];
+        }
+        else if (buttonIndex == 1) {
+            newData = NO;
+            [self openLibrary];
+        }
+        else if (buttonIndex == 2){
+            newData = YES;
+            [self openLibrary];
+        }
+    }
+    else if(actionSheet.tag == 200 && buttonIndex != actionSheet.cancelButtonIndex){
         if (buttonIndex == 0){
             [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
             [self presentViewController:imagePicker animated:YES completion:nil];
         }
-        
-        else if (buttonIndex == 1)
-//            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-//
+        else if (buttonIndex == 1) {
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary|UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+            [self presentViewController:imagePicker animated:YES completion:nil];
+        }
+        else if (buttonIndex == 2){
+            newData = NO;
             [self openLibrary];
+        }
+        else if (buttonIndex == 3) {
+            newData = YES;
+            [self openLibrary];
+        }
+
     } else
         [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -218,18 +261,27 @@
 #pragma mark - MWPhotoBrowserDelegate
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
-    return photos.count;
+    return (newData)?NewPhotos.count:photos.count;
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
-    if (index < photos.count)
+    
+    if (newData && index<NewPhotos.count) {
+        return NewPhotos[index];
+    }
+    else if (index < photos.count && !newData) {
         return [photos objectAtIndex:index];
+    }
     return nil;
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {
-    if (index < photos.count)
+    if (newData && index<NewPhotos.count) {
+        return NewPhotos[index];
+    }
+    else if (index < photos.count && !newData) {
         return [photos objectAtIndex:index];
+    }
     return nil;
 }
 
@@ -244,7 +296,7 @@
 //}
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
-    NSLog(@"Did start viewing photo at index %lu", (unsigned long)index);
+//    NSLog(@"Did start viewing photo at index %lu", (unsigned long)index);
 }
 
 //- (BOOL)photoBrowser:(MWPhotoBrowser *)photoBrowser isPhotoSelectedAtIndex:(NSUInteger)index {
@@ -257,16 +309,16 @@
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index selectedChanged:(BOOL)selected {
     //    [_selections replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:selected]];
-    NSLog(@"Photo at index %lu selected %@", (unsigned long)index, selected ? @"YES" : @"NO");
+//    NSLog(@"Photo at index %lu selected %@", (unsigned long)index, selected ? @"YES" : @"NO");
 }
 
 - (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser {
     // If we subscribe to this method we must dismiss the view controller ourselves
-    NSLog(@"Did finish modal presentation");
+//    NSLog(@"Did finish modal presentation");
     
 
     NSUInteger index =  [photoBrowser currentIndex];
-    MWPhoto * photo = photos [index];
+    MWPhoto * photo = (newData)?NewPhotos[index]:photos [index];
     [inputImageView setImage:photo.image];
     sourceImage = photo.image;
 
