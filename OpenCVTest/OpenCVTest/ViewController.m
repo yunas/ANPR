@@ -10,7 +10,6 @@
 #import "ImageProcessorImplementation.h"
 #include "UIImage+operation.h"
 
-
 @interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
     
     __weak IBOutlet UIImageView *inputImageView;
@@ -20,6 +19,8 @@
     __weak IBOutlet UIActivityIndicatorView *activityIndicatorView;
     
     NSMutableArray *photos;
+    NSMutableArray *NewPhotos;
+    BOOL newData;
 }
 
 @end
@@ -47,6 +48,14 @@
         [photos addObject:photo];
     }
     
+    
+    NewPhotos = [NSMutableArray new];
+    for(int i = 14; i <= 125 ; i++){
+        NSString *urlStr = [NSString stringWithFormat:@"l%d.jpg",i];
+        MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
+        [photo setCaption:[NSString stringWithFormat:@"%d",i]];
+        [NewPhotos addObject:photo];
+    }
 }
 
 
@@ -119,16 +128,27 @@
     imagePicker.allowsEditing = YES;
     imagePicker.modalPresentationStyle = UIModalPresentationFullScreen;
     
+    UIActionSheet *actionSheet = nil;
+    
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Take a photo or choose existing photo."
+        
+        actionSheet = [[UIActionSheet alloc] initWithTitle:@"Take a photo or choose existing photo."
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Take photo", @"Choose Existing", nil];
-        [actionSheet showInView:self.view];
+                                                        otherButtonTitles:@"Take photo", @"Choose Existing", @"Choose New data set", nil];
+        actionSheet.tag = 200;
     } else {
-        [self openLibrary];
+        
+        actionSheet = [[UIActionSheet alloc] initWithTitle:@"Take a photo or choose existing photo."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Cancel"
+                                                   destructiveButtonTitle:nil
+                                                        otherButtonTitles:@"Choose Existing", @"Choose New data set", nil];
+        actionSheet.tag = 100;
+//        [self openLibrary];
     }
+    [actionSheet showInView:self.view];
 }
 
 - (IBAction)processandsave:(id)sender {
@@ -156,7 +176,7 @@
     
     [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name result:^(UIImage *image) {
 
-     dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
          
          if (image) {
              resultImage = image;
@@ -167,8 +187,7 @@
              [alert show];
          }
          [activityIndicatorView stopAnimating];
-         
-     });
+        });
     }];
 }
 
@@ -202,14 +221,26 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     
-    if(buttonIndex != actionSheet.cancelButtonIndex){
+    if (actionSheet.tag == 100 && buttonIndex != actionSheet.cancelButtonIndex) {
+     
+        if (buttonIndex == 0){
+            newData = NO;
+        }
+        else {
+            newData = YES;
+        }
+        [self openLibrary];
+    }
+    else if(actionSheet.tag == 200 && buttonIndex != actionSheet.cancelButtonIndex){
         if (buttonIndex == 0){
             [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
             [self presentViewController:imagePicker animated:YES completion:nil];
         }
-        
-        else if (buttonIndex == 1)
+        else {
+            newData = (buttonIndex==1)?NO:YES;
             [self openLibrary];
+        }
+        
     } else
         [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -218,18 +249,27 @@
 #pragma mark - MWPhotoBrowserDelegate
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
-    return photos.count;
+    return (newData)?NewPhotos.count:photos.count;
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
-    if (index < photos.count)
+    
+    if (newData && index<NewPhotos.count) {
+        return NewPhotos[index];
+    }
+    else if (index < photos.count && !newData) {
         return [photos objectAtIndex:index];
+    }
     return nil;
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {
-    if (index < photos.count)
+    if (newData && index<NewPhotos.count) {
+        return NewPhotos[index];
+    }
+    else if (index < photos.count && !newData) {
         return [photos objectAtIndex:index];
+    }
     return nil;
 }
 
@@ -266,7 +306,7 @@
     
 
     NSUInteger index =  [photoBrowser currentIndex];
-    MWPhoto * photo = photos [index];
+    MWPhoto * photo = (newData)?NewPhotos[index]:photos [index];
     [inputImageView setImage:photo.image];
     sourceImage = photo.image;
 
