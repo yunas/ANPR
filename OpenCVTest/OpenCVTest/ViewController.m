@@ -87,9 +87,6 @@
     browser.displaySelectionButtons = NO;
     browser.alwaysShowControls = YES;
     browser.zoomPhotosToFill = YES;
-#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
-    browser.wantsFullScreenLayout = YES;
-#endif
     browser.enableGrid = YES;
     browser.startOnGrid = YES;
     browser.enableSwipeToDismiss = YES;
@@ -141,7 +138,7 @@
     return;
     
     // For first time our source image will be input image.
-    if (count <= 14) {
+    if (count <= 125) {
         sourceImage = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.jpg",count]];
         
         inputImageView.image = sourceImage;
@@ -160,9 +157,17 @@
     [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name result:^(UIImage *image) {
 
      dispatch_async(dispatch_get_main_queue(), ^{
-         resultImage = image;
-         outputImageView.image = resultImage;
+         
+         if (image) {
+             resultImage = image;
+             outputImageView.image = resultImage;
+         }
+         else {
+             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"No Number plate detected." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+             [alert show];
+         }
          [activityIndicatorView stopAnimating];
+         
      });
     }];
 }
@@ -239,7 +244,7 @@
 //}
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
-    NSLog(@"Did start viewing photo at index %lu", (unsigned long)index);
+//    NSLog(@"Did start viewing photo at index %lu", (unsigned long)index);
 }
 
 //- (BOOL)photoBrowser:(MWPhotoBrowser *)photoBrowser isPhotoSelectedAtIndex:(NSUInteger)index {
@@ -252,12 +257,12 @@
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index selectedChanged:(BOOL)selected {
     //    [_selections replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:selected]];
-    NSLog(@"Photo at index %lu selected %@", (unsigned long)index, selected ? @"YES" : @"NO");
+//    NSLog(@"Photo at index %lu selected %@", (unsigned long)index, selected ? @"YES" : @"NO");
 }
 
 - (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser {
     // If we subscribe to this method we must dismiss the view controller ourselves
-    NSLog(@"Did finish modal presentation");
+//    NSLog(@"Did finish modal presentation");
     
 
     NSUInteger index =  [photoBrowser currentIndex];

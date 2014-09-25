@@ -35,22 +35,18 @@ using namespace std;
 //    NSData *data = nil;
 //    NSString* filePath = nil;
     
+    NSLog(@"Total detected regions:%lu",posible_regions.size());
+    
     for (int i=0; i<posible_regions.size(); i++) {
         
         Plate rect = posible_regions[i];
         
         outImage = [UIImage imageWithCVMat:rect.plateImg];
-        
-//        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-//        
-//        filePath = [documentsPath stringByAppendingFormat:@"/%@_%d_0.jpg",name,i];
-//        
-//        data = UIImageJPEGRepresentation(outImage, 1);
-//        
-//        [data writeToFile:filePath atomically:YES];
     }
     
-//    return outImage;
+    block(outImage);
+    
+    return;
     
     //SVM for each plate region to get valid car plates
     //Read file storage.
@@ -81,8 +77,8 @@ using namespace std;
     
     //For each possible plate, classify with svm if it's a plate or no
     vector<Plate> plates;
-    for(int i=0; i< posible_regions.size()-1; i++)
-    {
+    for(int i=0; i< posible_regions.size()-1; i++) {
+        
         Mat img=posible_regions[i].plateImg;
         Mat p= img.reshape(1, 1);
         p.convertTo(p, CV_32FC1);
@@ -93,17 +89,9 @@ using namespace std;
     }
     
     for (int i=0; i<plates.size(); i++) {
+        
         Plate rect = plates[i];
-        
         outImage = [UIImage imageWithCVMat:rect.plateImg];
-        
-//        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-//        
-//        filePath = [documentsPath stringByAppendingFormat:@"/%@_%d_svm.jpg",name,i];
-//        
-//        data = UIImageJPEGRepresentation(outImage, 1);
-//        
-//        [data writeToFile:filePath atomically:YES];
     }
     
     block(outImage);
@@ -243,7 +231,7 @@ using namespace std;
     
     cv::Mat img_gray;
     img_gray = [[self class] grayImage:source];  //cvtColor(source, img_gray, cv::COLOR_BGR2GRAY);
-//    blur(img_gray, img_gray, cv::Size(5,5));
+    blur(img_gray, img_gray, cv::Size(5,5));
     
     filtered=[UIImage imageWithCVMat:img_gray];
     
@@ -257,38 +245,6 @@ using namespace std;
     
     cv::Mat img_close_1;
     morphologyEx(img_gray, img_close_1, cv::MORPH_CLOSE, element);
-    
-/*    // function Dilation
-    cv::Mat dilation_dst;
-    dilate( img_gray, dilation_dst, element );
-    
-    filtered=[UIImage imageWithCVMat:dilation_dst];
-    
-    // Saving image step by step. Dialtion
-    filePath = [self filePath:@"dialation"];
-    data = UIImageJPEGRepresentation(filtered, 1);
-    [data writeToFile:filePath atomically:YES];
-    
-    // Erosion
-    cv::Mat erosion_dst;
-    erode( dilation_dst, erosion_dst, element );
-    
-    filtered=[UIImage imageWithCVMat:erosion_dst];
-    
-    // Saving image step by step. Erosion
-    filePath = [self filePath:@"erosion"];
-    data = UIImageJPEGRepresentation(filtered,1);
-    [data writeToFile:filePath atomically:YES];
-    
-    cv::Mat result = dilation_dst-erosion_dst;
-    
-    filtered=[UIImage imageWithCVMat:img_close];
-    
-    // Saving image step by step. Subtraction
-    filePath = [self filePath:@"subtract"];
-    data = UIImageJPEGRepresentation(filtered,1);
-    [data writeToFile:filePath atomically:YES];
- */
     
     // Sobel operation
     cv::Mat img_sobel;
@@ -318,7 +274,7 @@ using namespace std;
 
     while (itc != contours.end()) {
         
-        cv::RotatedRect mr = cv::minAreaRect(cv::Mat(*itc));
+        RotatedRect mr = minAreaRect(cv::Mat(*itc));
         
         float area = fabs(cv::contourArea(*itc));
         float bbArea=mr.size.width * mr.size.height;

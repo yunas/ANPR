@@ -139,7 +139,7 @@ vector<Plate> DetectRegions::segment(Mat input){
         float minSize=(rects[i].size.width < rects[i].size.height)?rects[i].size.width:rects[i].size.height;
         minSize=minSize-minSize*0.5;
         //initialize rand and get 5 points around center for floodfill algorithm
-        srand ( time(NULL) );
+        srand (time(NULL) );
         //Initialize floodfill parameters and variables
         Mat mask;
         mask.create(input.rows + 2, input.cols + 2, CV_8UC1);
@@ -208,17 +208,15 @@ vector<Plate> DetectRegions::segment(Mat input){
         }
     }       
     
-    int size = output.size();
-    
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < output.size(); i++) {
         Plate rect = output[i];
 
         cout<<rect.position<<endl;
         
-        rectangle(result, rect.position, Scalar(0,255,0), 3);
+        rectangle(result, rect.position, Scalar(255,0,0), 3);
     }
     
-    output.push_back(Plate(result, Rect(Point(0,0), result.size())));
+//    output.push_back(Plate(result, Rect(Point(0,0), result.size())));
 
     return output;
 }

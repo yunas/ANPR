@@ -21,7 +21,6 @@ static void ProviderReleaseDataNOP(void *info, const void *data, size_t size)
 }
 
 
-
 @implementation UIImage (UIImage_OpenCV)
 
 -(cv::Mat)CVMat
