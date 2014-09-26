@@ -18,7 +18,7 @@ void DetectRegions::setFilename(string s) {
 DetectRegions::DetectRegions(){
     showSteps=false;
     saveRegions=false;
-    aspectRatio = 4.6429;
+    aspectRatio = 4.4642; 
     minArea = 25;
     maxArea = 150;
 }
@@ -210,13 +210,10 @@ vector<Plate> DetectRegions::segment(Mat input){
     
     for (int i = 0; i < output.size(); i++) {
         Plate rect = output[i];
-
-        cout<<rect.position<<endl;
-        
-        rectangle(result, rect.position, Scalar(255,0,0), 3);
+//        rectangle(result, rect.position, Scalar(0,255,0), 3);
     }
     
-//    output.push_back(Plate(result, Rect(Point(0,0), result.size())));
+    output.push_back(Plate(result, Rect(Point(0,0), result.size())));
 
     return output;
 }

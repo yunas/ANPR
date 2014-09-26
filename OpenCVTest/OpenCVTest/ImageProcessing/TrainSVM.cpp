@@ -24,7 +24,7 @@ bool TrainSVM::train(Mat img_gray) {
     std::vector<int> trainingLabels;
     
     for (int i = 1; i< numberofPlates; i++) {
-  
+        
     }
     
     img_gray= img_gray.reshape(1, 1);

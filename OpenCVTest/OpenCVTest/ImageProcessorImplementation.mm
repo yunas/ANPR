@@ -26,22 +26,24 @@ using namespace std;
 
     DetectRegions detectRegions;
     detectRegions.setFilename("12");
-    detectRegions.saveRegions = false;
+    detectRegions.saveRegions = YES;
     detectRegions.showSteps = false;
     
     vector<Plate> posible_regions = detectRegions.run(input_image);
     
     UIImage *outImage = nil;
-//    NSData *data = nil;
-//    NSString* filePath = nil;
-    
-    NSLog(@"Total detected regions:%lu",posible_regions.size());
+    NSData *data = nil;
+    NSString* filePath = nil;
     
     for (int i=0; i<posible_regions.size(); i++) {
         
         Plate rect = posible_regions[i];
         
         outImage = [UIImage imageWithCVMat:rect.plateImg];
+        
+        data = UIImageJPEGRepresentation(outImage, 1);
+        filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"1"]];
+        [data writeToFile:filePath atomically:YES];
     }
     
     block(outImage);
@@ -92,6 +94,10 @@ using namespace std;
         
         Plate rect = plates[i];
         outImage = [UIImage imageWithCVMat:rect.plateImg];
+        
+        data = UIImageJPEGRepresentation(outImage, 1);
+        filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"_SVM_%@_%d",name,i]];
+        [data writeToFile:filePath atomically:YES];
     }
     
     block(outImage);
@@ -139,7 +145,7 @@ using namespace std;
 
 + (BOOL)trainSVM {
     
-    int numPlates = 48;
+    int numPlates = 1;
     int numNoPlates = 29;
     
     cv::Mat classes; // = Mat(numPlates+numNoPlates, 1, CV_32FC1);
@@ -151,8 +157,8 @@ using namespace std;
     for (int i=1; i<= numPlates; i++) {
         
         NSString *plateNumber = [NSString stringWithFormat:@"%d.jpg",i];
-        
-        cv::Mat img_gray = [[self class] trainingPlate:plateNumber];
+
+        cv::Mat img_gray = [ImageProcessorImplementation trainingPlate:plateNumber];
         
         img_gray= img_gray.reshape(1, 1);
         trainingImages.push_back(img_gray);
@@ -189,6 +195,9 @@ using namespace std;
 
 + (Mat)trainingPlate:(NSString*)platenumber {
     
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    platenumber = [documentsPath stringByAppendingFormat:@"/1.jpg"];
+    
     UIImage *image = [UIImage imageNamed:platenumber];
     
     cv::Mat src = [image CVMat];
@@ -200,7 +209,7 @@ using namespace std;
 #pragma mark - instance methods
 
 
-- (NSString*)filePath:(NSString*)name {
++ (NSString*)filePath:(NSString*)name {
     
     NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     
@@ -236,7 +245,7 @@ using namespace std;
     filtered=[UIImage imageWithCVMat:img_gray];
     
     // Saving image step by step. Grayscale image
-    filePath = [self filePath:@"gray"];
+    filePath = [ImageProcessorImplementation filePath:@"gray"];
     data = UIImageJPEGRepresentation(filtered, 1);
     [data writeToFile:filePath atomically:YES];
     
@@ -384,10 +393,8 @@ using namespace std;
         }
     }
     
-    
-    
     // Saving image step by step. Sobel
-    filePath = [self filePath:@"img_dst"];
+    filePath = [ImageProcessorImplementation filePath:@"img_dst"];
     data = UIImageJPEGRepresentation(filtered,1);
     [data writeToFile:filePath atomically:YES];
 

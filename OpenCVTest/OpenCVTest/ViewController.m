@@ -110,8 +110,6 @@
     double delayInSeconds = 3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        
-        
     });
 
 }
@@ -125,7 +123,7 @@
     }
 
     [imagePicker setDelegate:self];
-    imagePicker.allowsEditing = YES;
+    imagePicker.allowsEditing = NO;
     imagePicker.modalPresentationStyle = UIModalPresentationFullScreen;
     
     UIActionSheet *actionSheet = nil;
@@ -136,7 +134,7 @@
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Take photo", @"Choose From Photo library", @"Choose Existing", nil];
+                                                        otherButtonTitles:@"Take photo", @"Choose From Photo library", @"Choose Existing", @"Choose Meta", nil];
         actionSheet.tag = 200;
     } else {
         
@@ -144,7 +142,7 @@
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Choose From Photo library", @"Choose Existing", nil];
+                                                        otherButtonTitles:@"Choose From Photo library", @"Choose Existing", @"Choose Meta", nil];
         actionSheet.tag = 100;
     }
     [actionSheet showInView:self.view];
@@ -152,11 +150,26 @@
 
 - (IBAction)processandsave:(id)sender {
     
-    [self operation:@"numberplate.jpg"];
+//    [self operation:@"numberplate.jpg"];
+    
+    // For first time our source image will be input image.
+    
+    for (int i=1; i<=1; i++) {
+        
+        UIImage *originalImage = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.jpg",i]];
+        
+        if (originalImage.imageOrientation!=UIImageOrientationUp)
+            sourceImage = [originalImage rotate:originalImage.imageOrientation];
+        else
+            sourceImage = originalImage;
+
+        inputImageView.image = sourceImage;
+        
+        [self operation:[NSString stringWithFormat:@"l%d",i]];
+    }
     
     return;
     
-    // For first time our source image will be input image.
     if (count <= 125) {
         sourceImage = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.jpg",count]];
         
@@ -172,6 +185,8 @@
 - (void)operation:(NSString*)name {
     
     [activityIndicatorView startAnimating];
+    [self.view bringSubviewToFront:activityIndicatorView];
+    
     
     [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name result:^(UIImage *image) {
 
@@ -196,6 +211,7 @@
     
     [self dismissViewControllerAnimated:YES completion:nil];
 
+    CGRect croppedRect=[[info objectForKey:UIImagePickerControllerCropRect] CGRectValue];
     UIImage *originalImage=[info objectForKey:UIImagePickerControllerOriginalImage];
     UIImage *rotatedImage;
 
@@ -206,7 +222,10 @@
 
     if (rotatedImage) {
         sourceImage = nil;
-        sourceImage= rotatedImage;
+        
+        CGImageRef ref= CGImageCreateWithImageInRect(rotatedImage.CGImage, croppedRect);
+        sourceImage= rotatedImage; //[UIImage imageWithCGImage:ref];
+        CGImageRelease(ref);
     }
 
     [inputImageView setImage:sourceImage];
