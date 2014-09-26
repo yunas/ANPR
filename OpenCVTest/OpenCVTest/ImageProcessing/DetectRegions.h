@@ -37,7 +37,7 @@ class DetectRegions{
         vector<Plate> drawRegion(Mat input);
         Mat testingDrawRegion(Mat input);
         Mat regionProcessing(Mat input);
-    
+        Mat grayImage(Mat sourceImage);
     private:
         vector<Plate> segment(Mat input);
         bool verifySizes(RotatedRect mr);

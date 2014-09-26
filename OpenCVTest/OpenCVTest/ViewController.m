@@ -10,6 +10,8 @@
 #import "ImageProcessorImplementation.h"
 #include "UIImage+operation.h"
 
+#import "MBProgressHUD.h"
+
 @interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
     
     __weak IBOutlet UIImageView *inputImageView;
@@ -35,7 +37,6 @@
     
     NSUInteger count;
 }
-
 
 #pragma mark - Custom Inits
 
@@ -65,8 +66,7 @@
     
     [super viewDidLoad];
     
-    count = 1;
-    
+    count = 12;
     processor = [[ImageProcessorImplementation alloc] init];
     [self initCustomView];
     
@@ -149,10 +149,36 @@
 
 - (IBAction)processandsave:(id)sender {
     
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    switch (count) {
+        case 12: {
+            sourceImage = [UIImage imageNamed:@"l12.JPG"];
+            break;
+        }
+        case 13: {
+            sourceImage = [UIImage imageNamed:@"IMG_6869.jpeg"];
+            break;
+        }
+        case 14: {
+            sourceImage = [UIImage imageNamed:@"IMG_6869.jpeg"];
+            break;
+        }
+        default:
+            break;
+    }
+    
+    count++;
+    inputImageView.image = sourceImage;
+    
+    [self operation:[NSString stringWithFormat:@"l%d",count]];
+    
+    return;
+    
     /*
      Perform plate detection on predefined images.
     */
-    if (count<14) {
+    if (count<100) {
         
         [self plateInPredefinedImage:@(count)];
     }
@@ -163,8 +189,8 @@
     /*
      Loop throuhg selected images
     */
-    for (int i=1; i<=13; i++) {
-        [self performSelector:@selector(plateInPredefinedImage:) withObject:@(i) afterDelay:2];
+    for (int i=1; i<=84; i++) {
+        [self performSelector:@selector(plateInPredefinedImage:) withObject:@(i) afterDelay:1];
     }
     return;
     
@@ -180,44 +206,31 @@
 
 }
 
-- (void)plateInPredefinedImage:(NSNumber*)index {
-    /*
-     Loop through all predefined images and get result
-     */
-    
-    UIImage *originalImage = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.jpg",[index integerValue]]];
-    
-    if (originalImage.imageOrientation!=UIImageOrientationUp)
-        sourceImage = [originalImage rotate:originalImage.imageOrientation];
-    else
-        sourceImage = originalImage;
-    
-    inputImageView.image = sourceImage;
-    
-    [self operation:[NSString stringWithFormat:@"l%d",[index integerValue]]];
-
+- (void)hideHUD {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
 
 - (void)operation:(NSString*)name {
     
-    [activityIndicatorView startAnimating];
-    [self.view bringSubviewToFront:activityIndicatorView];
-    
-    [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name result:^(UIImage *image) {
-
+    dispatch_async(dispatch_queue_create("fun", 0), ^{
+        
+        UIImage *image = [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name];
+        
         dispatch_async(dispatch_get_main_queue(), ^{
-         
-         if (image) {
-             resultImage = image;
-             outputImageView.image = resultImage;
-         }
-         else {
-             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"No Number plate detected." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-             [alert show];
-         }
-         [activityIndicatorView stopAnimating];
+            
+            [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
+            
+            if (image) {
+                resultImage = image;
+                outputImageView.image = resultImage;
+            }
+            else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"No Number plate detected." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+                //                [alert show];
+            }
         });
-    }];
+    });
+    
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -291,7 +304,6 @@
         [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-
 #pragma mark - MWPhotoBrowserDelegate
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
@@ -319,27 +331,9 @@
     return nil;
 }
 
-//- (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index {
-//    MWPhoto *photo = [self.photos objectAtIndex:index];
-//    MWCaptionView *captionView = [[MWCaptionView alloc] initWithPhoto:photo];
-//    return [captionView autorelease];
-//}
-
-//- (void)photoBrowser:(MWPhotoBrowser *)photoBrowser actionButtonPressedForPhotoAtIndex:(NSUInteger)index {
-//    NSLog(@"ACTION!");
-//}
-
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser didDisplayPhotoAtIndex:(NSUInteger)index {
 //    NSLog(@"Did start viewing photo at index %lu", (unsigned long)index);
 }
-
-//- (BOOL)photoBrowser:(MWPhotoBrowser *)photoBrowser isPhotoSelectedAtIndex:(NSUInteger)index {
-////    return [[_selections objectAtIndex:index] boolValue];
-//}
-
-//- (NSString *)photoBrowser:(MWPhotoBrowser *)photoBrowser titleForPhotoAtIndex:(NSUInteger)index {
-//    return [NSString stringWithFormat:@"Photo %lu", (unsigned long)index+1];
-//}
 
 - (void)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index selectedChanged:(BOOL)selected {
     //    [_selections replaceObjectAtIndex:index withObject:[NSNumber numberWithBool:selected]];
@@ -349,15 +343,36 @@
 - (void)photoBrowserDidFinishModalPresentation:(MWPhotoBrowser *)photoBrowser {
     // If we subscribe to this method we must dismiss the view controller ourselves
 //    NSLog(@"Did finish modal presentation");
-    
 
     NSUInteger index =  [photoBrowser currentIndex];
     MWPhoto * photo = (newData)?NewPhotos[index]:photos [index];
     [inputImageView setImage:photo.image];
     sourceImage = photo.image;
 
-    
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Private method
+
+- (void)plateInPredefinedImage:(NSNumber*)index {
+    /*
+     Loop through all predefined images and get result
+     */
+    
+    
+    NSString *path =[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"l%d.JPG",[index integerValue]] ofType:nil];
+    
+    UIImage *originalImage = [UIImage imageWithContentsOfFile:path];
+    
+    if (originalImage.imageOrientation!=UIImageOrientationUp)
+        sourceImage = [originalImage rotate:originalImage.imageOrientation];
+    else
+        sourceImage = originalImage;
+    
+    inputImageView.image = sourceImage;
+    
+    [self operation:[NSString stringWithFormat:@"l%d",[index integerValue]]];
+    
 }
 
 

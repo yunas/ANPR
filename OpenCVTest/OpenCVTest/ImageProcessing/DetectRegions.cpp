@@ -19,11 +19,11 @@ DetectRegions::DetectRegions(){
     showSteps=false;
     saveRegions=false;
     aspectRatio = 4.6429;
-    minArea = 15;
-    maxArea = 125;
+    minArea = 25;
+    maxArea = 150;
 }
 
-bool DetectRegions::verifySizes(RotatedRect mr) {
+bool DetectRegions::verifySizes(RotatedRect mr){
 
     float error=0.4;
     //Spain car plate size: 520x112 aspect 4.6429
@@ -47,7 +47,8 @@ bool DetectRegions::verifySizes(RotatedRect mr) {
     }
 }
 
-Mat DetectRegions::histeq(Mat in) {
+Mat DetectRegions::histeq(Mat in)
+{
     Mat out(in.size(), in.type());
     if(in.channels()==3){
         Mat hsv;
@@ -205,14 +206,15 @@ vector<Plate> DetectRegions::segment(Mat input){
             
             output.push_back(Plate(grayResult,minRect.boundingRect()));
         }
-    }       
-    
-    for (int i = 0; i < output.size(); i++) {
-        Plate rect = output[i];
-        rectangle(result, rect.position, Scalar(0,255,0), 3);
     }
     
-    output.push_back(Plate(result, Rect(Point(0,0), result.size())));
+    cout<<output.size()<<endl;
+    
+//    for (int i = 0; i < output.size(); i++) {
+//        Plate rect = output[i];
+//        rectangle(result, rect.position, Scalar(255,0,0), 3);
+//    }
+//    output.push_back(Plate(result, Rect(Point(0,0), result.size())));
 
     return output;
 }
