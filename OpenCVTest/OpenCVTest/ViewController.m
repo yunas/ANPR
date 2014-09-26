@@ -58,12 +58,11 @@
     }
 }
 
-
 #pragma mark - Standard Methods
 
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
+    
     [super viewDidLoad];
     
     count = 1;
@@ -81,14 +80,14 @@
     
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
+    
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-
--(void) openLibrary{
+-(void) openLibrary {
+    
     // Create browser
 	MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
     browser.displayActionButton = YES;
@@ -150,43 +149,59 @@
 
 - (IBAction)processandsave:(id)sender {
     
-//    [self operation:@"numberplate.jpg"];
-    
-    // For first time our source image will be input image.
-    
-    for (int i=1; i<=1; i++) {
+    /*
+     Perform plate detection on predefined images.
+    */
+    if (count<14) {
         
-        UIImage *originalImage = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.jpg",i]];
-        
-        if (originalImage.imageOrientation!=UIImageOrientationUp)
-            sourceImage = [originalImage rotate:originalImage.imageOrientation];
-        else
-            sourceImage = originalImage;
-
-        inputImageView.image = sourceImage;
-        
-        [self operation:[NSString stringWithFormat:@"l%d",i]];
+        [self plateInPredefinedImage:@(count)];
     }
+    count++;
     
     return;
     
-    if (count <= 125) {
-        sourceImage = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.jpg",count]];
-        
-        inputImageView.image = sourceImage;
-        
-        [self operation:[NSString stringWithFormat:@"l%d",count]];
+    /*
+     Loop throuhg selected images
+    */
+    for (int i=1; i<=13; i++) {
+        [self performSelector:@selector(plateInPredefinedImage:) withObject:@(i) afterDelay:2];
     }
-    // We will be using source image for further processing.
+    return;
     
-    count++;
+    /*
+      use selected image.
+    */
+
+    inputImageView.image = sourceImage;
+
+    [self operation:[NSString stringWithFormat:@"l%d",count]];
+    
+    // We will be using source image for further processing.
+
+}
+
+- (void)plateInPredefinedImage:(NSNumber*)index {
+    /*
+     Loop through all predefined images and get result
+     */
+    
+    UIImage *originalImage = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.jpg",[index integerValue]]];
+    
+    if (originalImage.imageOrientation!=UIImageOrientationUp)
+        sourceImage = [originalImage rotate:originalImage.imageOrientation];
+    else
+        sourceImage = originalImage;
+    
+    inputImageView.image = sourceImage;
+    
+    [self operation:[NSString stringWithFormat:@"l%d",[index integerValue]]];
+
 }
 
 - (void)operation:(NSString*)name {
     
     [activityIndicatorView startAnimating];
     [self.view bringSubviewToFront:activityIndicatorView];
-    
     
     [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name result:^(UIImage *image) {
 
@@ -224,7 +239,7 @@
         sourceImage = nil;
         
         CGImageRef ref= CGImageCreateWithImageInRect(rotatedImage.CGImage, croppedRect);
-        sourceImage= rotatedImage; //[UIImage imageWithCGImage:ref];
+        sourceImage= [UIImage imageWithCGImage:ref];
         CGImageRelease(ref);
     }
 

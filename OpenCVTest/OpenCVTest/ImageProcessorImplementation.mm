@@ -42,13 +42,9 @@ using namespace std;
         outImage = [UIImage imageWithCVMat:rect.plateImg];
         
         data = UIImageJPEGRepresentation(outImage, 1);
-        filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"1"]];
+        filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"_detected_%d",i]];
         [data writeToFile:filePath atomically:YES];
     }
-    
-    block(outImage);
-    
-    return;
     
     //SVM for each plate region to get valid car plates
     //Read file storage.
