@@ -89,7 +89,6 @@
 		5CA3028219B6EA9500A1337A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026419B6EA9500A1337A /* UIKit.framework */; };
 		5CA3028A19B6EA9500A1337A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CA3028819B6EA9500A1337A /* InfoPlist.strings */; };
 		5CA3028C19B6EA9500A1337A /* OpenCVTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA3028B19B6EA9500A1337A /* OpenCVTestTests.m */; };
-		5CB8A7B919CAAE3000FBAF9A /* UIImage+operation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CB8A7B819CAAE3000FBAF9A /* UIImage+operation.m */; };
 		5CBD8F9E19BD87BD00D5F218 /* ImageProcessorImplementation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */; };
 		5CBD8FA119BD8C4300D5F218 /* ImageProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD8F9F19BD8C4300D5F218 /* ImageProcessor.cpp */; };
 		5CBE267B19D46106009CED61 /* l14.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5CBE263319D46106009CED61 /* l14.JPG */; };
@@ -355,9 +354,7 @@
 		5CEC10EA19C83CE100BDFCF4 /* 7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CEC109C19C83CE100BDFCF4 /* 7.jpg */; };
 		5CEC10EB19C83CE100BDFCF4 /* 8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CEC109D19C83CE100BDFCF4 /* 8.jpg */; };
 		5CEC10EC19C83CE100BDFCF4 /* 9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CEC109E19C83CE100BDFCF4 /* 9.jpg */; };
-		5CEC10F019C881E000BDFCF4 /* SVM1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 5CEC10EF19C881E000BDFCF4 /* SVM1.xml */; };
 		5CFEF54A19BEB90000A97C39 /* vehicle.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEF54919BEB90000A97C39 /* vehicle.jpg */; };
-		5CFEF54C19BF1D0900A97C39 /* l15.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5CFEF54B19BF1D0900A97C39 /* l15.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -507,8 +504,6 @@
 		5CA3028719B6EA9500A1337A /* OpenCVTestTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OpenCVTestTests-Info.plist"; sourceTree = "<group>"; };
 		5CA3028919B6EA9500A1337A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5CA3028B19B6EA9500A1337A /* OpenCVTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenCVTestTests.m; sourceTree = "<group>"; };
-		5CB8A7B719CAAE3000FBAF9A /* UIImage+operation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+operation.h"; path = "GPlates/UIImage+operation.h"; sourceTree = "<group>"; };
-		5CB8A7B819CAAE3000FBAF9A /* UIImage+operation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+operation.m"; path = "GPlates/UIImage+operation.m"; sourceTree = "<group>"; };
 		5CBD8F9C19BD87BD00D5F218 /* ImageProcessorImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageProcessorImplementation.h; sourceTree = "<group>"; };
 		5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageProcessorImplementation.mm; sourceTree = "<group>"; };
 		5CBD8F9F19BD8C4300D5F218 /* ImageProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageProcessor.cpp; sourceTree = "<group>"; };
@@ -777,9 +772,7 @@
 		5CEC109C19C83CE100BDFCF4 /* 7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 7.jpg; sourceTree = "<group>"; };
 		5CEC109D19C83CE100BDFCF4 /* 8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 8.jpg; sourceTree = "<group>"; };
 		5CEC109E19C83CE100BDFCF4 /* 9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 9.jpg; sourceTree = "<group>"; };
-		5CEC10EF19C881E000BDFCF4 /* SVM1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SVM1.xml; sourceTree = "<group>"; };
 		5CFEF54919BEB90000A97C39 /* vehicle.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = vehicle.jpg; sourceTree = "<group>"; };
-		5CFEF54B19BF1D0900A97C39 /* l15.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l15.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1002,7 +995,6 @@
 			children = (
 				5CBE263219D46106009CED61 /* LNPR_Full_images */,
 				45FB94F119CAF5EA0022B30A /* ThirdParty */,
-				5CEC10EF19C881E000BDFCF4 /* SVM1.xml */,
 				5CE4D98419D4378300D19267 /* SVM.xml */,
 				5CEC104E19C83CE100BDFCF4 /* trainingdata */,
 				5CA3026619B6EA9500A1337A /* OpenCVTest */,
@@ -1041,8 +1033,6 @@
 		5CA3026619B6EA9500A1337A /* OpenCVTest */ = {
 			isa = PBXGroup;
 			children = (
-				5CB8A7B719CAAE3000FBAF9A /* UIImage+operation.h */,
-				5CB8A7B819CAAE3000FBAF9A /* UIImage+operation.m */,
 				5C1C88FB19C32DCD0015A08E /* GPlates */,
 				5C5A9EE719B8A10D0080DCEC /* UIImage+OpenCV.h */,
 				5C5A9EE819B8A10D0080DCEC /* UIImage+OpenCV.mm */,
@@ -1061,7 +1051,6 @@
 				5C1C88C719C315450015A08E /* highrez01.jpg */,
 				5CA3027819B6EA9500A1337A /* Images.xcassets */,
 				5C5A9EE519B89A610080DCEC /* 5445BSX.JPG */,
-				5CFEF54B19BF1D0900A97C39 /* l15.jpg */,
 				5CA3026719B6EA9500A1337A /* Supporting Files */,
 			);
 			path = OpenCVTest;
@@ -1591,7 +1580,6 @@
 				5CBE26B019D46106009CED61 /* l67.JPG in Resources */,
 				5CEC10D719C83CE100BDFCF4 /* 34.jpg in Resources */,
 				5CEC10AF19C83CE100BDFCF4 /* n24.jpg in Resources */,
-				5CEC10F019C881E000BDFCF4 /* SVM1.xml in Resources */,
 				5CBE26B219D46106009CED61 /* l69.JPG in Resources */,
 				5CE4D94519D4295E00D19267 /* 98.JPG in Resources */,
 				5CE4D94A19D4295E00D19267 /* 103.JPG in Resources */,
@@ -1730,7 +1718,6 @@
 				5CE4D97719D4295E00D19267 /* 148.JPG in Resources */,
 				5CBE269A19D46106009CED61 /* l45.JPG in Resources */,
 				5CE4D91419D4295E00D19267 /* 49.JPG in Resources */,
-				5CFEF54C19BF1D0900A97C39 /* l15.jpg in Resources */,
 				5CE4D97919D4295E00D19267 /* 150.JPG in Resources */,
 				5CBE26BE19D46106009CED61 /* l81.JPG in Resources */,
 				5CE4D92B19D4295E00D19267 /* 72.JPG in Resources */,
@@ -1802,7 +1789,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5CB8A7B919CAAE3000FBAF9A /* UIImage+operation.m in Sources */,
 				5C5441E119C9809C009D1445 /* OCR.cpp in Sources */,
 				45FB956519CAF5EB0022B30A /* PSTGridLayoutItem.m in Sources */,
 				45FB955F19CAF5EB0022B30A /* PSTCollectionViewData.m in Sources */,
