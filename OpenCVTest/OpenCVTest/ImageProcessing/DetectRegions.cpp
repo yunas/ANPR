@@ -206,7 +206,6 @@ vector<Plate> DetectRegions::segment(Mat input) {
             grayResult=histeq(grayResult);
             
             Mat new_image = enhanceContrast(resultResized);
-        
             output.push_back(Plate(new_image,minRect.boundingRect()));
 //            output.push_back(Plate(grayResult,minRect.boundingRect()));
         }
@@ -831,7 +830,8 @@ double DetectRegions::preProcessingangle( cv::Point pt1, cv::Point pt2, cv::Poin
 Mat DetectRegions::enhanceContrast(Mat resultResized) {
     
     Mat new_image = Mat::zeros( resultResized.size(), resultResized.type() );
-    /// Do the operation new_image(i,j) = alpha*image(i,j) + beta
+
+/// Do the operation new_image(i,j) = alpha*image(i,j) + beta
 //    for( int y = 0; y < resultResized.rows; y++ ) {
 //        
 //        for( int x = 0; x < resultResized.cols; x++ )
@@ -842,7 +842,7 @@ Mat DetectRegions::enhanceContrast(Mat resultResized) {
 //        }
 //    }
 
-    resultResized.convertTo(new_image, -1, 0.75, 10);
+    resultResized.convertTo(new_image, -1, 2.2, 0);
     
     return new_image;
 }

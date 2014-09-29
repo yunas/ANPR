@@ -19,6 +19,25 @@ using namespace std;
 
 #pragma mark - Class methods
 
++ (UIImage*)contrastImage:(UIImage*)image contrast:(float)contrast {
+    CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
+    
+    CIFilter *brightnesContrastFilter = [CIFilter filterWithName:@"CIColorControls"];
+    [brightnesContrastFilter setDefaults];
+    [brightnesContrastFilter setValue:inputImage forKey:kCIInputImageKey];
+    [brightnesContrastFilter setValue:[NSNumber numberWithFloat:contrast]
+                               forKey:@"inputContrast"];
+    
+    
+    // Get the output image recipe
+    CIImage *outputImage = [brightnesContrastFilter outputImage];
+    
+//    return [UIImage imageWithCIImage:outputImage scale:[[UIScreen mainScreen] scale] orientation:UIImageOrientationUp];
+        CIContext *context = [CIContext contextWithOptions:nil];
+      return [UIImage imageWithCGImage:[context createCGImage:outputImage fromRect:outputImage.extent]];
+}
+
+
 + (UIImage*)getLocalisedImageFromSource:(UIImage*)image imageName:(NSString *)name {
 
     // input image
@@ -46,7 +65,10 @@ using namespace std;
         [data writeToFile:filePath atomically:YES];
     }
     
-    return outImage;
+//    UIImage *newOutImg = outImage;
+    UIImage *newOutImg =    [ImageProcessorImplementation contrastImage:outImage contrast:2.5];
+    
+    return newOutImg;
     
     //SVM for each plate region to get valid car plates
     //Read file storage.
