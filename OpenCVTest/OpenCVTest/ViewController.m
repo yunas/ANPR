@@ -21,7 +21,7 @@
     __weak IBOutlet UIActivityIndicatorView *activityIndicatorView;
     
     NSMutableArray *photos;
-    NSMutableArray *NewPhotos;
+    NSMutableArray *bmpPhotos;
     BOOL newData;
 }
 
@@ -42,7 +42,7 @@
 
 -(void) initCustomView{
     photos = [NSMutableArray new];
-    for(int i = 1; i <= 13 ; i++){
+    for(int i = 12; i <= 78 ; i++){
         NSString *urlStr = [NSString stringWithFormat:@"l%d.jpg",i];
         MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
         [photo setCaption:[NSString stringWithFormat:@"%d",i]];
@@ -50,12 +50,12 @@
     }
     
     
-    NewPhotos = [NSMutableArray new];
-    for(int i = 14; i <= 125 ; i++){
-        NSString *urlStr = [NSString stringWithFormat:@"l%d.jpg",i];
+    bmpPhotos = [NSMutableArray new];
+    for(int i = 1; i <= 50 ; i++){
+        NSString *urlStr = [NSString stringWithFormat:@"detectsample%d.bmp",i];
         MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
         [photo setCaption:[NSString stringWithFormat:@"%d",i]];
-        [NewPhotos addObject:photo];
+        [bmpPhotos addObject:photo];
     }
 }
 
@@ -66,7 +66,7 @@
     
     [super viewDidLoad];
     
-    count = 12;
+    count = 17;
     processor = [[ImageProcessorImplementation alloc] init];
     [self initCustomView];
     
@@ -151,46 +151,23 @@
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     
-    switch (count) {
-        case 12: {
-            sourceImage = [UIImage imageNamed:@"l12.JPG"];
-            break;
-        }
-        case 13: {
-            sourceImage = [UIImage imageNamed:@"IMG_6869.jpeg"];
-            break;
-        }
-        case 14: {
-            sourceImage = [UIImage imageNamed:@"IMG_6869.jpeg"];
-            break;
-        }
-        default:
-            break;
-    }
-    
-    count++;
-    inputImageView.image = sourceImage;
-    
-    [self operation:[NSString stringWithFormat:@"l%d",count]];
-    
-    return;
-    
     /*
      Perform plate detection on predefined images.
     */
-    if (count<100) {
-        
+    if (count<78) {
         [self plateInPredefinedImage:@(count)];
+        count++;
     }
-    count++;
-    
+    else {
+        NSLog(@"o sharam ker");
+    }
     return;
     
     /*
      Loop throuhg selected images
     */
-    for (int i=1; i<=84; i++) {
-        [self performSelector:@selector(plateInPredefinedImage:) withObject:@(i) afterDelay:1];
+    for (int i=1; i<=78; i++) {
+        [self performSelector:@selector(plateInPredefinedImage:) withObject:@(i) afterDelay:5];
     }
     return;
     
@@ -200,7 +177,7 @@
 
     inputImageView.image = sourceImage;
 
-    [self operation:[NSString stringWithFormat:@"l%d",count]];
+    [self operation:[NSString stringWithFormat:@"l%lu",(unsigned long)count]];
     
     // We will be using source image for further processing.
 
@@ -223,10 +200,18 @@
             if (image) {
                 resultImage = image;
                 outputImageView.image = resultImage;
+                
+                NSData *data = UIImageJPEGRepresentation(image, 1);
+                NSError *error = nil;
+                [data writeToFile:[self filePath:[NSString stringWithFormat:@"plate%d",count]] options:NSDataWritingAtomic error:&error];
             }
             else {
+                outputImageView.image = nil;
+                
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"No Number plate detected." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                //                [alert show];
+                [alert show];
+                
+                NSLog(@"number plate not found for image:%d.JPG",count);
             }
         });
     });
@@ -252,7 +237,7 @@
         sourceImage = nil;
         
         CGImageRef ref= CGImageCreateWithImageInRect(rotatedImage.CGImage, croppedRect);
-        sourceImage= [UIImage imageWithCGImage:ref];
+        sourceImage= [[UIImage imageWithCGImage:ref] scaleImageKeepingAspectRatiotoSize:CGSizeMake(432.f, 302.f)];
         CGImageRelease(ref);
     }
 
@@ -307,13 +292,13 @@
 #pragma mark - MWPhotoBrowserDelegate
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
-    return (newData)?NewPhotos.count:photos.count;
+    return (newData)?bmpPhotos.count:photos.count;
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
     
-    if (newData && index<NewPhotos.count) {
-        return NewPhotos[index];
+    if (newData && index<bmpPhotos.count) {
+        return bmpPhotos[index];
     }
     else if (index < photos.count && !newData) {
         return [photos objectAtIndex:index];
@@ -322,8 +307,8 @@
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {
-    if (newData && index<NewPhotos.count) {
-        return NewPhotos[index];
+    if (newData && index<bmpPhotos.count) {
+        return bmpPhotos[index];
     }
     else if (index < photos.count && !newData) {
         return [photos objectAtIndex:index];
@@ -345,7 +330,7 @@
 //    NSLog(@"Did finish modal presentation");
 
     NSUInteger index =  [photoBrowser currentIndex];
-    MWPhoto * photo = (newData)?NewPhotos[index]:photos [index];
+    MWPhoto * photo = (newData)?bmpPhotos[index]:photos [index];
     [inputImageView setImage:photo.image];
     sourceImage = photo.image;
 
@@ -354,11 +339,20 @@
 
 #pragma mark - Private method
 
+- (NSString*)filePath:(NSString*)name {
+    
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSString *filePath = [documentsPath stringByAppendingFormat:@"/%@.jpg",name];
+    
+    return filePath;
+}
+
+
 - (void)plateInPredefinedImage:(NSNumber*)index {
     /*
      Loop through all predefined images and get result
-     */
-    
+    */
     
     NSString *path =[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"l%d.JPG",[index integerValue]] ofType:nil];
     
@@ -372,7 +366,6 @@
     inputImageView.image = sourceImage;
     
     [self operation:[NSString stringWithFormat:@"l%d",[index integerValue]]];
-    
 }
 
 
