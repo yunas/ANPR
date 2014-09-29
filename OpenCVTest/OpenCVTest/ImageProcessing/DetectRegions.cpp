@@ -205,10 +205,9 @@ vector<Plate> DetectRegions::segment(Mat input) {
             blur(grayResult, grayResult, Size(3,3));
             grayResult=histeq(grayResult);
             
-            Mat new_image = enhanceSharpness(resultResized);
-            Mat new_image1 = enhanceContrast(new_image);
-            
-            output.push_back(Plate(new_image1,minRect.boundingRect()));
+            Mat new_image = enhanceContrast(resultResized);
+        
+            output.push_back(Plate(new_image,minRect.boundingRect()));
 //            output.push_back(Plate(grayResult,minRect.boundingRect()));
         }
     }
@@ -851,7 +850,7 @@ Mat DetectRegions::enhanceContrast(Mat resultResized) {
 Mat DetectRegions::enhanceSharpness(cv::Mat source) {
     Mat destination = Mat(source.size(), source.type());
     
-    GaussianBlur(source, destination, Size(0,0), 10);
+    blur(source, destination, Size(3,3));
     addWeighted(source, 1.5, destination, -0.5, 0, destination);
     
     return destination;

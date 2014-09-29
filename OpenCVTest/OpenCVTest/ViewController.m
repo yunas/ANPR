@@ -9,8 +9,15 @@
 #import "ViewController.h"
 #import "ImageProcessorImplementation.h"
 #include "UIImage+operation.h"
+#import "OCRWebServiceSvc.h"
 
 #import "MBProgressHUD.h"
+#import "iToast.h"
+
+
+#define kOCRWS_UserName @"ashaheen"
+#define kOCRWS_License  @"4FC611E1-5782-4C9A-AEA6-8A1B88C874C8"
+
 
 @interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
     
@@ -41,8 +48,9 @@
 #pragma mark - Custom Inits
 
 -(void) initCustomView{
+    
     photos = [NSMutableArray new];
-    for(int i = 12; i <= 78 ; i++){
+    for(int i = 1; i <= 66 ; i++){
         NSString *urlStr = [NSString stringWithFormat:@"l%d.jpg",i];
         MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
         [photo setCaption:[NSString stringWithFormat:@"%d",i]];
@@ -66,7 +74,7 @@
     
     [super viewDidLoad];
     
-    count = 17;
+    count = 1;
     processor = [[ImageProcessorImplementation alloc] init];
     [self initCustomView];
     
@@ -133,7 +141,7 @@
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Take photo", @"Choose From Photo library", @"Choose Existing", @"Choose Meta", nil];
+                                                        otherButtonTitles:@"Take photo", @"Choose From Photo library", @"Choose Existing", nil];
         actionSheet.tag = 200;
     } else {
         
@@ -141,7 +149,7 @@
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Choose From Photo library", @"Choose Existing", @"Choose Meta", nil];
+                                                        otherButtonTitles:@"Choose From Photo library", @"Choose Existing", nil];
         actionSheet.tag = 100;
     }
     [actionSheet showInView:self.view];
@@ -154,29 +162,31 @@
     /*
      Perform plate detection on predefined images.
     */
-    if (count<78) {
-        [self plateInPredefinedImage:@(count)];
-        count++;
-    }
-    else {
-        NSLog(@"o sharam ker");
-    }
-    return;
+    
+//    if (count<66) {
+//        [self plateInPredefinedImage:@(count)];
+//        count++;
+//    }
+//    else {
+//        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
+//    }
+//    return;
     
     /*
      Loop throuhg selected images
     */
-    for (int i=1; i<=78; i++) {
-        [self performSelector:@selector(plateInPredefinedImage:) withObject:@(i) afterDelay:5];
-    }
-    return;
+    
+//    for (int i=1; i<=78; i++) {
+//        [self performSelector:@selector(plateInPredefinedImage:) withObject:@(i) afterDelay:5];
+//    }
+//    return;
     
     /*
       use selected image.
     */
 
     inputImageView.image = sourceImage;
-
+    
     [self operation:[NSString stringWithFormat:@"l%lu",(unsigned long)count]];
     
     // We will be using source image for further processing.
@@ -189,29 +199,44 @@
 
 - (void)operation:(NSString*)name {
     
-    dispatch_async(dispatch_queue_create("fun", 0), ^{
+    dispatch_async(dispatch_queue_create("pre processing", 0), ^{
         
         UIImage *image = [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
-            [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            
+            resultImage = image;
+            outputImageView.image = resultImage;
             
             if (image) {
-                resultImage = image;
-                outputImageView.image = resultImage;
+                                
+                dispatch_async(dispatch_queue_create("web service", 0), ^{
+                
+                    NSString *plateNumber = [self OCRTextFromImage:image];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        
+                        [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
+                        
+                        alert.message = [NSString stringWithFormat:@"Detected plate number is \"%@\"",plateNumber];
+                        [alert show];
+                    });
+                });
                 
                 NSData *data = UIImageJPEGRepresentation(image, 1);
                 NSError *error = nil;
                 [data writeToFile:[self filePath:[NSString stringWithFormat:@"plate%d",count]] options:NSDataWritingAtomic error:&error];
             }
             else {
-                outputImageView.image = nil;
                 
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"No Number plate detected." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                [alert show];
+                [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
+                
+                alert.message = @"No plate detected.";
                 
                 NSLog(@"number plate not found for image:%d.JPG",count);
+                [alert show];
             }
         });
     });
@@ -368,5 +393,59 @@
     [self operation:[NSString stringWithFormat:@"l%d",[index integerValue]]];
 }
 
+#pragma mark - WEB SERVICES
+
+
+-(NSString*) OCRTextFromImage:(UIImage*)image {
+    
+    
+    OCRWebServiceSoapBinding *binding = [OCRWebServiceSvc OCRWebServiceSoapBinding];
+    [binding setLogXMLInOut:NO];
+    
+    
+    OCRWebServiceSvc_OCRWebServiceRecognize *params = [[OCRWebServiceSvc_OCRWebServiceRecognize alloc]init];
+    [params setUser_name:kOCRWS_UserName];
+    [params setLicense_code:kOCRWS_License];
+    
+    OCRWebServiceSvc_OCRWSInputImage *inputImg = [[OCRWebServiceSvc_OCRWSInputImage alloc]init];
+    
+    [inputImg setFileData:UIImageJPEGRepresentation(image, 1)];
+    [inputImg setFileName:@"plate1.jpg"];
+    
+    [params setOCRWSInputImage:inputImg];
+    
+    OCRWebServiceSvc_OCRWSSettings *settings = [[OCRWebServiceSvc_OCRWSSettings alloc]init];
+    
+    [settings setOutputDocumentFormat:OCRWebServiceSvc_OCRWS_OutputFormat_TXT];
+    
+    [settings setConvertToBW:[[USBoolean alloc]initWithBool:NO]];
+    [settings setGetOCRText:[[USBoolean alloc]initWithBool:YES]];
+    [settings setCreateOutputDocument:[[USBoolean alloc]initWithBool:NO]];
+    [settings setMultiPageDoc:[[USBoolean alloc]initWithBool:NO]];
+    [settings setOcrWords:[[USBoolean alloc]initWithBool:NO]];
+    [settings addOcrLanguages:OCRWebServiceSvc_OCRWS_Language_ENGLISH];
+    
+    
+    [params setOCRWSSetting:settings];
+    
+    
+    OCRWebServiceSoapBindingResponse *response = [binding OCRWebServiceRecognizeUsingParameters:params];
+    
+    NSString *plateNumber = nil;
+    
+    for(id bodyPart in response.bodyParts) {
+        if([bodyPart isKindOfClass:[OCRWebServiceSvc_OCRWebServiceRecognizeResponse class]]) {
+            OCRWebServiceSvc_OCRWebServiceRecognizeResponse *oResponse = (OCRWebServiceSvc_OCRWebServiceRecognizeResponse*)bodyPart;
+            OCRWebServiceSvc_ArrayOfArrayOfString *ocrTextsArr = oResponse.OCRWSResponse.ocrText;
+            OCRWebServiceSvc_ArrayOfString *strings = [ocrTextsArr.ArrayOfString lastObject];
+            plateNumber = [strings.string lastObject];
+            break;
+        }
+    }
+    
+    NSLog(@"plate number:%@",plateNumber);
+    
+    return plateNumber;
+}
 
 @end
