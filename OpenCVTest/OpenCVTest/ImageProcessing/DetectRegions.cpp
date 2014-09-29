@@ -205,9 +205,10 @@ vector<Plate> DetectRegions::segment(Mat input) {
             blur(grayResult, grayResult, Size(3,3));
             grayResult=histeq(grayResult);
             
-            Mat new_image = enhanceContrast(resultResized);
+            Mat new_image = enhanceSharpness(resultResized);
+            Mat new_image1 = enhanceContrast(new_image);
             
-            output.push_back(Plate(new_image,minRect.boundingRect()));
+            output.push_back(Plate(new_image1,minRect.boundingRect()));
 //            output.push_back(Plate(grayResult,minRect.boundingRect()));
         }
     }
@@ -832,15 +833,26 @@ Mat DetectRegions::enhanceContrast(Mat resultResized) {
     
     Mat new_image = Mat::zeros( resultResized.size(), resultResized.type() );
     /// Do the operation new_image(i,j) = alpha*image(i,j) + beta
-    for( int y = 0; y < resultResized.rows; y++ ) {
-        
-        for( int x = 0; x < resultResized.cols; x++ )
-        {
-            for( int c = 0; c < 3; c++ ) {
-                new_image.at<Vec3b>(y,x)[c] = saturate_cast<uchar>( 0.75*( resultResized.at<Vec3b>(y,x)[c] ) + 10 );
-            }
-        }
-    }
+//    for( int y = 0; y < resultResized.rows; y++ ) {
+//        
+//        for( int x = 0; x < resultResized.cols; x++ )
+//        {
+//            for( int c = 0; c < 3; c++ ) {
+//                new_image.at<Vec3b>(y,x)[c] = saturate_cast<uchar>( 0.75*( resultResized.at<Vec3b>(y,x)[c] ) + 10 );
+//            }
+//        }
+//    }
 
+    resultResized.convertTo(new_image, -1, 0.75, 10);
+    
     return new_image;
+}
+
+Mat DetectRegions::enhanceSharpness(cv::Mat source) {
+    Mat destination = Mat(source.size(), source.type());
+    
+    GaussianBlur(source, destination, Size(0,0), 10);
+    addWeighted(source, 1.5, destination, -0.5, 0, destination);
+    
+    return destination;
 }
