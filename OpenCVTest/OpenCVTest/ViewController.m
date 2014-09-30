@@ -441,6 +441,8 @@
     filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@";" withString:@""];
     filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@":" withString:@""];
     filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"." withString:@""];
+    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"'" withString:@""];
     
     NSArray *platesPart = [filteredStr componentsSeparatedByString:@" "];
     
@@ -449,6 +451,12 @@
         NSString *partb = [self stringWithAlphabetsOnly:platesPart[1]];
         NSString *partc = [self stringWithNumbersOnly:platesPart[2]];
         filteredStr = [NSString stringWithFormat:@"%@ %@ %@",parta,partb,partc];
+    }
+    
+    if (platesPart.count == 2) {
+        NSString *parta = [self stringWithAlphabetsOnly:platesPart[0]];
+        NSString *partb = platesPart[1];//[self stringWithNumbersOnly:platesPart[1]];
+        filteredStr = [NSString stringWithFormat:@"%@ %@",parta,partb];
     }
 
     return filteredStr;
@@ -505,7 +513,7 @@
         }
     }
     
-    
+    NSLog(@"WEB-OCR-TEXT: %@",plateNumber);
     return plateNumber;
 }
 

@@ -66,7 +66,7 @@ using namespace std;
     }
     
 //    UIImage *newOutImg = outImage;
-    UIImage *newOutImg =    [ImageProcessorImplementation contrastImage:outImage contrast:2];
+    UIImage *newOutImg =    [ImageProcessorImplementation contrastImage:outImage contrast:1.8];
     
     return newOutImg;
     
