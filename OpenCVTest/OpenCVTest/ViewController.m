@@ -51,8 +51,8 @@
 -(void) initCustomView{
     
     photos = [NSMutableArray new];
-    for(int i = 1; i <= 37 ; i++){
-        NSString *urlStr = [NSString stringWithFormat:@"l%d.jpg",i];
+    for(int i = 1; i <= 20 ; i++){
+        NSString *urlStr = [NSString stringWithFormat:@"l%d.JPG",i];
         MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
         [photo setCaption:[NSString stringWithFormat:@"%d",i]];
         [photos addObject:photo];
@@ -167,7 +167,8 @@
      Perform plate detection on predefined images.
     */
     
-//    if (count<=37) {
+//    NSLog(@"%lu",(unsigned long)count);
+//    if (count<=20) {
 //        [self plateInPredefinedImage:@(count)];
 //        count++;
 //    }
@@ -395,6 +396,11 @@
     NSString *path =[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"l%ld.JPG",(long)[index integerValue]] ofType:nil];
     
     UIImage *originalImage = [UIImage imageWithContentsOfFile:path];
+    
+    if (!originalImage) {
+        [_hud hide:YES];
+        return;
+    }
     
     if (originalImage.imageOrientation!=UIImageOrientationUp)
         sourceImage = [originalImage rotate:originalImage.imageOrientation];

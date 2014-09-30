@@ -66,12 +66,13 @@ using namespace std;
     }
     
 //    UIImage *newOutImg = outImage;
-    UIImage *newOutImg =    [ImageProcessorImplementation contrastImage:outImage contrast:2.0];
+    UIImage *newOutImg =    [ImageProcessorImplementation contrastImage:outImage contrast:2];
     
     return newOutImg;
     
     //SVM for each plate region to get valid car plates
     //Read file storage.
+    
 //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 //    NSString *docs = [paths objectAtIndex:0];
 //    NSString *vocabPath = [docs stringByAppendingPathComponent:@"SVM.xml"];
@@ -488,8 +489,5 @@ cv::Mat histeq(cv::Mat in) {
     
     return filtered;
 }
-
-
-
 
 @end

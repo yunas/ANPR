@@ -10,48 +10,10 @@
 
 @implementation AppDelegate
 
-- (void)renameFilesAndSaveInsideFolder:(NSString*)folder prefix:(NSString*)prefix suffix:(NSString*)ext {
-    NSBundle* myBundle = [NSBundle mainBundle];
-    
-    NSFileManager *manager = [NSFileManager defaultManager];
-    NSArray *myImages = [myBundle URLsForResourcesWithExtension:@"JPG" subdirectory:nil];
-    
-    NSError *error = nil;
-    
-    NSString *documentsDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-    NSString *dataPath = [documentsDirectory stringByAppendingPathComponent:folder];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:dataPath])
-        [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:&error]; //Create folder
-    
-    NSURL *finalURL = [NSURL fileURLWithPath:dataPath];
-    
-    NSInteger count = 161;
-    
-    for (NSURL *url in myImages) {
-        
-        NSString *filename = [url lastPathComponent];
-        
-        //change the suffix to what you are looking for
-        if ([filename hasSuffix:ext]) {
-            
-            NSURL *newURL = [finalURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%ld%@",(long)count,ext]];
-            [manager moveItemAtURL:url toURL:newURL error:&error];
-            count++;
-            
-            if (error) {
-                NSLog(@"%@",[error localizedDescription]);
-            }
-        }
-        else {
-            NSLog(@"filename:%@",filename);
-        }
-    }
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-//    [self renameFilesAndSaveInsideFolder:@"LNPR_Full_images" prefix:@"NEWIMG_" suffix:@".JPG"];
+//    NSLog(@"Documents Directory: %@", [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject]);
     
     // Override point for customization after application launch.
     return YES;

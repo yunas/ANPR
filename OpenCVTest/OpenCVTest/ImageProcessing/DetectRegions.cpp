@@ -85,6 +85,7 @@ vector<Plate> DetectRegions::segment(Mat input) {
     
     blur(img_gray, img_gray, Size(5,5));
 
+    
     //Finde vertical lines. Car plates have high density of vertical lines
     Mat img_sobel;
     Sobel(img_gray, img_sobel, CV_8U, 1, 0, 3, 1, 0, BORDER_DEFAULT);
@@ -120,7 +121,7 @@ vector<Plate> DetectRegions::segment(Mat input) {
         }
     }
 
-    cout<<"number of possible regions:"<<rects.size()<<endl;
+            //    cout<<"number of possible regions:"<<rects.size()<<endl;
     
     // Draw blue contours on a white image
     cv::Mat result;
@@ -140,7 +141,7 @@ vector<Plate> DetectRegions::segment(Mat input) {
         float minSize=(rects[i].size.width < rects[i].size.height)?rects[i].size.width:rects[i].size.height;
         minSize=minSize-minSize*0.5;
         //initialize rand and get 5 points around center for floodfill algorithm
-        srand (time(NULL) );
+        srand ( time(NULL) );
         //Initialize floodfill parameters and variables
         Mat mask;
         mask.create(input.rows + 2, input.cols + 2, CV_8UC1);
@@ -819,7 +820,6 @@ Mat DetectRegions::preProcessing(cv::Mat source) {
     
     return img_crop;
 }
-
 double DetectRegions::preProcessingangle( cv::Point pt1, cv::Point pt2, cv::Point pt0 ) {
     double dx1 = pt1.x - pt0.x;
     double dy1 = pt1.y - pt0.y;
@@ -827,16 +827,14 @@ double DetectRegions::preProcessingangle( cv::Point pt1, cv::Point pt2, cv::Poin
     double dy2 = pt2.y - pt0.y;
     return (dx1 * dx2 + dy1 * dy2)/sqrt((dx1 * dx1 + dy1 * dy1) * (dx2 * dx2 + dy2 * dy2) + 1e-10);
 }
-
 Mat DetectRegions::enhanceContrast(Mat resultResized) {
     
-    Mat new_image = Mat::zeros( resultResized.size(), resultResized.type() );
+    Mat new_image; // = Mat::zeros( resultResized.size(), resultResized.type() );
 
     resultResized.convertTo(new_image, -1, 2.2, 0);
     
     return new_image;
 }
-
 Mat DetectRegions::enhanceSharpness(cv::Mat source) {
     Mat destination = Mat(source.size(), source.type());
     
