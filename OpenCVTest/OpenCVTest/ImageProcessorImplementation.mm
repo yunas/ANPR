@@ -351,9 +351,6 @@ using namespace std;
             seed.x=rects[i].center.x+rand()%(int)minSize-(minSize/2);
             seed.y=rects[i].center.y+rand()%(int)minSize-(minSize/2);
             circle(result, seed, 1, cv::Scalar(0,255,255), -1);
-            
-//            int area = cv::floodFill(img_gray, mask, seed, cv::Scalar(255,0,0));
-
             cv::floodFill(img_gray, mask, seed, cv::Scalar(255,0,0), &ccomp, cv::Scalar(loDiff, loDiff, loDiff), cv::Scalar(upDiff, upDiff, upDiff), flags);
         }
         

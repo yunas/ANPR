@@ -51,7 +51,7 @@
 -(void) initCustomView{
     
     photos = [NSMutableArray new];
-    for(int i = 1; i <= 66 ; i++){
+    for(int i = 1; i <= 37 ; i++){
         NSString *urlStr = [NSString stringWithFormat:@"l%d.jpg",i];
         MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
         [photo setCaption:[NSString stringWithFormat:@"%d",i]];
@@ -167,7 +167,7 @@
      Perform plate detection on predefined images.
     */
     
-//    if (count<86) {
+//    if (count<=37) {
 //        [self plateInPredefinedImage:@(count)];
 //        count++;
 //    }
