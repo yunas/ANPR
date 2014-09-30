@@ -206,9 +206,9 @@ vector<Plate> DetectRegions::segment(Mat input) {
             grayResult=histeq(grayResult);
             
             Mat new_image = enhanceContrast(resultResized);
-//            output.push_back(Plate(new_image,minRect.boundingRect()));
+            output.push_back(Plate(new_image,minRect.boundingRect()));
             
-            output.push_back(Plate(grayResult,minRect.boundingRect()));
+//            output.push_back(Plate(grayResult,minRect.boundingRect()));
         }
     }
     

@@ -65,8 +65,8 @@ using namespace std;
         [data writeToFile:filePath atomically:YES];
     }
     
-    UIImage *newOutImg = outImage;
-//    UIImage *newOutImg =    [ImageProcessorImplementation contrastImage:outImage contrast:2.5];
+//    UIImage *newOutImg = outImage;
+    UIImage *newOutImg =    [ImageProcessorImplementation contrastImage:outImage contrast:2.5];
     
     return newOutImg;
     
