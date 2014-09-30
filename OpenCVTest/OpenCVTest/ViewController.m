@@ -226,13 +226,13 @@
                                 
                 dispatch_async(dispatch_queue_create("web service", 0), ^{
                 
-                    NSString *plateNumber = [self OCRTextFromImage:image];
+                    NSString *plateNumber = [self filterPlateNumberFromOCRString:[self OCRTextFromImage:image]];
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
                         [_hud hide:YES afterDelay:0.2];
                         
-                        alert.message = [NSString stringWithFormat:@"Detected plate number is \"%@\"",plateNumber];
+                        alert.message = [NSString stringWithFormat:@"Detected plate number is \n \"%@\"",plateNumber];
                         [alert show];
                     });
                 });
@@ -406,7 +406,50 @@
     [self operation:[NSString stringWithFormat:@"l%ld",(long)[index integerValue]]];
 }
 
+
+-(NSString *) stringWithNumbersOnly:(NSString*)str{
+    
+    NSString *numberStr = [NSString stringWithString:str];
+    
+    NSCharacterSet *myCharset = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
+    numberStr = [numberStr stringByTrimmingCharactersInSet:[myCharset invertedSet]];
+    return numberStr;
+    
+}
+
+-(NSString *) stringWithAlphabetsOnly:(NSString *)str{
+    NSString *alphaStr = [NSString stringWithString:str];
+    alphaStr = [alphaStr stringByReplacingOccurrencesOfString:@"[^A-Z]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [alphaStr length])];
+    return alphaStr;
+}
+
+
+
+
+-(NSString *) filterPlateNumberFromOCRString:(NSString *)ocrText{
+    
+    NSString *filteredStr = [NSString stringWithString:ocrText];
+    
+    filteredStr = [filteredStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"," withString:@""];
+    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@";" withString:@""];
+    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@":" withString:@""];
+    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"." withString:@""];
+    
+    NSArray *platesPart = [filteredStr componentsSeparatedByString:@" "];
+    
+    if (platesPart.count == 3) {
+        NSString *parta = [self stringWithAlphabetsOnly:platesPart[0]];
+        NSString *partb = [self stringWithAlphabetsOnly:platesPart[1]];
+        NSString *partc = [self stringWithNumbersOnly:platesPart[2]];
+        filteredStr = [NSString stringWithFormat:@"%@ %@ %@",parta,partb,partc];
+    }
+
+    return filteredStr;
+}
+
 #pragma mark - WEB SERVICES
+
 
 
 -(NSString*) OCRTextFromImage:(UIImage*)image {
@@ -456,7 +499,6 @@
         }
     }
     
-    NSLog(@"plate number:%@",plateNumber);
     
     return plateNumber;
 }
