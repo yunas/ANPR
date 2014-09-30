@@ -2322,11 +2322,8 @@
 				5CF8E0E519D9386D00B6EE33 /* 42.JPG in Resources */,
 				5C71380B19DA9DD200A99C54 /* l22.JPG in Resources */,
 				5CF8E0A519D9386D00B6EE33 /* 319.JPG in Resources */,
-<<<<<<< HEAD
 				45FB956819CAF5EB0022B30A /* LICENSE in Resources */,
-=======
 				5CF8E24219D961CE00B6EE33 /* l50.JPG in Resources */,
->>>>>>> 730d83bef6d4a30b5f5770a192a710f7afa8e3ac
 				5CF8DEDE19D9386D00B6EE33 /* detectsample14.bmp in Resources */,
 				5CF8E11619D9386D00B6EE33 /* 87.JPG in Resources */,
 				5CF8E0FA19D9386D00B6EE33 /* 61.JPG in Resources */,
