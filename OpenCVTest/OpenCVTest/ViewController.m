@@ -163,14 +163,14 @@
      Perform plate detection on predefined images.
     */
     
-    if (count<86) {
-        [self plateInPredefinedImage:@(count)];
-        count++;
-    }
-    else {
-        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
-    }
-    return;
+//    if (count<86) {
+//        [self plateInPredefinedImage:@(count)];
+//        count++;
+//    }
+//    else {
+//        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
+//    }
+//    return;
     
     /*
      Loop throuhg selected images
