@@ -37,7 +37,10 @@ class DetectRegions{
         vector<Plate> drawRegion(Mat input);
         Mat testingDrawRegion(Mat input);
         Mat regionProcessing(Mat input);
-    
+        Mat grayImage(Mat sourceImage);
+        double preProcessingangle( cv::Point pt1, cv::Point pt2, cv::Point pt0 );
+        Mat enhanceContrast(Mat input);
+        Mat enhanceSharpness(Mat input);
     private:
         vector<Plate> segment(Mat input);
         bool verifySizes(RotatedRect mr);
@@ -45,6 +48,12 @@ class DetectRegions{
         Mat edgeDetection(Mat input);
         Mat blurImage(Mat input);
         Mat imageMorphology(Mat input);
+    
+#pragma mark - New testing methods.
+    
+    vector<Plate> segment5(Mat input);
+    Mat LPRalgorithm(Mat src_img);
+    Mat preProcessing(Mat src_img);
 };
 
 #endif

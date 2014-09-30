@@ -15,7 +15,7 @@ typedef void(^ImageProcessingDone)(UIImage *image);
     ImageProcessingDone completionBlock;
 }
 
-+ (void)getLocalisedImageFromSource:(UIImage*)src imageName:(NSString*)name result:(ImageProcessingDone)block;
++ (UIImage *)getLocalisedImageFromSource:(UIImage*)src imageName:(NSString*)name;
 + (UIImage *)harissCornerDetector:(UIImage*)source;
 + (UIImage *)ShiTomasiCornerDetector:(UIImage*)source;
 

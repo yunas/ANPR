@@ -19,7 +19,26 @@ using namespace std;
 
 #pragma mark - Class methods
 
-+ (void)getLocalisedImageFromSource:(UIImage*)image imageName:(NSString *)name result:(ImageProcessingDone)block {
++ (UIImage*)contrastImage:(UIImage*)image contrast:(float)contrast {
+    CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
+    
+    CIFilter *brightnesContrastFilter = [CIFilter filterWithName:@"CIColorControls"];
+    [brightnesContrastFilter setDefaults];
+    [brightnesContrastFilter setValue:inputImage forKey:kCIInputImageKey];
+    [brightnesContrastFilter setValue:[NSNumber numberWithFloat:contrast]
+                               forKey:@"inputContrast"];
+    
+    
+    // Get the output image recipe
+    CIImage *outputImage = [brightnesContrastFilter outputImage];
+    
+//    return [UIImage imageWithCIImage:outputImage scale:[[UIScreen mainScreen] scale] orientation:UIImageOrientationUp];
+        CIContext *context = [CIContext contextWithOptions:nil];
+      return [UIImage imageWithCGImage:[context createCGImage:outputImage fromRect:outputImage.extent]];
+}
+
+
++ (UIImage*)getLocalisedImageFromSource:(UIImage*)image imageName:(NSString *)name {
 
     // input image
     cv::Mat input_image = [image CVMat];
@@ -42,13 +61,14 @@ using namespace std;
         outImage = [UIImage imageWithCVMat:rect.plateImg];
         
         data = UIImageJPEGRepresentation(outImage, 1);
-        filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"1"]];
+        filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"detected_%d",i]];
         [data writeToFile:filePath atomically:YES];
     }
     
-    block(outImage);
+//    UIImage *newOutImg = outImage;
+    UIImage *newOutImg =    [ImageProcessorImplementation contrastImage:outImage contrast:2.5];
     
-    return;
+    return newOutImg;
     
     //SVM for each plate region to get valid car plates
     //Read file storage.
@@ -79,7 +99,7 @@ using namespace std;
     
     //For each possible plate, classify with svm if it's a plate or no
     vector<Plate> plates;
-    for(int i=0; i< posible_regions.size()-1; i++) {
+    for(int i=0; i< posible_regions.size(); i++) {
         
         Mat img=posible_regions[i].plateImg;
         Mat p= img.reshape(1, 1);
@@ -100,7 +120,7 @@ using namespace std;
         [data writeToFile:filePath atomically:YES];
     }
     
-    block(outImage);
+    return outImage;
 }
 
 + (UIImage *)harissCornerDetector:(UIImage*)source {
@@ -145,7 +165,7 @@ using namespace std;
 
 + (BOOL)trainSVM {
     
-    int numPlates = 1;
+    int numPlates = 371;
     int numNoPlates = 29;
     
     cv::Mat classes; // = Mat(numPlates+numNoPlates, 1, CV_32FC1);
@@ -156,7 +176,7 @@ using namespace std;
     
     for (int i=1; i<= numPlates; i++) {
         
-        NSString *plateNumber = [NSString stringWithFormat:@"%d.jpg",i];
+        NSString *plateNumber = [NSString stringWithFormat:@"%d.JPG",i];
 
         cv::Mat img_gray = [ImageProcessorImplementation trainingPlate:plateNumber];
         
@@ -195,13 +215,10 @@ using namespace std;
 
 + (Mat)trainingPlate:(NSString*)platenumber {
     
-    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    platenumber = [documentsPath stringByAppendingFormat:@"/1.jpg"];
-    
     UIImage *image = [UIImage imageNamed:platenumber];
     
     cv::Mat src = [image CVMat];
-    cv::Mat img_gray = [[self class] grayImage:src];
+    cv::Mat img_gray = [ImageProcessorImplementation grayImage:src];
 
     return img_gray;
 }

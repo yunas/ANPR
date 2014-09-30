@@ -26,16 +26,16 @@
     
     NSURL *finalURL = [NSURL fileURLWithPath:dataPath];
     
-    NSInteger count = 14;
+    NSInteger count = 161;
     
     for (NSURL *url in myImages) {
         
         NSString *filename = [url lastPathComponent];
         
         //change the suffix to what you are looking for
-        if ([filename hasSuffix:ext] && [filename hasPrefix:prefix]) {
+        if ([filename hasSuffix:ext]) {
             
-            NSURL *newURL = [finalURL URLByAppendingPathComponent:[NSString stringWithFormat:@"l%d%@",count,ext]];
+            NSURL *newURL = [finalURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%d%@",count,ext]];
             [manager moveItemAtURL:url toURL:newURL error:&error];
             count++;
             
@@ -51,7 +51,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-//    [self renameFilesAndSaveInsideFolder:@"LNPR_Full_images" prefix:@"IMG_" suffix:@".JPG"];
+//    [self renameFilesAndSaveInsideFolder:@"LNPR_Full_images" prefix:@"NEWIMG_" suffix:@".JPG"];
     
     // Override point for customization after application launch.
     return YES;

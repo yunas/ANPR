@@ -738,17 +738,17 @@
         if (_currentPageIndex == pageIndex) {
             if (pageIndex > 0) {
                 // Preload index - 1
-                id <MWPhoto> photo = [self photoAtIndex:pageIndex-1];
-                if (![photo underlyingImage]) {
-                    [photo loadUnderlyingImageAndNotify];
+                id <MWPhoto> photo1 = [self photoAtIndex:pageIndex-1];
+                if (![photo1 underlyingImage]) {
+                    [photo1 loadUnderlyingImageAndNotify];
                     MWLog(@"Pre-loading image at index %lu", (unsigned long)pageIndex-1);
                 }
             }
             if (pageIndex < [self numberOfPhotos] - 1) {
                 // Preload index + 1
-                id <MWPhoto> photo = [self photoAtIndex:pageIndex+1];
-                if (![photo underlyingImage]) {
-                    [photo loadUnderlyingImageAndNotify];
+                id <MWPhoto> photo1 = [self photoAtIndex:pageIndex+1];
+                if (![photo1 underlyingImage]) {
+                    [photo1 loadUnderlyingImageAndNotify];
                     MWLog(@"Pre-loading image at index %lu", (unsigned long)pageIndex+1);
                 }
             }
