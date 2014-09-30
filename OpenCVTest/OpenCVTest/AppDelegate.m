@@ -35,7 +35,7 @@
         //change the suffix to what you are looking for
         if ([filename hasSuffix:ext]) {
             
-            NSURL *newURL = [finalURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%d%@",count,ext]];
+            NSURL *newURL = [finalURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%ld%@",(long)count,ext]];
             [manager moveItemAtURL:url toURL:newURL error:&error];
             count++;
             

@@ -41,8 +41,9 @@
     UIImage *sourceImage;
     
     NSUInteger processingstep;
-    
     NSUInteger count;
+    
+    MBProgressHUD *_hud;
 }
 
 #pragma mark - Custom Inits
@@ -68,7 +69,6 @@
 }
 
 #pragma mark - Standard Methods
-
 
 - (void)viewDidLoad {
     
@@ -157,7 +157,11 @@
 
 - (IBAction)processandsave:(id)sender {
     
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = @"Detecting number plate.";
+    [hud show:YES];
+    _hud = hud;
     
     /*
      Perform plate detection on predefined images.
@@ -207,8 +211,16 @@
             
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             
+            [_hud hide:YES];
+            
             resultImage = image;
             outputImageView.image = resultImage;
+            
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            hud.mode = MBProgressHUDModeIndeterminate;
+            hud.labelText = @"Detecting numbers in plate.";
+            [hud show:YES];
+            _hud = hud;
             
             if (image) {
                                 
@@ -218,17 +230,17 @@
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
-                        [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
+                        [_hud hide:YES afterDelay:0.2];
                         
                         alert.message = [NSString stringWithFormat:@"Detected plate number is \"%@\"",plateNumber];
                         [alert show];
                     });
                 });
                 
-                [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
+//                [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
                 NSData *data = UIImageJPEGRepresentation(image, 1);
                 NSError *error = nil;
-                [data writeToFile:[self filePath:[NSString stringWithFormat:@"plate%d",count]] options:NSDataWritingAtomic error:&error];
+                [data writeToFile:[self filePath:[NSString stringWithFormat:@"plate%lu",(unsigned long)count]] options:NSDataWritingAtomic error:&error];
             }
             else {
                 
@@ -237,7 +249,7 @@
                 alert.message = @"No plate detected.";
                 [alert show];
                 
-                NSLog(@"number plate not found for image:%d.JPG",count);
+                NSLog(@"number plate not found for image:%lu.JPG",(unsigned long)count);
             }
         });
     });
@@ -380,7 +392,7 @@
      Loop through all predefined images and get result
     */
     
-    NSString *path =[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"l%d.JPG",[index integerValue]] ofType:nil];
+    NSString *path =[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"l%ld.JPG",(long)[index integerValue]] ofType:nil];
     
     UIImage *originalImage = [UIImage imageWithContentsOfFile:path];
     
@@ -391,7 +403,7 @@
     
     inputImageView.image = sourceImage;
     
-    [self operation:[NSString stringWithFormat:@"l%d",[index integerValue]]];
+    [self operation:[NSString stringWithFormat:@"l%ld",(long)[index integerValue]]];
 }
 
 #pragma mark - WEB SERVICES
