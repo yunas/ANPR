@@ -163,14 +163,14 @@
      Perform plate detection on predefined images.
     */
     
-//    if (count<66) {
-//        [self plateInPredefinedImage:@(count)];
-//        count++;
-//    }
-//    else {
-//        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
-//    }
-//    return;
+    if (count<86) {
+        [self plateInPredefinedImage:@(count)];
+        count++;
+    }
+    else {
+        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
+    }
+    return;
     
     /*
      Loop throuhg selected images
@@ -212,19 +212,20 @@
             
             if (image) {
                                 
-                dispatch_async(dispatch_queue_create("web service", 0), ^{
+//                dispatch_async(dispatch_queue_create("web service", 0), ^{
+//                
+//                    NSString *plateNumber = [self OCRTextFromImage:image];
+//                    
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        
+//                        [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
+//                        
+//                        alert.message = [NSString stringWithFormat:@"Detected plate number is \"%@\"",plateNumber];
+//                        [alert show];
+//                    });
+//                });
                 
-                    NSString *plateNumber = [self OCRTextFromImage:image];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                        [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
-                        
-                        alert.message = [NSString stringWithFormat:@"Detected plate number is \"%@\"",plateNumber];
-                        [alert show];
-                    });
-                });
-                
+                [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
                 NSData *data = UIImageJPEGRepresentation(image, 1);
                 NSError *error = nil;
                 [data writeToFile:[self filePath:[NSString stringWithFormat:@"plate%d",count]] options:NSDataWritingAtomic error:&error];
@@ -232,11 +233,12 @@
             else {
                 
                 [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
-                
+
                 alert.message = @"No plate detected.";
+                [alert show];
                 
                 NSLog(@"number plate not found for image:%d.JPG",count);
-                [alert show];
+                
             }
         });
     });
