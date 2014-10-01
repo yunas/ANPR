@@ -75,29 +75,25 @@ vector<Plate> DetectRegions::segment(Mat input) {
     if (input.channels() == 3)
         cv::cvtColor(input, img_gray, COLOR_BGR2GRAY);
     else if (input.channels() == 4) {
+        cv::cvtColor(input, img_gray, COLOR_BGRA2GRAY);
         Mat temp;
         cv::cvtColor(input, temp, COLOR_BGRA2BGR);
-        cv::cvtColor(input, img_gray, COLOR_BGRA2GRAY);
         temp.copyTo(input);
     }
     else if(input.channels() == 1)
         img_gray = input;
     
-    blur(img_gray, img_gray, Size(5,5));
-
+    Mat img_blur;
+    img_blur = getBlurMat(img_gray);
     
     //Finde vertical lines. Car plates have high density of vertical lines
     Mat img_sobel;
-    Sobel(img_gray, img_sobel, CV_8U, 1, 0, 3, 1, 0, BORDER_DEFAULT);
+    img_sobel = getSobelFilteredMat(img_blur);
     
-    //threshold image
+    //threshold image & Morphplogic operation close
     Mat img_threshold;
-    threshold(img_sobel, img_threshold, 0, 255, THRESH_OTSU+THRESH_BINARY);
+    img_threshold = getMorpholgyMat(img_sobel);
     
-    //Morphplogic operation close
-    Mat element = getStructuringElement(MORPH_RECT, Size(17, 3) );
-    morphologyEx(img_threshold, img_threshold, MORPH_CLOSE, element);
-
     //Find contours of possibles plates
     vector< vector< Point> > contours;
     findContours(img_threshold,
@@ -121,7 +117,7 @@ vector<Plate> DetectRegions::segment(Mat input) {
         }
     }
 
-            //    cout<<"number of possible regions:"<<rects.size()<<endl;
+    cout<<"number of possible regions:"<<rects.size()<<endl;
     
     // Draw blue contours on a white image
     cv::Mat result;
@@ -231,6 +227,156 @@ vector<Plate> DetectRegions::run(Mat input) {
 
     //return detected and posibles regions
     return tmp;
+}
+
+
+#pragma mark - Begin new methods
+
+Mat DetectRegions::getGrayScaleMat(Mat source) {
+    
+    cv::Mat gray;
+    if (source.channels() == 3)
+        cv::cvtColor(source, gray, cv::COLOR_BGR2GRAY);
+    else if (source.channels() == 4)
+        cv::cvtColor(source, gray, cv::COLOR_BGRA2GRAY);
+    else if(source.channels() == 1)
+        gray = source;
+    
+    return gray;
+}
+Mat DetectRegions::getBlurMat(Mat source) {
+   
+    Mat output;
+    source.copyTo(output);
+    
+    blur(output, output, Size(5,5));
+    
+    return output;
+}
+Mat DetectRegions::getSobelFilteredMat(Mat img_gray) {
+    Mat img_sobel;
+
+    Sobel(img_gray, img_sobel, CV_8U, 1, 0, 3, 1, 0, BORDER_DEFAULT);
+    
+    return img_sobel;
+}
+Mat DetectRegions::getThresholdMat(Mat img_sobel) {
+
+    Mat img_threshold;
+    
+    threshold(img_sobel, img_threshold, 0, 255, THRESH_OTSU+THRESH_BINARY);
+    
+    return img_threshold;
+}
+Mat DetectRegions::getMorpholgyMat(Mat img_sobel) {
+    
+    Mat img_threshold = getThresholdMat(img_sobel);
+    
+    //Morphplogic operation close
+    Mat element = getStructuringElement(MORPH_RECT, Size(17, 3) );
+    morphologyEx(img_threshold, img_threshold, MORPH_CLOSE, element);
+    
+    return img_threshold;
+}
+vector<RotatedRect> DetectRegions::getPossibleRegionsAfterFindContour(Mat img_threshold) {
+    
+    //Find contours of possibles plates
+    vector< vector< Point> > contours;
+    findContours(img_threshold,
+                 contours, // a vector of contours
+                 RETR_EXTERNAL, // retrieve the external contours
+                 CHAIN_APPROX_NONE); // all pixels of each contours
+    
+    //Start to iterate to each contour founded
+    vector<vector<Point> >::iterator itc= contours.begin();
+    vector<RotatedRect> rects;
+    
+    //Remove patch that are no inside limits of aspect ratio and area.
+    while (itc!=contours.end()) {
+        //Create bounding rect of object
+        RotatedRect mr= minAreaRect(Mat(*itc));
+        if( !verifySizes(mr)){
+            itc= contours.erase(itc);
+        }else{
+            ++itc;
+            rects.push_back(mr);
+        }
+    }
+    cout<<"number of possible regions:"<<rects.size()<<endl;
+
+    return rects;
+}
+cv::RotatedRect DetectRegions::getDetectedPlateRect(Mat mask) {
+
+    vector<Point> pointsInterest;
+    Mat_<uchar>::iterator itMask= mask.begin<uchar>();
+    Mat_<uchar>::iterator end= mask.end<uchar>();
+    for( ; itMask!=end; ++itMask)
+        if(*itMask==255)
+            pointsInterest.push_back(itMask.pos());
+    
+    RotatedRect minRect = minAreaRect(pointsInterest);
+
+    return minRect;
+}
+Mat DetectRegions::getRotatedMatFromDetectedRectangle(RotatedRect source) {
+    
+    float r= (float)source.size.width / (float)source.size.height;
+    float angle=source.angle;
+    if(r<1)
+        angle=90+angle;
+    Mat rotmat= getRotationMatrix2D(source.center, angle,1);
+    
+    return rotmat;
+}
+Mat  DetectRegions::getRotatedMat(Mat source, Mat rotmat) {
+    
+    //Create and rotate image
+    Mat img_rotated;
+    warpAffine(source, img_rotated, rotmat, source.size(), INTER_CUBIC);
+    
+    return img_rotated;
+}
+Mat DetectRegions::getCroppedMat(Mat img_rotated, RotatedRect rect) {
+    
+    float r= (float)rect.size.width / (float)rect.size.height;
+    //Crop image
+    Size rect_size=rect.size;
+    if(r < 1)
+        swap(rect_size.width, rect_size.height);
+    Mat img_crop;
+    getRectSubPix(img_rotated, rect_size, rect.center, img_crop);
+    
+    Mat output;
+    return output;
+}
+Mat DetectRegions::getResizedMat(Mat img_crop, cv::Size size) {
+    
+    Mat resultResized;
+    
+    resultResized.create(size.height,size.width, CV_8UC3);
+    resize(img_crop, resultResized, resultResized.size(), 0, 0, INTER_CUBIC);
+    
+    return resultResized;
+}
+Mat DetectRegions::getNormalisedGrayscaleMat(Mat resultResized) {
+    
+    Mat grayResult;
+    
+    cvtColor(resultResized, grayResult, COLOR_BGR2GRAY);
+    grayResult = histogramEqualizedMat(grayResult);
+    
+    return grayResult;
+}
+Mat DetectRegions::histogramEqualizedMat(Mat source) {
+    
+    Mat output;
+    source.copyTo(output);
+    
+    blur(output, output, Size(3,3));
+    output=histeq(output);
+    
+    return output;
 }
 
 #pragma mark - Adnan work
@@ -448,12 +594,7 @@ Mat DetectRegions::blurImage(Mat input) {
     
     Mat output;
     input.copyTo(output);
-    
     blur(output, output, Size(5,5));
-//    blur(output, output, Size(5,5));
-//    blur(output, output, Size(5,5));
-    //    blur(output, output, Size(5,5));
-    
     return output;
 }
 Mat DetectRegions::imageMorphology(Mat input) {
@@ -465,7 +606,6 @@ Mat DetectRegions::imageMorphology(Mat input) {
     
     return img_threshold;
 }
-
 
 #pragma mark - Chapter 5 code.
 

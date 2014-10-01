@@ -41,6 +41,23 @@ class DetectRegions{
         double preProcessingangle( cv::Point pt1, cv::Point pt2, cv::Point pt0 );
         Mat enhanceContrast(Mat input);
         Mat enhanceSharpness(Mat input);
+    
+    
+    
+    Mat getGrayScaleMat(Mat source);
+    Mat getSobelFilteredMat(Mat source);
+    Mat getBlurMat(Mat source);
+    Mat getThresholdMat(Mat source);
+    Mat getMorpholgyMat(Mat source);
+    vector<RotatedRect> getPossibleRegionsAfterFindContour(Mat source);
+    cv::RotatedRect getDetectedPlateRect(Mat source);
+    Mat getRotatedMatFromDetectedRectangle(RotatedRect source);
+    Mat getRotatedMat(Mat source, Mat rotmat);
+    Mat getCroppedMat(Mat source, RotatedRect rect);
+    Mat getResizedMat(Mat source, cv::Size size);
+    Mat getNormalisedGrayscaleMat(Mat source);
+    Mat histogramEqualizedMat(Mat source);
+    
     private:
         vector<Plate> segment(Mat input);
         bool verifySizes(RotatedRect mr);

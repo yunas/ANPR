@@ -17,7 +17,7 @@
                BlueprintIdentifier = "5CA3025C19B6EA9400A1337A"
                BuildableName = "OpenCVTest.app"
                BlueprintName = "OpenCVTest"
-               ReferencedContainer = "container:OpenCVTest.xcodeproj">
+               ReferencedContainer = "container:LNPR.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "5CA3027D19B6EA9500A1337A"
                BuildableName = "OpenCVTestTests.xctest"
                BlueprintName = "OpenCVTestTests"
-               ReferencedContainer = "container:OpenCVTest.xcodeproj">
+               ReferencedContainer = "container:LNPR.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -45,7 +45,7 @@
             BlueprintIdentifier = "5CA3025C19B6EA9400A1337A"
             BuildableName = "OpenCVTest.app"
             BlueprintName = "OpenCVTest"
-            ReferencedContainer = "container:OpenCVTest.xcodeproj">
+            ReferencedContainer = "container:LNPR.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -64,7 +64,7 @@
             BlueprintIdentifier = "5CA3025C19B6EA9400A1337A"
             BuildableName = "OpenCVTest.app"
             BlueprintName = "OpenCVTest"
-            ReferencedContainer = "container:OpenCVTest.xcodeproj">
+            ReferencedContainer = "container:LNPR.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -87,7 +87,7 @@
             BlueprintIdentifier = "5CA3025C19B6EA9400A1337A"
             BuildableName = "OpenCVTest.app"
             BlueprintName = "OpenCVTest"
-            ReferencedContainer = "container:OpenCVTest.xcodeproj">
+            ReferencedContainer = "container:LNPR.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
