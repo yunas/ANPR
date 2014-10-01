@@ -51,7 +51,7 @@
 -(void) initCustomView{
     
     photos = [NSMutableArray new];
-    for(int i = 1; i <= 20 ; i++){
+    for(int i = 1; i <= 30 ; i++){
         NSString *urlStr = [NSString stringWithFormat:@"l%d.JPG",i];
         MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
         [photo setCaption:[NSString stringWithFormat:@"%d",i]];
@@ -74,7 +74,7 @@
     
     [super viewDidLoad];
     
-    count = 1;
+    count = 21;
     processor = [[ImageProcessorImplementation alloc] init];
     [self initCustomView];
     
@@ -168,7 +168,7 @@
     */
     
 //    NSLog(@"%lu",(unsigned long)count);
-//    if (count<=20) {
+//    if (count<=30) {
 //        [self plateInPredefinedImage:@(count)];
 //        count++;
 //    }
@@ -234,7 +234,7 @@
                         [_hud hide:YES afterDelay:0.2];
                         
                         alert.message = [NSString stringWithFormat:@"Detected plate number is \n \"%@\"",plateNumber];
-                        [alert show];
+//                        [alert show];
                     });
                 });
                 
@@ -250,11 +250,10 @@
                 alert.message = @"No plate detected.";
                 [alert show];
                 
-                NSLog(@"number plate not found for image:%lu.JPG",(unsigned long)count);
+                NSLog(@"number plate not found for image:%lu.JPG",(unsigned long)count-1);
             }
         });
     });
-    
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -514,6 +513,7 @@
     }
     
     NSLog(@"WEB-OCR-TEXT: %@",plateNumber);
+    
     return plateNumber;
 }
 

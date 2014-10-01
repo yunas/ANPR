@@ -121,7 +121,7 @@ vector<Plate> DetectRegions::segment(Mat input) {
         }
     }
 
-            //    cout<<"number of possible regions:"<<rects.size()<<endl;
+    cout<<"number of possible regions:"<<rects.size()<<endl;
     
     // Draw blue contours on a white image
     cv::Mat result;
