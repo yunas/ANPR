@@ -502,7 +502,7 @@
     
     OCRWebServiceSoapBindingResponse *response = [binding OCRWebServiceRecognizeUsingParameters:params];
     
-    NSString *plateNumber = nil;
+    NSString *plateNumber = @"";
     
     for(id bodyPart in response.bodyParts) {
         if([bodyPart isKindOfClass:[OCRWebServiceSvc_OCRWebServiceRecognizeResponse class]]) {
@@ -512,6 +512,10 @@
             plateNumber = [strings.string lastObject];
             break;
         }
+    }
+   
+    if (response.error) {
+        plateNumber = [response.error localizedDescription];
     }
     
     NSLog(@"WEB-OCR-TEXT: %@",plateNumber);
