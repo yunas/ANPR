@@ -95,44 +95,22 @@ vector<Plate> DetectRegions::segment(Mat input) {
     img_threshold = getMorpholgyMat(img_sobel);
     
     //Find contours of possibles plates
-    vector< vector< Point> > contours;
-    findContours(img_threshold,
-            contours, // a vector of contours
-            RETR_EXTERNAL, // retrieve the external contours
-            CHAIN_APPROX_NONE); // all pixels of each contours
-
-    //Start to iterate to each contour founded
-    vector<vector<Point> >::iterator itc= contours.begin();
     vector<RotatedRect> rects;
-
-    //Remove patch that are no inside limits of aspect ratio and area.    
-    while (itc!=contours.end()) {
-        //Create bounding rect of object
-        RotatedRect mr= minAreaRect(Mat(*itc));
-        if( !verifySizes(mr)){
-            itc= contours.erase(itc);
-        }else{
-            ++itc;
-            rects.push_back(mr);
-        }
-    }
-
+    rects = getPossibleRegionsAfterFindContour(img_threshold);
+    
     cout<<"number of possible regions:"<<rects.size()<<endl;
     
-    // Draw blue contours on a white image
     cv::Mat result;
     input.copyTo(result);
-    cv::drawContours(result,contours,
-            -1, // draw all contours
-            cv::Scalar(255,0,0), // in blue
-            1); // with a thickness of 1
 
     for(int i=0; i< rects.size(); i++){
-
+        
+        circle(result, rects[i].center, 3, Scalar(0,255,0), -1);
+        
         //For better rect cropping for each posible box
         //Make floodfill algorithm because the plate has white background
         //And then we can retrieve more clearly the contour box
-        circle(result, rects[i].center, 3, Scalar(0,255,0), -1);
+        
         //get the min size between width and height
         float minSize=(rects[i].size.width < rects[i].size.height)?rects[i].size.width:rects[i].size.height;
         minSize=minSize-minSize*0.5;
@@ -158,16 +136,7 @@ vector<Plate> DetectRegions::segment(Mat input) {
             floodFill(input, mask, seed, Scalar(255,0,0), &ccomp, Scalar(loDiff, loDiff, loDiff), Scalar(upDiff, upDiff, upDiff), flags);
         }
         
-        //Check new floodfill mask match for a correct patch.
-        //Get all points detected for get Minimal rotated Rect
-        vector<Point> pointsInterest;
-        Mat_<uchar>::iterator itMask= mask.begin<uchar>();
-        Mat_<uchar>::iterator end= mask.end<uchar>();
-        for( ; itMask!=end; ++itMask)
-            if(*itMask==255)
-                pointsInterest.push_back(itMask.pos());
-
-        RotatedRect minRect = minAreaRect(pointsInterest);
+        RotatedRect minRect = getDetectedPlateRectFromMask(mask);
 
         if(verifySizes(minRect)) {
             // rotated rectangle drawing 
@@ -176,34 +145,29 @@ vector<Plate> DetectRegions::segment(Mat input) {
                 line( result, rect_points[j], rect_points[(j+1)%4], Scalar(0,0,255), 1, 8 );    
 
             //Get rotation matrix
-            float r= (float)minRect.size.width / (float)minRect.size.height;
-            float angle=minRect.angle;    
-            if(r<1)
-                angle=90+angle;
-            Mat rotmat= getRotationMatrix2D(minRect.center, angle,1);
-
+            Mat rotmat = getRotated2by3MatFromDetectedRectangle(minRect);
+            
             //Create and rotate image
             Mat img_rotated;
-            warpAffine(input, img_rotated, rotmat, input.size(), INTER_CUBIC);
-
+            img_rotated = rotateImageMat(input, rotmat);
+            
             //Crop image
-            Size rect_size=minRect.size;
-            if(r < 1)
-                swap(rect_size.width, rect_size.height);
             Mat img_crop;
-            getRectSubPix(img_rotated, rect_size, minRect.center, img_crop);
+            img_crop = getCroppedMat(img_rotated, minRect);
             
             Mat resultResized;
-            resultResized.create(69,300, CV_8UC3);
-            resize(img_crop, resultResized, resultResized.size(), 0, 0, INTER_CUBIC);
+            resultResized = getResizedMat(img_crop, cv::Size(300,69));
+            
             //Equalize croped image
             Mat grayResult;
             cvtColor(resultResized, grayResult, COLOR_BGR2GRAY);
             blur(grayResult, grayResult, Size(3,3));
             grayResult=histeq(grayResult);
             
+            grayResult = getNormalisedGrayscaleMat(resultResized);
+            
             Mat new_image = enhanceContrast(resultResized);
-            output.push_back(Plate(new_image,minRect.boundingRect()));
+            output.push_back(Plate(resultResized,minRect.boundingRect()));
             
 //            output.push_back(Plate(grayResult,minRect.boundingRect()));
         }
@@ -246,12 +210,12 @@ Mat DetectRegions::getGrayScaleMat(Mat source) {
 }
 Mat DetectRegions::getBlurMat(Mat source) {
    
-    Mat output;
-    source.copyTo(output);
+    Mat img_blur;
+    source.copyTo(img_blur);
     
-    blur(output, output, Size(5,5));
+    blur(img_blur, img_blur, Size(5,5));
     
-    return output;
+    return img_blur;
 }
 Mat DetectRegions::getSobelFilteredMat(Mat img_gray) {
     Mat img_sobel;
@@ -302,12 +266,13 @@ vector<RotatedRect> DetectRegions::getPossibleRegionsAfterFindContour(Mat img_th
             rects.push_back(mr);
         }
     }
-    cout<<"number of possible regions:"<<rects.size()<<endl;
 
     return rects;
 }
-cv::RotatedRect DetectRegions::getDetectedPlateRect(Mat mask) {
+cv::RotatedRect DetectRegions::getDetectedPlateRectFromMask(Mat mask) {
 
+    //Check new floodfill mask match for a correct patch.
+    //Get all points detected for get Minimal rotated Rect
     vector<Point> pointsInterest;
     Mat_<uchar>::iterator itMask= mask.begin<uchar>();
     Mat_<uchar>::iterator end= mask.end<uchar>();
@@ -319,7 +284,7 @@ cv::RotatedRect DetectRegions::getDetectedPlateRect(Mat mask) {
 
     return minRect;
 }
-Mat DetectRegions::getRotatedMatFromDetectedRectangle(RotatedRect source) {
+Mat DetectRegions::getRotated2by3MatFromDetectedRectangle(RotatedRect source) {
     
     float r= (float)source.size.width / (float)source.size.height;
     float angle=source.angle;
@@ -329,11 +294,11 @@ Mat DetectRegions::getRotatedMatFromDetectedRectangle(RotatedRect source) {
     
     return rotmat;
 }
-Mat  DetectRegions::getRotatedMat(Mat source, Mat rotmat) {
-    
+Mat  DetectRegions::rotateImageMat(Mat input, Mat rotmat) {
+
     //Create and rotate image
     Mat img_rotated;
-    warpAffine(source, img_rotated, rotmat, source.size(), INTER_CUBIC);
+    warpAffine(input, img_rotated, rotmat, input.size(), INTER_CUBIC);
     
     return img_rotated;
 }
@@ -346,9 +311,8 @@ Mat DetectRegions::getCroppedMat(Mat img_rotated, RotatedRect rect) {
         swap(rect_size.width, rect_size.height);
     Mat img_crop;
     getRectSubPix(img_rotated, rect_size, rect.center, img_crop);
-    
-    Mat output;
-    return output;
+
+    return img_crop;
 }
 Mat DetectRegions::getResizedMat(Mat img_crop, cv::Size size) {
     
@@ -370,13 +334,13 @@ Mat DetectRegions::getNormalisedGrayscaleMat(Mat resultResized) {
 }
 Mat DetectRegions::histogramEqualizedMat(Mat source) {
     
-    Mat output;
-    source.copyTo(output);
+    Mat img_hist;
+    source.copyTo(img_hist);
     
-    blur(output, output, Size(3,3));
-    output=histeq(output);
+    blur(img_hist, img_hist, Size(3,3));
+    img_hist=histeq(img_hist);
     
-    return output;
+    return img_hist;
 }
 
 #pragma mark - Adnan work
@@ -592,10 +556,10 @@ Mat DetectRegions::edgeDetection(Mat input) {
 }
 Mat DetectRegions::blurImage(Mat input) {
     
-    Mat output;
-    input.copyTo(output);
-    blur(output, output, Size(5,5));
-    return output;
+    Mat img_blur;
+    input.copyTo(img_blur);
+    blur(img_blur, img_blur, Size(5,5));
+    return img_blur;
 }
 Mat DetectRegions::imageMorphology(Mat input) {
     Mat img_threshold;

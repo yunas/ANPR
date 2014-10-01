@@ -287,7 +287,7 @@ using namespace std;
     cv::Mat input_image = [source CVMat];
     
     DetectRegions detectRegions;
-    RotatedRect rotatedRect = detectRegions.getDetectedPlateRect(input_image);
+    RotatedRect rotatedRect = detectRegions.getDetectedPlateRectFromMask(input_image);
     
     cv::Rect boundingRect = rotatedRect.boundingRect();
     Size2f size = rotatedRect.size;
@@ -300,7 +300,7 @@ using namespace std;
     cv::Mat input_image = [source CVMat];
     
     DetectRegions detectRegions;
-    Mat output_image = detectRegions.getRotatedMat(input_image, Mat(input_image.size(), input_image.type()));
+    Mat output_image = detectRegions.rotateImageMat(input_image, Mat(input_image.size(), input_image.type()));
     
     UIImage *outImage = [UIImage imageWithCVMat:output_image];
     return outImage;

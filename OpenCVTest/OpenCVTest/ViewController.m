@@ -73,7 +73,7 @@
     
     [super viewDidLoad];
     
-    count = 21;
+    count = 1;
     processor = [[ImageProcessorImplementation alloc] init];
     [self initCustomView];
     
@@ -165,6 +165,9 @@
     /*
      Perform plate detection on predefined images.
     */
+    
+    resultImage = nil;
+    outputImageView.image = resultImage;
     
     NSLog(@"%lu",(unsigned long)count);
     if (count<=30) {

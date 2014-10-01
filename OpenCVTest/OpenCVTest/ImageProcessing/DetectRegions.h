@@ -50,9 +50,9 @@ class DetectRegions{
     Mat getThresholdMat(Mat source);
     Mat getMorpholgyMat(Mat source);
     vector<RotatedRect> getPossibleRegionsAfterFindContour(Mat source);
-    cv::RotatedRect getDetectedPlateRect(Mat source);
-    Mat getRotatedMatFromDetectedRectangle(RotatedRect source);
-    Mat getRotatedMat(Mat source, Mat rotmat);
+    cv::RotatedRect getDetectedPlateRectFromMask(Mat source);
+    Mat getRotated2by3MatFromDetectedRectangle(RotatedRect source);
+    Mat rotateImageMat(Mat source, Mat rotmat);
     Mat getCroppedMat(Mat source, RotatedRect rect);
     Mat getResizedMat(Mat source, cv::Size size);
     Mat getNormalisedGrayscaleMat(Mat source);
