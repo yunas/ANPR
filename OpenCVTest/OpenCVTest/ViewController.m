@@ -58,7 +58,6 @@
         [photos addObject:photo];
     }
     
-    
     bmpPhotos = [NSMutableArray new];
     for(int i = 1; i <= 50 ; i++){
         NSString *urlStr = [NSString stringWithFormat:@"detectsample%d.bmp",i];
@@ -167,15 +166,15 @@
      Perform plate detection on predefined images.
     */
     
-//    NSLog(@"%lu",(unsigned long)count);
-//    if (count<=30) {
-//        [self plateInPredefinedImage:@(count)];
-//        count++;
-//    }
-//    else {
-//        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
-//    }
-//    return;
+    NSLog(@"%lu",(unsigned long)count);
+    if (count<=30) {
+        [self plateInPredefinedImage:@(count)];
+        count++;
+    }
+    else {
+        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
+    }
+    return;
     
     /*
      Loop throuhg selected images
@@ -234,7 +233,7 @@
                         [_hud hide:YES afterDelay:0.2];
                         
                         alert.message = [NSString stringWithFormat:@"Detected plate number is \n \"%@\"",plateNumber];
-//                        [alert show];
+                        [alert show];
                     });
                 });
                 

@@ -224,6 +224,130 @@ using namespace std;
     return img_gray;
 }
 
+#pragma  mark getter methods (Debug)
+
++ (UIImage*)getGrayScaleImage:(UIImage*)source {
+    Mat input_image = [source CVMat];
+    
+    DetectRegions detectRegions;
+    Mat output_image = detectRegions.getGrayScaleMat(input_image);
+    
+    UIImage *outImage = [UIImage imageWithCVMat:output_image];
+    return outImage;
+}
++ (UIImage*)getSobelFilteredImage:(UIImage*)source {
+    cv::Mat input_image = [source CVMat];
+    
+    DetectRegions detectRegions;
+    Mat output_image = detectRegions.getSobelFilteredMat(input_image);
+    
+    UIImage *outImage = [UIImage imageWithCVMat:output_image];
+    return outImage;
+}
++ (UIImage*)getBlurImage:(UIImage*)source {
+    cv::Mat input_image = [source CVMat];
+    
+    DetectRegions detectRegions;
+    Mat output_image = detectRegions.getBlurMat(input_image);
+    
+    UIImage *outImage = [UIImage imageWithCVMat:output_image];
+    return outImage;
+    
+}
++ (UIImage*)getThresholdImage:(UIImage*)source {
+    cv::Mat input_image = [source CVMat];
+    
+    DetectRegions detectRegions;
+    Mat output_image = detectRegions.getThresholdMat(input_image);
+    
+    UIImage *outImage = [UIImage imageWithCVMat:output_image];
+    return outImage;
+    
+}
++ (UIImage*)getMorpholgyImage:(UIImage*)source {
+    cv::Mat input_image = [source CVMat];
+    
+    DetectRegions detectRegions;
+    Mat output_image = detectRegions.getMorpholgyMat(input_image);
+    
+    UIImage *outImage = [UIImage imageWithCVMat:output_image];
+    return outImage;
+    
+}
++ (NSArray*)getPossibleRegionsAfterFindContour:(UIImage*)source {
+    cv::Mat input_image = [source CVMat];
+    
+    DetectRegions detectRegions;
+    vector<RotatedRect> output_images = detectRegions.getPossibleRegionsAfterFindContour(input_image);
+    
+    UIImage *outImage = [UIImage imageWithCVMat:input_image];
+    return @[outImage];
+}
++ (CGRect)getDetectedPlateRect:(UIImage*)source {
+    cv::Mat input_image = [source CVMat];
+    
+    DetectRegions detectRegions;
+    RotatedRect rotatedRect = detectRegions.getDetectedPlateRect(input_image);
+    
+    cv::Rect boundingRect = rotatedRect.boundingRect();
+    Size2f size = rotatedRect.size;
+    
+    CGRect rect  = CGRectMake(boundingRect.x, boundingRect.y, size.width, size.height);
+    
+    return rect;
+}
++ (UIImage*)getRotatedImage:(UIImage*)source {
+    cv::Mat input_image = [source CVMat];
+    
+    DetectRegions detectRegions;
+    Mat output_image = detectRegions.getRotatedMat(input_image, Mat(input_image.size(), input_image.type()));
+    
+    UIImage *outImage = [UIImage imageWithCVMat:output_image];
+    return outImage;
+}
++ (UIImage*)getCroppedImage:(UIImage*)source frame:(CGRect)frame{
+    cv::Mat input_image = [source CVMat];
+    
+    DetectRegions detectRegions;
+    
+    Point2f point = cv::Point(CGRectGetMinX(frame), CGRectGetMinY(frame));
+    Size2f size = cv::Size(CGRectGetWidth(frame), CGRectGetHeight(frame));
+    RotatedRect rect = RotatedRect(point, size, 0);
+    
+    Mat output_image = detectRegions.getCroppedMat(input_image, rect);
+    
+    UIImage *outImage = [UIImage imageWithCVMat:output_image];
+    return outImage;
+}
++ (UIImage*)getResizedImage:(UIImage*)source size:(CGSize)size {
+    cv::Mat input_image = [source CVMat];
+    
+    DetectRegions detectRegions;
+    Mat output_image = detectRegions.getResizedMat(input_image, cv::Size(size.width,size.height));
+    
+    UIImage *outImage = [UIImage imageWithCVMat:output_image];
+    return outImage;
+}
++ (UIImage*)getNormalisedGrayscaleImage:(UIImage*)source {
+    cv::Mat input_image = [source CVMat];
+    
+    DetectRegions detectRegions;
+    Mat output_image = detectRegions.getNormalisedGrayscaleMat(input_image);
+    
+    UIImage *outImage = [UIImage imageWithCVMat:output_image];
+    return outImage;
+}
++ (UIImage*)histogramEqualizedImage:(UIImage*)source {
+    cv::Mat input_image = [source CVMat];
+    
+    DetectRegions detectRegions;
+    Mat output_image = detectRegions.histogramEqualizedMat(input_image);
+    
+    UIImage *outImage = [UIImage imageWithCVMat:output_image];
+    return outImage;
+}
+
+
 #pragma mark - instance methods
 
 
@@ -335,7 +459,7 @@ using namespace std;
         float minSize=(rects[i].size.width < rects[i].size.height)?rects[i].size.width:rects[i].size.height;
         minSize=minSize-minSize*0.5;
         //initialize rand and get 5 points around center for floodfill algorithm
-        srand ( time(NULL) );
+        srand48 ( time(NULL) );
         //Initialize floodfill parameters and variables
         cv::Mat mask;
         mask.create(source.rows + 2, source.cols + 2, CV_8UC1);
