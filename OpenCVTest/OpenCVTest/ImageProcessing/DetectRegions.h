@@ -43,14 +43,14 @@ class DetectRegions{
         Mat enhanceSharpness(Mat input);
     
     
-    
     Mat getGrayScaleMat(Mat source);
     Mat getSobelFilteredMat(Mat source);
     Mat getBlurMat(Mat source);
     Mat getThresholdMat(Mat source);
     Mat getMorpholgyMat(Mat source);
     vector<RotatedRect> getPossibleRegionsAfterFindContour(Mat source);
-    cv::RotatedRect getDetectedPlateRectFromMask(Mat source);
+    Mat getFloodFillMask(Mat input, Mat output, RotatedRect rect);
+    RotatedRect getDetectedPlateRectFromMask(Mat source);
     Mat getRotated2by3MatFromDetectedRectangle(RotatedRect source);
     Mat rotateImageMat(Mat source, Mat rotmat);
     Mat getCroppedMat(Mat source, RotatedRect rect);

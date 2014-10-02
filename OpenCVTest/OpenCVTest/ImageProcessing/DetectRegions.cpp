@@ -96,47 +96,16 @@ vector<Plate> DetectRegions::segment(Mat input) {
     vector<RotatedRect> rects;
     rects = getPossibleRegionsAfterFindContour(img_threshold);
     
-    cout<<"number of possible regions:"<<rects.size()<<endl;
-    
     cv::Mat result;
     input.copyTo(result);
 
     for(int i=0; i< rects.size(); i++){
         
-        circle(result, rects[i].center, 3, Scalar(0,255,0), -1);
-        
-        //For better rect cropping for each posible box
-        //Make floodfill algorithm because the plate has white background
-        //And then we can retrieve more clearly the contour box
-        
-        //get the min size between width and height
-        float minSize=(rects[i].size.width < rects[i].size.height)?rects[i].size.width:rects[i].size.height;
-        minSize=minSize-minSize*0.5;
-        //initialize rand and get 5 points around center for floodfill algorithm
-        srand ( time(NULL) );
-        //Initialize floodfill parameters and variables
-        Mat mask;
-        mask.create(input.rows + 2, input.cols + 2, CV_8UC1);
-        mask= Scalar::all(0);
-        int loDiff = 30;
-        int upDiff = 30;
-        int connectivity = 4;
-        int newMaskVal = 255;
-        int NumSeeds = 20;
-        Rect ccomp;
-        int flags = connectivity + (newMaskVal << 8 ) + FLOODFILL_FIXED_RANGE + FLOODFILL_MASK_ONLY;
-        for(int j=0; j<NumSeeds; j++){
-            Point seed;
-            seed.x=rects[i].center.x+rand()%(int)minSize-(minSize/2);
-            seed.y=rects[i].center.y+rand()%(int)minSize-(minSize/2);
-            circle(result, seed, 1, Scalar(0,255,255), -1);
-            
-            floodFill(input, mask, seed, Scalar(255,0,0), &ccomp, Scalar(loDiff, loDiff, loDiff), Scalar(upDiff, upDiff, upDiff), flags);
-        }
-        
+        Mat mask = getFloodFillMask(input, result, rects[i]);
         RotatedRect minRect = getDetectedPlateRectFromMask(mask);
 
         if(verifySizes(minRect)) {
+            
             // rotated rectangle drawing 
             Point2f rect_points[4]; minRect.points( rect_points );
             for( int j = 0; j < 4; j++ )
@@ -158,10 +127,6 @@ vector<Plate> DetectRegions::segment(Mat input) {
             
             //Equalize croped image
             Mat grayResult;
-            cvtColor(resultResized, grayResult, COLOR_BGR2GRAY);
-            blur(grayResult, grayResult, Size(3,3));
-            grayResult=histeq(grayResult);
-            
             grayResult = getNormalisedGrayscaleMat(resultResized);
             
             Mat new_image = enhanceContrast(resultResized);
@@ -170,8 +135,6 @@ vector<Plate> DetectRegions::segment(Mat input) {
 //            output.push_back(Plate(grayResult,minRect.boundingRect()));
         }
     }
-    
-    cout<<"detected plate regions:"<<output.size()<<endl;
     
 //    for (int i = 0; i < output.size(); i++) {
 //        Plate rect = output[i];
@@ -239,6 +202,45 @@ Mat DetectRegions::getMorpholgyMat(Mat img_sobel) {
     morphologyEx(img_threshold, img_threshold, MORPH_CLOSE, element);
     
     return img_threshold;
+}
+Mat DetectRegions::getFloodFillMask(Mat input, Mat output, RotatedRect rect) {
+    
+    // Draw blue circles around each rect. just for fun.
+//    circle(output, rect.center, 3, Scalar(0,255,0), -1);
+    
+    //For better rect cropping for each posible box
+    //Make floodfill algorithm because the plate has white background
+    //And then we can retrieve more clearly the contour box
+    
+    //get the min size between width and height
+    float minSize=(rect.size.width < rect.size.height)?rect.size.width:rect.size.height;
+    minSize=minSize-minSize*0.5;
+    //initialize rand and get 5 points around center for floodfill algorithm
+    srand48 ( time(NULL) );
+    //Initialize floodfill parameters and variables
+    Mat mask;
+    mask.create(input.rows + 2, input.cols + 2, CV_8UC1);
+    mask= Scalar::all(0);
+    
+    int loDiff = 30;
+    int upDiff = 30;
+    int connectivity = 4;
+    int newMaskVal = 255;
+    int NumSeeds = 20;
+    Rect ccomp;
+    int flags = connectivity + (newMaskVal << 8 ) + FLOODFILL_FIXED_RANGE + FLOODFILL_MASK_ONLY;
+    
+    for(int j=0; j<NumSeeds; j++){
+        Point seed;
+        seed.x=rect.center.x+rand()%(int)minSize-(minSize/2);
+        seed.y=rect.center.y+rand()%(int)minSize-(minSize/2);
+        circle(output, seed, 1, Scalar(0,255,255), -1);
+        
+        floodFill(input, mask, seed, Scalar(255,0,0), &ccomp, Scalar(loDiff, loDiff, loDiff), Scalar(upDiff, upDiff, upDiff), flags);
+    }
+
+    return mask;
+    
 }
 vector<RotatedRect> DetectRegions::getPossibleRegionsAfterFindContour(Mat img_threshold) {
     
@@ -324,7 +326,7 @@ Mat DetectRegions::getResizedMat(Mat img_crop, cv::Size size) {
 Mat DetectRegions::getNormalisedGrayscaleMat(Mat resultResized) {
     
     Mat grayResult;
-    
+    cout<<resultResized.channels();
     cvtColor(resultResized, grayResult, COLOR_BGR2GRAY);
     grayResult = histogramEqualizedMat(grayResult);
     

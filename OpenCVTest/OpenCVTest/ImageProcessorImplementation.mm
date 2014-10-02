@@ -38,21 +38,99 @@ using namespace std;
 }
 
 
-+ (UIImage*)numberPlateImageFromSource:(UIImage*)image imageName:(NSString *)name {
++ (UIImage*)numberPlateFromCarImage:(UIImage*)image imageName:(NSString *)name {
 
     // input image
-    cv::Mat input_image = [image CVMat];
-
+    cv::Mat input_img = [image CVMat];
+    vector<Plate> posible_regions;
+    
     DetectRegions detectRegions;
     detectRegions.setFilename("12");
     detectRegions.saveRegions = YES;
     detectRegions.showSteps = false;
     
+//    posible_regions = detectRegions.run(input_img);
     
-    cv::Mat 
+    // pre processing
+    cv::Mat img_gray = detectRegions.getGrayScaleMat(input_img);
+    
+    if (input_img.channels()==4) {
+        
+        Mat temp;
+        cv::cvtColor(input_img, temp, COLOR_BGRA2BGR);
+        temp.copyTo(input_img);
+    }
+    
+    // apply gaussian blur of 5x5
+    Mat img_blur = detectRegions.getBlurMat(img_gray);
+    
+    //Finde vertical lines. Car plates have high density of vertical lines
+    Mat img_sobel;
+    img_sobel = detectRegions.getSobelFilteredMat(img_blur);
+    
+    //threshold image & Morphplogic operation close
+    Mat img_threshold;
+    img_threshold = detectRegions.getMorpholgyMat(img_sobel);
+    
+    //Find contours of possibles plates
+    vector<RotatedRect> rects;
+    rects = detectRegions.getPossibleRegionsAfterFindContour(img_threshold);
+    
+    cout<<"number of possible regions:"<<rects.size()<<endl;
+    
+    // for flood fill
+    cv::Mat result;
+    input_img.copyTo(result);
     
     
-    vector<Plate> posible_regions = detectRegions.run(input_image);
+    for(int i=0; i< rects.size(); i++) {
+        
+        Mat mask;
+        mask = detectRegions.getFloodFillMask(input_img, result, rects[i]);
+        
+        RotatedRect minRect = detectRegions.getDetectedPlateRectFromMask(mask);
+        
+        if(verifySizes(minRect)) {
+            
+            // rotated rectangle drawing
+            Point2f rect_points[4]; minRect.points( rect_points );
+            for( int j = 0; j < 4; j++ )
+                line( result, rect_points[j], rect_points[(j+1)%4], Scalar(0,0,255), 1, 8 );
+            
+            //Get rotation matrix
+            Mat rotmat = detectRegions.getRotated2by3MatFromDetectedRectangle(minRect);
+            
+            //Create and rotate image
+            Mat img_rotated;
+            img_rotated = detectRegions.rotateImageMat(input_img, rotmat);
+            
+            //Crop image
+            Mat img_crop;
+            img_crop = detectRegions.getCroppedMat(img_rotated, minRect);
+            
+            Mat resultResized;
+            resultResized = detectRegions.getResizedMat(img_crop, cv::Size(300,69));
+            
+            //Equalize croped image
+            Mat grayResult;
+            grayResult = detectRegions.getNormalisedGrayscaleMat(resultResized);
+            
+            Mat new_image = detectRegions.enhanceContrast(resultResized);
+            posible_regions.push_back(Plate(new_image,minRect.boundingRect()));
+            
+        }
+    }
+    
+    cout<<"detected plate regions:"<<posible_regions.size()<<endl;
+    
+    // Uncomment following code
+    
+//    for (int i = 0; i < output.size(); i++) {
+//        Plate rect = output[i];
+//        rectangle(result, rect.position, Scalar(255,0,0), 3);
+//    }
+//    output.push_back(Plate(result, Rect(Point(0,0), result.size())));
+
     
     UIImage *outImage = nil;
     NSData *data = nil;
