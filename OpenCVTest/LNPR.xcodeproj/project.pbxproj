@@ -53,6 +53,8 @@
 		5C08A6EF19C716C900ACC4B7 /* HarissDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */; };
 		5C198ECC19C1D606001EBF92 /* DetectRegions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C198EC819C1D606001EBF92 /* DetectRegions.cpp */; };
 		5C198ECD19C1D606001EBF92 /* Plate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C198ECA19C1D606001EBF92 /* Plate.cpp */; };
+		5C1AF25719DC4C2A00718334 /* l27.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5C1AF25519DC4C2A00718334 /* l27.JPG */; };
+		5C1AF25819DC4C2A00718334 /* l28.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5C1AF25619DC4C2A00718334 /* l28.JPG */; };
 		5C38BAA619C1B70C0083CE87 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */; };
 		5C5441E119C9809C009D1445 /* OCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C5441DE19C9809C009D1445 /* OCR.cpp */; };
 		5C5441E219C9809C009D1445 /* trainOCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C5441E019C9809C009D1445 /* trainOCR.cpp */; };
@@ -672,6 +674,8 @@
 		5C198EC919C1D606001EBF92 /* DetectRegions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetectRegions.h; sourceTree = "<group>"; };
 		5C198ECA19C1D606001EBF92 /* Plate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Plate.cpp; sourceTree = "<group>"; };
 		5C198ECB19C1D606001EBF92 /* Plate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Plate.h; sourceTree = "<group>"; };
+		5C1AF25519DC4C2A00718334 /* l27.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l27.JPG; sourceTree = "<group>"; };
+		5C1AF25619DC4C2A00718334 /* l28.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l28.JPG; sourceTree = "<group>"; };
 		5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5C5441DE19C9809C009D1445 /* OCR.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OCR.cpp; sourceTree = "<group>"; };
 		5C5441DF19C9809C009D1445 /* OCR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCR.h; sourceTree = "<group>"; };
@@ -1535,6 +1539,8 @@
 				5CE2CFEE19DBD24100FCC64C /* l24.JPG */,
 				5CE2CFEF19DBD24100FCC64C /* l25.JPG */,
 				5CE2CFF019DBD24100FCC64C /* l26.JPG */,
+				5C1AF25519DC4C2A00718334 /* l27.JPG */,
+				5C1AF25619DC4C2A00718334 /* l28.JPG */,
 				5CE2CFF319DBD24100FCC64C /* l29.JPG */,
 				5CE2CFF419DBD24100FCC64C /* l30.JPG */,
 			);
@@ -2185,6 +2191,7 @@
 				5CF8E01819D9386D00B6EE33 /* 192.JPG in Resources */,
 				5CF8DFFE19D9386D00B6EE33 /* 169.JPG in Resources */,
 				5CF8DFD619D9386D00B6EE33 /* 132.JPG in Resources */,
+				5C1AF25719DC4C2A00718334 /* l27.JPG in Resources */,
 				5CF8E0C519D9386D00B6EE33 /* 348.jpg in Resources */,
 				5CE2CFB719DBC59700FCC64C /* l11.JPG in Resources */,
 				5CF8DFD219D9386D00B6EE33 /* 129.JPG in Resources */,
@@ -2542,6 +2549,7 @@
 				5CF8DFEF19D9386D00B6EE33 /* 155.JPG in Resources */,
 				5CF8E00019D9386D00B6EE33 /* 170.JPG in Resources */,
 				5CA3026B19B6EA9500A1337A /* InfoPlist.strings in Resources */,
+				5C1AF25819DC4C2A00718334 /* l28.JPG in Resources */,
 				5CF8DFB219D9386D00B6EE33 /* 10.JPG in Resources */,
 				5CF8E0FF19D9386D00B6EE33 /* 66.JPG in Resources */,
 				5CE2CFBC19DBC59700FCC64C /* l16.JPG in Resources */,

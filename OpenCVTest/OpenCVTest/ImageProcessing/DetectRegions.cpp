@@ -60,9 +60,7 @@ Mat DetectRegions::histeq(Mat in) {
     }else if(in.channels()==1){
         equalizeHist(in, out);
     }
-
     return out;
-
 }
 
 vector<Plate> DetectRegions::segment(Mat input) {
@@ -167,7 +165,7 @@ vector<Plate> DetectRegions::segment(Mat input) {
             grayResult = getNormalisedGrayscaleMat(resultResized);
             
             Mat new_image = enhanceContrast(resultResized);
-            output.push_back(Plate(resultResized,minRect.boundingRect()));
+            output.push_back(Plate(new_image,minRect.boundingRect()));
             
 //            output.push_back(Plate(grayResult,minRect.boundingRect()));
         }

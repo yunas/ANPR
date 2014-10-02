@@ -169,15 +169,15 @@
     resultImage = nil;
     outputImageView.image = resultImage;
     
-    NSLog(@"%lu",(unsigned long)count);
-    if (count<=30) {
-        [self plateInPredefinedImage:@(count)];
-        count++;
-    }
-    else {
-        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
-    }
-    return;
+//    NSLog(@"%lu",(unsigned long)count);
+//    if (count<=30) {
+//        [self plateInPredefinedImage:@(count)];
+//        count++;
+//    }
+//    else {
+//        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
+//    }
+//    return;
     
     /*
      Loop throuhg selected images
@@ -208,7 +208,7 @@
     
     dispatch_async(dispatch_queue_create("pre processing", 0), ^{
         
-        UIImage *image = [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name];
+        UIImage *image = [ImageProcessorImplementation numberPlateImageFromSource:sourceImage imageName:name];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             
