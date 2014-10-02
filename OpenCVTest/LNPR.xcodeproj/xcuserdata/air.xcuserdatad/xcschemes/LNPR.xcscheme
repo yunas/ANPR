@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0510"
+   LastUpgradeVersion = "0600"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -20,20 +20,6 @@
                ReferencedContainer = "container:LNPR.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5CA3025C19B6EA9400A1337A"
-               BuildableName = "OpenCVTest.app"
-               BlueprintName = "OpenCVTest"
-               ReferencedContainer = "container:OpenCVTest.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -42,16 +28,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5CA3027D19B6EA9500A1337A"
-               BuildableName = "OpenCVTestTests.xctest"
-               BlueprintName = "OpenCVTestTests"
-               ReferencedContainer = "container:OpenCVTest.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
@@ -59,7 +35,7 @@
             BlueprintIdentifier = "5CA3025C19B6EA9400A1337A"
             BuildableName = "OpenCVTest.app"
             BlueprintName = "OpenCVTest"
-            ReferencedContainer = "container:OpenCVTest.xcodeproj">
+            ReferencedContainer = "container:LNPR.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -78,7 +54,7 @@
             BlueprintIdentifier = "5CA3025C19B6EA9400A1337A"
             BuildableName = "OpenCVTest.app"
             BlueprintName = "OpenCVTest"
-            ReferencedContainer = "container:OpenCVTest.xcodeproj">
+            ReferencedContainer = "container:LNPR.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>

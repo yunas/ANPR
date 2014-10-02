@@ -131,6 +131,7 @@ using namespace std;
 //    }
 //    output.push_back(Plate(result, Rect(Point(0,0), result.size())));
 
+    vector<Plate> posible_regions = detectRegions.run(input_image);
     
     UIImage *outImage = nil;
     NSData *data = nil;
