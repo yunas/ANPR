@@ -61,7 +61,7 @@ using namespace std;
         outImage = [UIImage imageWithCVMat:rect.plateImg];
         
         data = UIImageJPEGRepresentation(outImage, 1);
-        filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"detected_%d",i]];
+        filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"detected_%@_%d",name,i]];
         [data writeToFile:filePath atomically:YES];
     }
     

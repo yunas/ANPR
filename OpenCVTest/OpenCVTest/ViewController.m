@@ -169,15 +169,15 @@
     resultImage = nil;
     outputImageView.image = resultImage;
     
-    NSLog(@"%lu",(unsigned long)count);
-    if (count<=30) {
-        [self plateInPredefinedImage:@(count)];
-        count++;
-    }
-    else {
-        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
-    }
-    return;
+//    NSLog(@"%lu",(unsigned long)count);
+//    if (count<=30) {
+//        [self plateInPredefinedImage:@(count)];
+//        count++;
+//    }
+//    else {
+//        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
+//    }
+//    return;
     
     /*
      Loop throuhg selected images

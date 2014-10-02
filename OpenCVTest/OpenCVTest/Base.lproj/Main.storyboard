@@ -30,7 +30,7 @@
                                     <action selector="processandsave:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="bju-3R-mht"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="l21.JPG" translatesAutoresizingMaskIntoConstraints="NO" id="2P2-LX-2Y9">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="l1.JPG" translatesAutoresizingMaskIntoConstraints="NO" id="2P2-LX-2Y9">
                                 <rect key="frame" x="10" y="85" width="300" height="280"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="280" id="wP4-DD-wzy"/>
@@ -85,7 +85,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="l21.JPG" width="432" height="302"/>
+        <image name="l1.JPG" width="432" height="302"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
