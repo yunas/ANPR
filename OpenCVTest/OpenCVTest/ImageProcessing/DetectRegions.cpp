@@ -25,7 +25,7 @@ DetectRegions::DetectRegions(){
 
 bool DetectRegions::verifySizes(RotatedRect mr) {
 
-    float error=0.4;
+    float error=0.5;
     //Spain car plate size: 520x112 aspect 4.6429
     float aspect=aspectRatio;
     //Set a min and max area. All other patchs are discarded
@@ -258,7 +258,9 @@ vector<RotatedRect> DetectRegions::getPossibleRegionsAfterFindContour(Mat img_th
     //Remove patch that are no inside limits of aspect ratio and area.
     while (itc!=contours.end()) {
         //Create bounding rect of object
+
         RotatedRect mr= minAreaRect(Mat(*itc));
+//        cout<<"number of possible regions:"<<mr.boundingRect()<<endl;
         if( !verifySizes(mr)){
             itc= contours.erase(itc);
         }else{

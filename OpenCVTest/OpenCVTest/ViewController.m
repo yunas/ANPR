@@ -453,7 +453,9 @@
     NSString *filteredStr = [NSString stringWithString:str];
     filteredStr = [filteredStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"[^A-Z0-9 ]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [filteredStr length])];
+    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"•" withString:@" "];
     filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"  " withString:@" "];
+    
     return filteredStr;
 }
 
