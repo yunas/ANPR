@@ -73,7 +73,7 @@
     
     [super viewDidLoad];
     
-//    NSString *testStr = @"B SB 6G3_31";
+//    NSString *testStr = @"B i MD 2052123J ";
 //    NSLog(@"%@",[self filterPlateNumberFromOCRString:testStr]);
 //    
 //    return;
@@ -428,11 +428,17 @@
 }
 
 
+#pragma mark - String Filtering
+
 -(NSString *) stringWithNumbersOnly:(NSString*)str{
     
     NSString *numberStr = [NSString stringWithString:str];
     
     numberStr = [numberStr stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [numberStr length])];
+    if (numberStr.length >= 5) {
+        numberStr = [numberStr substringToIndex:4];
+    }
+
     return numberStr;
     
 }
@@ -447,6 +453,7 @@
     NSString *filteredStr = [NSString stringWithString:str];
     filteredStr = [filteredStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"[^A-Z0-9 ]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [filteredStr length])];
+    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"  " withString:@" "];
     return filteredStr;
 }
 
@@ -466,8 +473,7 @@
         NSString *partc = [self stringWithNumbersOnly:platesPart[2]];
         filteredStr = [NSString stringWithFormat:@"%@ %@ %@",parta,partb,partc];
     }
-    
-    if (platesPart.count == 2) {
+    else if (platesPart.count == 2) {
         NSString *parta = [self stringWithAlphabetsOnly:platesPart[0]];
         NSString *partb = platesPart[1];//[self stringWithNumbersOnly:platesPart[1]];
         filteredStr = [NSString stringWithFormat:@"%@ %@",parta,partb];
