@@ -48,10 +48,6 @@ using namespace std;
     detectRegions.saveRegions = YES;
     detectRegions.showSteps = false;
     
-    
-    cv::Mat 
-    
-    
     vector<Plate> posible_regions = detectRegions.run(input_image);
     
     UIImage *outImage = nil;

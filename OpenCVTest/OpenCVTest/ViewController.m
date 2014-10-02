@@ -73,6 +73,11 @@
     
     [super viewDidLoad];
     
+//    NSString *testStr = @"B SB 6G3_31";
+//    NSLog(@"%@",[self filterPlateNumberFromOCRString:testStr]);
+//    
+//    return;
+    
     count = 1;
     processor = [[ImageProcessorImplementation alloc] init];
     [self initCustomView];
@@ -229,7 +234,16 @@
                                 
                 dispatch_async(dispatch_queue_create("web service", 0), ^{
                 
-                    NSString *plateNumber = [self filterPlateNumberFromOCRString:[self OCRTextFromImage:image]];
+                    NSError *error = nil;
+                    NSString *plateNumber = @"";
+                    NSString *ocrText = [self OCRTextFromImage:image withError:&error];
+                    if (!error) {
+                        plateNumber = [self filterPlateNumberFromOCRString:ocrText];
+                    }
+                    else{
+                        plateNumber = [error localizedDescription];
+                    }
+
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
@@ -418,8 +432,7 @@
     
     NSString *numberStr = [NSString stringWithString:str];
     
-    NSCharacterSet *myCharset = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
-    numberStr = [numberStr stringByTrimmingCharactersInSet:[myCharset invertedSet]];
+    numberStr = [numberStr stringByReplacingOccurrencesOfString:@"[^0-9]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [numberStr length])];
     return numberStr;
     
 }
@@ -430,20 +443,20 @@
     return alphaStr;
 }
 
-
+-(NSString *) stringWithoutPunctuations:(NSString *)str{
+    NSString *filteredStr = [NSString stringWithString:str];
+    filteredStr = [filteredStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"[^A-Z0-9 ]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [filteredStr length])];
+    return filteredStr;
+}
 
 
 -(NSString *) filterPlateNumberFromOCRString:(NSString *)ocrText{
     
     NSString *filteredStr = [NSString stringWithString:ocrText];
+
     
-    filteredStr = [filteredStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"," withString:@""];
-    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@";" withString:@""];
-    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@":" withString:@""];
-    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"." withString:@""];
-    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"'" withString:@""];
+    filteredStr = [self stringWithoutPunctuations:filteredStr];
     
     NSArray *platesPart = [filteredStr componentsSeparatedByString:@" "];
     
@@ -467,7 +480,7 @@
 
 
 
--(NSString*) OCRTextFromImage:(UIImage*)image {
+-(NSString*) OCRTextFromImage:(UIImage*)image withError:(NSError * __autoreleasing *)error {
     
     
     OCRWebServiceSoapBinding *binding = [OCRWebServiceSvc OCRWebServiceSoapBinding];
@@ -516,6 +529,7 @@
    
     if (response.error) {
         plateNumber = [response.error localizedDescription];
+        *error = [NSError errorWithDomain:response.error.domain code:response.error.code userInfo:response.error.userInfo] ;
     }
     
     NSLog(@"WEB-OCR-TEXT: %@",plateNumber);
