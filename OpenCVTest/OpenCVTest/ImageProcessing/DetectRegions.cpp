@@ -60,9 +60,7 @@ Mat DetectRegions::histeq(Mat in) {
     }else if(in.channels()==1){
         equalizeHist(in, out);
     }
-
     return out;
-
 }
 
 vector<Plate> DetectRegions::segment(Mat input) {

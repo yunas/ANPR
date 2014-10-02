@@ -208,7 +208,7 @@
     
     dispatch_async(dispatch_queue_create("pre processing", 0), ^{
         
-        UIImage *image = [ImageProcessorImplementation getLocalisedImageFromSource:sourceImage imageName:name];
+        UIImage *image = [ImageProcessorImplementation numberPlateImageFromSource:sourceImage imageName:name];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             

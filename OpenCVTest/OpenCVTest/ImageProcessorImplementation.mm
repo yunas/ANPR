@@ -38,7 +38,7 @@ using namespace std;
 }
 
 
-+ (UIImage*)getLocalisedImageFromSource:(UIImage*)image imageName:(NSString *)name {
++ (UIImage*)numberPlateImageFromSource:(UIImage*)image imageName:(NSString *)name {
 
     // input image
     cv::Mat input_image = [image CVMat];
@@ -47,6 +47,10 @@ using namespace std;
     detectRegions.setFilename("12");
     detectRegions.saveRegions = YES;
     detectRegions.showSteps = false;
+    
+    
+    cv::Mat 
+    
     
     vector<Plate> posible_regions = detectRegions.run(input_image);
     
