@@ -115,23 +115,21 @@ using namespace std;
             Mat grayResult;
             grayResult = detectRegions.getNormalisedGrayscaleMat(resultResized);
             
-            Mat new_image = detectRegions.enhanceContrast(resultResized);
-            posible_regions.push_back(Plate(new_image,minRect.boundingRect()));
-            
+            Mat contrast_image = detectRegions.enhanceContrast(resultResized);
+            posible_regions.push_back(Plate(contrast_image,minRect.boundingRect()));
         }
     }
     
     cout<<"detected plate regions:"<<posible_regions.size()<<endl;
     
-    // Uncomment following code
-    
+    // Uncomment following code if you want to draw detected region on original image.
 //    for (int i = 0; i < output.size(); i++) {
 //        Plate rect = output[i];
 //        rectangle(result, rect.position, Scalar(255,0,0), 3);
 //    }
 //    output.push_back(Plate(result, Rect(Point(0,0), result.size())));
 
-    vector<Plate> posible_regions = detectRegions.run(input_image);
+//    posible_regions = detectRegions.run(input_img);
     
     UIImage *outImage = nil;
     NSData *data = nil;
