@@ -29,7 +29,7 @@ public:
     float aspectRatio;
     float minArea;
     float maxArea;
-    
+    float error;
     void setFilename(string f);
     bool saveRegions;
     bool showSteps;

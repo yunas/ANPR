@@ -10,16 +10,19 @@
 
 typedef void(^ImageProcessingDone)(UIImage *image);
 
+typedef NS_ENUM(NSInteger, EdgeDetectionType) {
+    EdgeDetectionTypeSobel,
+    EdgeDetectionTypeCanny,
+};
+
 @interface ImageProcessorImplementation : NSObject
 {
     ImageProcessingDone completionBlock;
 }
 
-+ (UIImage *)numberPlateFromCarImage:(UIImage*)src imageName:(NSString*)name;
++ (UIImage *)numberPlateFromCarImage:(UIImage*)src imageName:(NSString*)name edgeDetectionType:(EdgeDetectionType)type;
 + (UIImage *)harissCornerDetector:(UIImage*)source;
 + (UIImage *)ShiTomasiCornerDetector:(UIImage*)source;
-
-- (UIImage*)LocalizeImageFromSource:(UIImage *)image;
 
 - (UIImage*)dilationOfSource:(UIImage *)src;
 - (UIImage*)erosionOfSource:(UIImage *)src;
