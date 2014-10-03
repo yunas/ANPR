@@ -21,7 +21,7 @@ DetectRegions::DetectRegions(){
     aspectRatio = 4.6429;
     minArea = 25;
     maxArea = 150;
-    error = 0.5;
+    error = 0.4;
 }
 
 bool DetectRegions::verifySizes(RotatedRect mr) {
@@ -35,6 +35,7 @@ bool DetectRegions::verifySizes(RotatedRect mr) {
     float rmin= aspect-aspect*error;
     float rmax= aspect+aspect*error;
 
+    
     int area= mr.size.height * mr.size.width;
     float r= (float)mr.size.width / (float)mr.size.height;
     if(r<1)

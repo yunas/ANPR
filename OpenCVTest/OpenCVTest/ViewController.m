@@ -109,24 +109,24 @@ typedef void(^FailureBlock) (NSError *error);
 
 -(void) automateFromIndex:(int)fromIndex toImageIndex:(int)toIndex{
 
-//    if (fromIndex <= toIndex) {
-//        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.JPG",fromIndex]];
-//        
-//        [self detectPlateNumberFromImage:image withResponseBlock:^(NSString *plateNumber) {
-//            [self saveResult:plateNumber forIndex:fromIndex];
-//            NSLog(@"%@",plateNumber);
-//            [self automateFromIndex:fromIndex+1 toImageIndex:toIndex];
-//            
-//        } andErrorBlock:^(NSError *error) {
-//            [self saveResult:error.localizedDescription forIndex:fromIndex];
-//            NSLog(@"%@",error.localizedDescription);
-//            [self automateFromIndex:fromIndex+1 toImageIndex:toIndex];
-//            NSLog(@"%@",error.localizedDescription);
-//        }];
-//    }
-//    else if (fromIndex > toIndex) {
+    if (fromIndex <= toIndex) {
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.JPG",fromIndex]];
+        
+        [self detectPlateNumberFromImage:image withResponseBlock:^(NSString *plateNumber) {
+            [self saveResult:plateNumber forIndex:fromIndex];
+            NSLog(@"%@",plateNumber);
+            [self automateFromIndex:fromIndex+1 toImageIndex:toIndex];
+            
+        } andErrorBlock:^(NSError *error) {
+            [self saveResult:error.localizedDescription forIndex:fromIndex];
+            NSLog(@"%@",error.localizedDescription);
+            [self automateFromIndex:fromIndex+1 toImageIndex:toIndex];
+            NSLog(@"%@",error.localizedDescription);
+        }];
+    }
+    else if (fromIndex > toIndex) {
         [self generatePdf];
-//    }
+    }
     
     NSLog(@"%d,%d",fromIndex, toIndex);
     
@@ -138,7 +138,7 @@ typedef void(^FailureBlock) (NSError *error);
     
     numberPlates = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"NumberPlates" ofType:@"plist"]];
     reportsArr = [NSMutableArray new];
-    [self automateFromIndex:1 toImageIndex:2];
+    [self automateFromIndex:11 toImageIndex:11];
 
 }
 
@@ -292,8 +292,9 @@ typedef void(^FailureBlock) (NSError *error);
             outputImageView.image = plateImg;
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
+            return ;
             [self showHudWithText:@"Recognizing Numbers in plate."];
-            
+
             if (plateImg) {
                                 
                 dispatch_async(dispatch_queue_create("web service", 0), ^{

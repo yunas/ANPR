@@ -211,7 +211,7 @@ using namespace std;
 }
 
 
-+ (UIImage*)numberPlateFromCarImage:(UIImage*)image imageName:(NSString *)name {
++ (UIImage*)numberPlateFromCarImageOldImplementation:(UIImage*)image imageName:(NSString *)name {
     
     // Algo
     // 1. pre processing => image to gray scale
@@ -224,6 +224,8 @@ using namespace std;
     
     // input image
     cv::Mat input_img = [image CVMat];
+    cv::Mat input_imgDebug = [image CVMat];
+    
     vector<Plate> posible_regions;
     
     DetectRegions detectRegions;
@@ -262,8 +264,26 @@ using namespace std;
     //Find contours of possibles plates
     vector<RotatedRect> rects;
     rects = detectRegions.getPossibleRegionsAfterFindContour(img_threshold);
+ 
+    for (int i = 0 ; i< rects.size(); i++) {
+        if (i == 0) {
+            rectangle(input_imgDebug, rects[i].boundingRect(), Scalar(255,0,0));
+        }
+        if (i == 1) {
+            rectangle(input_imgDebug, rects[i].boundingRect(), Scalar(0,255,0));
+        }
+        if (i == 2) {
+            rectangle(input_imgDebug, rects[i].boundingRect(), Scalar(0,0,255));
+        }
+
+        watchTestImg = [UIImage imageWithCVMat:input_imgDebug];
+    }
+    watchTestImg = [UIImage imageWithCVMat:input_imgDebug];
     
-    RotatedRect possiblePlateRect = getOnePossiblePlateRegion(rects, 0.5);
+    RotatedRect possiblePlateRect = getOnePossiblePlateRegion(rects, 0.4);
+    rectangle(input_imgDebug, possiblePlateRect.boundingRect(), Scalar(0,255,0),3);
+    watchTestImg = [UIImage imageWithCVMat:input_imgDebug];
+
     
     cout<<"number of possible regions:"<<rects.size()<<endl;
     
@@ -343,6 +363,162 @@ using namespace std;
     return outImage;
 }
 
+
++ (UIImage*)numberPlateFromCarImage:(UIImage*)image imageName:(NSString *)name {
+    
+    
+    
+    
+    // Algo
+    // 1. pre processing => image to gray scale
+    // 2. Apply Gaussian Blur of 5x5
+    // 3. Apply Sobel filter
+    // 4. Apply threshold and morphological operation
+    // 5. Apply Contours to fetch Possible Regions
+    // 6.
+    
+    
+    // input image
+    cv::Mat input_img = [image CVMat];
+    vector<Plate> posible_regions;
+    
+    DetectRegions detectRegions;
+    detectRegions.setFilename("12");
+    detectRegions.saveRegions = YES;
+    detectRegions.showSteps = false;
+    
+    //    posible_regions = detectRegions.run(input_img);
+    
+    UIImage *watchTestImg = nil;
+    
+    // pre processing => image to gray scale
+    cv::Mat img_gray = detectRegions.getGrayScaleMat(input_img);
+    
+    watchTestImg = [UIImage imageWithCVMat:img_gray];
+    
+    if (input_img.channels()==4) {
+        
+        Mat temp;
+        cv::cvtColor(input_img, temp, COLOR_BGRA2BGR);
+        temp.copyTo(input_img);
+    }
+    
+    // apply gaussian blur of 5x5
+    Mat img_blur = detectRegions.getBlurMat(img_gray);
+    
+    watchTestImg = [UIImage imageWithCVMat:img_blur];
+    //Finde vertical lines. Car plates have high density of vertical lines
+    Mat img_sobel;
+    img_sobel = detectRegions.getSobelFilteredMat(img_blur);
+    watchTestImg = [UIImage imageWithCVMat:img_sobel];
+    
+    //threshold image & Morphplogic operation close
+    Mat img_threshold;
+    img_threshold = detectRegions.getMorpholgyMat(img_sobel);
+    watchTestImg = [UIImage imageWithCVMat:img_threshold];
+    
+    //Find contours of possibles plates
+    vector<RotatedRect> rects;
+    rects = detectRegions.getPossibleRegionsAfterFindContour(img_threshold);
+    
+    
+    cout<<"number of possible regions:"<<rects.size()<<endl;
+    
+    // for flood fill
+    cv::Mat result;
+    input_img.copyTo(result);
+    
+    
+    for(int i=0; i< rects.size(); i++) {
+        
+        Mat mask;
+        mask = detectRegions.getFloodFillMask(input_img, result, rects[i]);
+        
+        watchTestImg = [UIImage imageWithCVMat:mask];
+        
+        RotatedRect minRect = detectRegions.getDetectedPlateRectFromMask(mask);
+        
+        if(verifySizes(minRect,0.5)) {
+            
+            // rotated rectangle drawing
+            Point2f rect_points[4]; minRect.points( rect_points );
+            for( int j = 0; j < 4; j++ )
+                line( result, rect_points[j], rect_points[(j+1)%4], Scalar(0,0,255), 1, 8 );
+            
+            //Get rotation matrix
+            Mat rotmat = detectRegions.getRotated2by3MatFromDetectedRectangle(minRect);
+            watchTestImg = [UIImage imageWithCVMat:rotmat];
+            
+            //Create and rotate image
+            Mat img_rotated;
+            img_rotated = detectRegions.rotateImageMat(input_img, rotmat);
+            watchTestImg = [UIImage imageWithCVMat:img_rotated];
+            
+            //Crop image
+            Mat img_crop;
+            img_crop = detectRegions.getCroppedMat(img_rotated, minRect);
+            watchTestImg = [UIImage imageWithCVMat:img_crop];
+            
+            Mat resultResized;
+            resultResized = detectRegions.getResizedMat(img_crop, cv::Size(300,69));
+            watchTestImg = [UIImage imageWithCVMat:resultResized];
+            
+            //Equalize croped image
+            Mat grayResult;
+            grayResult = detectRegions.getNormalisedGrayscaleMat(resultResized);
+            watchTestImg = [UIImage imageWithCVMat:grayResult];
+            
+            Mat new_image = detectRegions.enhanceContrast(resultResized);
+            //            posible_regions.push_back(Plate(new_image,minRect.boundingRect()));
+            watchTestImg = [UIImage imageWithCVMat:new_image];
+            
+            
+            
+            cv::Mat blackNWhiteMat = [watchTestImg CVMat];
+            blackNWhiteMat = detectRegions.getGrayScaleMat(blackNWhiteMat);
+            new_image = detectRegions.getThresholdMat(blackNWhiteMat);
+            posible_regions.push_back(Plate(new_image,minRect.boundingRect()));
+            watchTestImg = [UIImage imageWithCVMat:new_image];
+            
+            //            Mat contrast_image = detectRegions.enhanceContrast(resultResized);
+            //            posible_regions.push_back(Plate(contrast_image,minRect.boundingRect()));
+        }
+    }
+    
+    cout<<"detected plate regions:"<<posible_regions.size()<<endl;
+    
+    // Uncomment following code if you want to draw detected region on original image.
+    //    for (int i = 0; i < output.size(); i++) {
+    //        Plate rect = output[i];
+    //        rectangle(result, rect.position, Scalar(255,0,0), 3);
+    //    }
+    //    output.push_back(Plate(result, Rect(Point(0,0), result.size())));
+    
+    //    posible_regions = detectRegions.run(input_img);
+    
+    UIImage *outImage = nil;
+    NSData *data = nil;
+    NSString* filePath = nil;
+    
+    for (int i=0; i<posible_regions.size(); i++) {
+        
+        Plate rect = posible_regions[i];
+        
+        outImage = [UIImage imageWithCVMat:rect.plateImg];
+        
+        data = UIImageJPEGRepresentation(outImage, 1);
+        filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"detected_%@_%d",name,i]];
+        [data writeToFile:filePath atomically:YES];
+    }
+    
+    UIImage *newOutImg = outImage;
+    //    UIImage *newOutImg =    [ImageProcessorImplementation contrastImage:outImage contrast:1.8];
+    
+    return newOutImg;
+    
+}
+
+
 + (UIImage*)numberPlateWithSobelFromCarImage:(UIImage*)image imageName:(NSString *)name {
 
     // Algo
@@ -355,6 +531,7 @@ using namespace std;
     
     // input image
     cv::Mat input_img = [image CVMat];
+    cv::Mat input_imgDebug = [image CVMat];
     vector<Plate> posible_regions;
     
     DetectRegions detectRegions;
@@ -395,13 +572,13 @@ using namespace std;
     rects = detectRegions.getPossibleRegionsAfterFindContour(img_threshold);
     
     for (int i = 0 ; i< rects.size(); i++) {
-        rectangle(input_img, rects[i].boundingRect(), Scalar(255,0,0));
+        rectangle(input_imgDebug, rects[i].boundingRect(), Scalar(255,0,0));
     }
-    watchTestImg = [UIImage imageWithCVMat:input_img];
+    watchTestImg = [UIImage imageWithCVMat:input_imgDebug];
     
     RotatedRect possiblePlateRect = getOnePossiblePlateRegion(rects, 0.5);
     rectangle(input_img, possiblePlateRect.boundingRect(), Scalar(0,255,0),3);
-    watchTestImg = [UIImage imageWithCVMat:input_img];
+    watchTestImg = [UIImage imageWithCVMat:input_imgDebug];
     
     cout<<"number of possible regions:"<<rects.size()<<endl;
     
@@ -414,8 +591,8 @@ using namespace std;
     UIImage *outImg = nil;
     
     if (type == EdgeDetectionTypeSobel) {
-        outImg = [ImageProcessorImplementation numberPlateWithSobelFromCarImage:src imageName:name];
-//        outImg = [ImageProcessorImplementation numberPlateFromCarImage:src imageName:name];
+//        outImg = [ImageProcessorImplementation numberPlateWithSobelFromCarImage:src imageName:name];
+        outImg = [ImageProcessorImplementation numberPlateFromCarImageOldImplementation:src imageName:name];
     }
     else if (type == EdgeDetectionTypeCanny) {
         outImg = [ImageProcessorImplementation numberPlateWithCannyFromCarImage:src imageName:name];
@@ -770,6 +947,12 @@ bool verifySizes(cv::RotatedRect mr, float error){
     //Get only patchs that match to a respect ratio.
     float rmin= aspect-aspect*error;
     float rmax= aspect+aspect*error;
+    
+//    if (!(mr.angle > -95 && mr.angle < -75)) {
+//        return false;
+//    }
+    
+
     
     int area= mr.size.height * mr.size.width;
     float r= (float)mr.size.width / (float)mr.size.height;

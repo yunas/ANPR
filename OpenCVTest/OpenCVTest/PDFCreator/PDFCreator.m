@@ -13,7 +13,7 @@
 - (void) generatePdfWithFilePath: (NSString *)thefilePath;
 - (void) drawPageNumber:(NSInteger)pageNum;
 - (void) drawBorder;
-- (void) drawText;
+- (void) drawText :(NSString *)textToDraw;
 - (void) drawLine;
 - (void) drawHeader;
 - (void) drawImage;
@@ -88,25 +88,30 @@
     
     [textToDraw drawInRect:renderingRect withAttributes:dictionary];}
 
-- (void) drawText
+- (void) drawText:(NSString *)textToDraw ForColumn:(int)columnNumber forRow:(int)rowNumber
 {
     CGContextRef    currentContext = UIGraphicsGetCurrentContext();
     CGContextSetRGBFillColor(currentContext, 0.0, 0.0, 0.0, 1.0);
     
-    NSString *textToDraw = @"Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.";
+    UIFont* theFont = [UIFont systemFontOfSize:14.0];
     
-    UIFont *font = [UIFont systemFontOfSize:14.0];
+    CGSize stringSize = [textToDraw sizeWithAttributes:
+                         @{NSFontAttributeName:theFont}];
     
-    CGSize stringSize = [textToDraw sizeWithFont:font
-                               constrainedToSize:CGSizeMake(pageSize.width - 2*kBorderInset-2*kMarginInset, pageSize.height - 2*kBorderInset - 2*kMarginInset)
-                                   lineBreakMode:UILineBreakModeWordWrap];
+    CGRect renderingRect = CGRectMake(kBorderInset + kMarginInset + (200.0 *columnNumber) ,
+                                      kBorderInset + kMarginInset + (20.0 *rowNumber),
+                                      200,
+                                      stringSize.height);
     
-    CGRect renderingRect = CGRectMake(kBorderInset + kMarginInset, kBorderInset + kMarginInset + 50.0, pageSize.width - 2*kBorderInset - 2*kMarginInset, stringSize.height);
+    NSMutableParagraphStyle *textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
+    textStyle.lineBreakMode = NSLineBreakByWordWrapping;
+    textStyle.alignment = NSTextAlignmentCenter;
     
-    [textToDraw drawInRect:renderingRect
-                  withFont:font
-             lineBreakMode:UILineBreakModeWordWrap
-                 alignment:UITextAlignmentLeft];
+    NSDictionary *dictionary = @{ NSFontAttributeName: theFont,
+                                  NSParagraphStyleAttributeName: textStyle,
+                                  NSForegroundColorAttributeName: [UIColor blackColor]};
+    
+    [textToDraw drawInRect:renderingRect withAttributes:dictionary];
     
 }
 
@@ -135,7 +140,7 @@
     [demoImage drawInRect:CGRectMake( (pageSize.width - demoImage.size.width/2)/2, 350, demoImage.size.width/2, demoImage.size.height/2)];
 }
 
-- (void) generatePdfWithFilePath: (NSString *)thefilePath
+- (void) generatePdfWithFilePath: (NSString *)thefilePath withArray:(NSArray*)reportsArr
 {
     UIGraphicsBeginPDFContextToFile(thefilePath, CGRectZero, nil);
     
@@ -159,8 +164,17 @@
         //Draw a line below the header.
         [self drawLine];
 
-        //Draw some text for the page.
-        [self drawText];
+        int row = 1;
+        for (NSDictionary *report in reportsArr) {
+            //Draw some text for the page.
+            int col = 0;
+            for (NSString *key in [report allKeys]) {
+                [self drawText:report[key] ForColumn:col forRow:row];
+                col++;
+            }
+            row++;
+
+        }
         
 //        //Draw an image
 //        [self drawImage];
@@ -182,7 +196,7 @@
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *pdfFileName = [documentsDirectory stringByAppendingPathComponent:fileName];
     
-    [self generatePdfWithFilePath:pdfFileName];
+    [self generatePdfWithFilePath:pdfFileName withArray:reportsArr];
 }
 
 @end
