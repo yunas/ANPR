@@ -102,6 +102,22 @@ static CGRect swapWidthAndHeight(CGRect rect)
     return copy;
 }
 
+- (UIImage *)scaleImageToSize:(CGSize)newSize {
+    
+    float width = newSize.width;
+    float height = newSize.height;
+    
+    UIGraphicsBeginImageContext(newSize);
+    CGRect rect = CGRectMake(0, 0, width, height);
+    
+    [self drawInRect: rect];
+    
+    UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return smallImage;
+}
+
 - (UIImage *)scaleImageKeepingAspectRatiotoSize:(CGSize)newSize {
     
     float width = newSize.width;

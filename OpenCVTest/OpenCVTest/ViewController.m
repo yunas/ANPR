@@ -289,9 +289,14 @@
     if (rotatedImage) {
         sourceImage = nil;
         
-        CGImageRef ref= CGImageCreateWithImageInRect(rotatedImage.CGImage, croppedRect);
-        sourceImage= [[UIImage imageWithCGImage:ref] scaleImageKeepingAspectRatiotoSize:CGSizeMake(432.f, 302.f)];
-        CGImageRelease(ref);
+        if (!CGRectIsEmpty(croppedRect)) {
+            CGImageRef ref= CGImageCreateWithImageInRect(rotatedImage.CGImage, croppedRect);
+            sourceImage= [[UIImage imageWithCGImage:ref] scaleImageKeepingAspectRatiotoSize:CGSizeMake(432.f, 302.f)];
+            CGImageRelease(ref);
+        }
+        else {
+            sourceImage= [rotatedImage scaleImageToSize:CGSizeMake(432.f, 302.f)];
+        }
     }
 
     [inputImageView setImage:sourceImage];

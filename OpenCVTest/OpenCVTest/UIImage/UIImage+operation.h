@@ -13,5 +13,6 @@
 - (UIImage*)rotate:(UIImageOrientation)orientation;
 - (UIImage *)scaleImageKeepingAspectRatiotoSize:(CGSize)newSize;
 - (UIImage*)scaleImageToRatina:(CGSize)newSize;
+- (UIImage *)scaleImageToSize:(CGSize)newSize;
 @end
 
