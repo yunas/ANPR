@@ -175,14 +175,14 @@
     outputImageView.image = resultImage;
     
     NSLog(@"%lu",(unsigned long)count);
-    if (count<=30) {
-        [self plateInPredefinedImage:@(count)];
-        count++;
-    }
-    else {
-        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
-    }
-    return;
+//    if (count<=30) {
+//        [self plateInPredefinedImage:@(count)];
+//        count++;
+//    }
+//    else {
+//        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
+//    }
+//    return;
     
     /*
      Loop throuhg selected images
@@ -236,7 +236,7 @@
                 
                     NSError *error = nil;
                     NSString *plateNumber = @"";
-                    NSString *ocrText = [self OCRTextFromImage:image withError:&error];
+                    NSString *ocrText = @"";//[self OCRTextFromImage:image withError:&error];
                     if (!error) {
                         plateNumber = [self filterPlateNumberFromOCRString:ocrText];
                     }
@@ -244,7 +244,6 @@
                         plateNumber = [error localizedDescription];
                     }
 
-                    
                     dispatch_async(dispatch_get_main_queue(), ^{
                         
                         [_hud hide:YES afterDelay:0.2];
@@ -530,7 +529,8 @@
             OCRWebServiceSvc_OCRWebServiceRecognizeResponse *oResponse = (OCRWebServiceSvc_OCRWebServiceRecognizeResponse*)bodyPart;
             OCRWebServiceSvc_ArrayOfArrayOfString *ocrTextsArr = oResponse.OCRWSResponse.ocrText;
             OCRWebServiceSvc_ArrayOfString *strings = [ocrTextsArr.ArrayOfString lastObject];
-            plateNumber = [strings.string lastObject];
+            if([strings.string lastObject])
+                plateNumber = [strings.string lastObject];
             break;
         }
     }

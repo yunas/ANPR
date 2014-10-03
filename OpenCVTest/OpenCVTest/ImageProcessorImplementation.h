@@ -24,8 +24,6 @@ typedef NS_ENUM(NSInteger, EdgeDetectionType) {
 + (UIImage *)harissCornerDetector:(UIImage*)source;
 + (UIImage *)ShiTomasiCornerDetector:(UIImage*)source;
 
-- (UIImage*)LocalizeImageFromSource:(UIImage *)image;
-
 - (UIImage*)dilationOfSource:(UIImage *)src;
 - (UIImage*)erosionOfSource:(UIImage *)src;
 
