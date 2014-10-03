@@ -78,7 +78,7 @@
 //    
 //    return;
     
-    count = 17;
+    count = 1;
     processor = [[ImageProcessorImplementation alloc] init];
     [self initCustomView];
     
@@ -213,7 +213,7 @@
     
     dispatch_async(dispatch_queue_create("pre processing", 0), ^{
         
-        UIImage *image = [ImageProcessorImplementation numberPlateFromCarImage:sourceImage imageName:name];
+        UIImage *image = [ImageProcessorImplementation numberPlateFromCarImage:sourceImage imageName:name edgeDetectionType:EdgeDetectionTypeSobel];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             

@@ -21,11 +21,11 @@ DetectRegions::DetectRegions(){
     aspectRatio = 4.6429;
     minArea = 25;
     maxArea = 150;
+    error = 0.5;
 }
 
 bool DetectRegions::verifySizes(RotatedRect mr) {
 
-    float error=0.5;
     //Spain car plate size: 520x112 aspect 4.6429
     float aspect=aspectRatio;
     //Set a min and max area. All other patchs are discarded
@@ -188,9 +188,7 @@ Mat DetectRegions::getSobelFilteredMat(Mat img_gray) {
 Mat DetectRegions::getThresholdMat(Mat img_sobel) {
 
     Mat img_threshold;
-    
     threshold(img_sobel, img_threshold, 0, 255, THRESH_OTSU+THRESH_BINARY);
-    
     return img_threshold;
 }
 Mat DetectRegions::getMorpholgyMat(Mat img_sobel) {
@@ -260,7 +258,6 @@ vector<RotatedRect> DetectRegions::getPossibleRegionsAfterFindContour(Mat img_th
         //Create bounding rect of object
 
         RotatedRect mr= minAreaRect(Mat(*itc));
-//        cout<<"number of possible regions:"<<mr.boundingRect()<<endl;
         if( !verifySizes(mr)){
             itc= contours.erase(itc);
         }else{
@@ -427,7 +424,7 @@ Mat DetectRegions::testingDrawRegion(Mat input) {
         
         float minSize=(rects[i].size.width < rects[i].size.height)?rects[i].size.width:rects[i].size.height;
         minSize = minSize-minSize*0.5;
-        srand ( time(NULL) );
+        srand48 ( time(NULL) );
         
         Mat mask;
         mask.create(gray.rows + 2, gray.cols + 2, CV_8UC1);
@@ -641,7 +638,7 @@ vector<Plate> DetectRegions::segment5(Mat input){
         float minSize=(rects[i].size.width < rects[i].size.height)?rects[i].size.width:rects[i].size.height;
         minSize=minSize-minSize*0.5;
         //initialize rand and get 5 points around center for floodfill algorithm
-        srand ( time(NULL) );
+        srand48( time(NULL) );
         //Initialize floodfill parameters and variables
         Mat mask;
         mask.create(input.rows + 2, input.cols + 2, CV_8UC1);
