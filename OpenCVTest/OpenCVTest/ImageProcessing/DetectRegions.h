@@ -21,26 +21,27 @@ using namespace std;
 using namespace cv;
 
 class DetectRegions{
-    public:
-        DetectRegions();
-        string filename;
+
+public:
+    DetectRegions();
+    string filename;
     
-        float aspectRatio;
-        float minArea;
-        float maxArea;
+    float aspectRatio;
+    float minArea;
+    float maxArea;
     
-        void setFilename(string f);
-        bool saveRegions;
-        bool showSteps;
-        vector<Plate> run(Mat input);
-    
-        vector<Plate> drawRegion(Mat input);
-        Mat testingDrawRegion(Mat input);
-        Mat regionProcessing(Mat input);
-        Mat grayImage(Mat sourceImage);
-        double preProcessingangle( cv::Point pt1, cv::Point pt2, cv::Point pt0 );
-        Mat enhanceContrast(Mat input);
-        Mat enhanceSharpness(Mat input);
+    void setFilename(string f);
+    bool saveRegions;
+    bool showSteps;
+    vector<Plate> run(Mat input);
+
+    vector<Plate> drawRegion(Mat input);
+    Mat testingDrawRegion(Mat input);
+    Mat regionProcessing(Mat input);
+    Mat grayImage(Mat sourceImage);
+    double preProcessingangle( cv::Point pt1, cv::Point pt2, cv::Point pt0 );
+    Mat enhanceContrast(Mat input);
+    Mat enhanceSharpness(Mat input);
     
     
     Mat getGrayScaleMat(Mat source);
@@ -57,14 +58,15 @@ class DetectRegions{
     Mat getResizedMat(Mat source, cv::Size size);
     Mat getNormalisedGrayscaleMat(Mat source);
     Mat histogramEqualizedMat(Mat source);
+
+    Mat edgeDetectionCanny(Mat input);
     
-    private:
-        vector<Plate> segment(Mat input);
-        bool verifySizes(RotatedRect mr);
-        Mat histeq(Mat in);
-        Mat edgeDetection(Mat input);
-        Mat blurImage(Mat input);
-        Mat imageMorphology(Mat input);
+private:
+    vector<Plate> segment(Mat input);
+    bool verifySizes(RotatedRect mr);
+    Mat histeq(Mat in);
+    Mat blurImage(Mat input);
+    Mat imageMorphology(Mat input);
     
 #pragma mark - New testing methods.
     

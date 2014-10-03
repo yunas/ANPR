@@ -328,7 +328,6 @@ Mat DetectRegions::getResizedMat(Mat img_crop, cv::Size size) {
 Mat DetectRegions::getNormalisedGrayscaleMat(Mat resultResized) {
     
     Mat grayResult;
-    cout<<resultResized.channels();
     cvtColor(resultResized, grayResult, COLOR_BGR2GRAY);
     grayResult = histogramEqualizedMat(grayResult);
     
@@ -364,7 +363,7 @@ Mat DetectRegions::testingDrawRegion(Mat input) {
     
     img_gray = blurImage(gray);
     
-    Mat img_sobel = edgeDetection(img_gray);
+    Mat img_sobel = edgeDetectionCanny(img_gray);
     
     Mat img_threshold = imageMorphology(img_sobel);
     
@@ -547,12 +546,12 @@ Mat DetectRegions::testingDrawRegion(Mat input) {
     return result;
     
 }
-Mat DetectRegions::edgeDetection(Mat input) {
+Mat DetectRegions::edgeDetectionCanny(Mat input) {
     
     Mat img_sobel;
     //    Sobel(input, img_sobel, CV_8U, 1, 0, 3, 1, 0, BORDER_DEFAULT);
     Canny(input, img_sobel, 0, 150, 5);
-    dilate(img_sobel, img_sobel, Mat(), Point(-1,-1), 1);
+//    dilate(img_sobel, img_sobel, Mat(), Point(-1,-1), 1);
     
     return img_sobel;
 }
