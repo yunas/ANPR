@@ -21,6 +21,8 @@
 		4531213719DA972E00FF7EA7 /* PSTGridLayoutRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531212919DA972E00FF7EA7 /* PSTGridLayoutRow.m */; };
 		4531213819DA972E00FF7EA7 /* PSTGridLayoutSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531212B19DA972E00FF7EA7 /* PSTGridLayoutSection.m */; };
 		4534C94019CAE8B800E563BC /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4534C93F19CAE8B800E563BC /* opencv2.framework */; };
+		455CBEED19DEBCFD00496725 /* NumberPlates.plist in Resources */ = {isa = PBXBuildFile; fileRef = 455CBEEC19DEBCFD00496725 /* NumberPlates.plist */; };
+		455CBEF319DEEAAF00496725 /* PDFCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 455CBEF219DEEAAF00496725 /* PDFCreator.m */; };
 		45B8F2F319D9A94300741B4B /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B8F2AE19D9A94300741B4B /* DACircularProgressView.m */; };
 		45B8F2F419D9A94300741B4B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B8F2B119D9A94300741B4B /* MBProgressHUD.m */; };
 		45B8F2F519D9A94300741B4B /* README.mdown in Sources */ = {isa = PBXBuildFile; fileRef = 45B8F2B219D9A94300741B4B /* README.mdown */; };
@@ -610,6 +612,9 @@
 		4531212A19DA972E00FF7EA7 /* PSTGridLayoutSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTGridLayoutSection.h; sourceTree = "<group>"; };
 		4531212B19DA972E00FF7EA7 /* PSTGridLayoutSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTGridLayoutSection.m; sourceTree = "<group>"; };
 		4534C93F19CAE8B800E563BC /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
+		455CBEEC19DEBCFD00496725 /* NumberPlates.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NumberPlates.plist; sourceTree = "<group>"; };
+		455CBEF119DEEAAF00496725 /* PDFCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDFCreator.h; path = PDFCreator/PDFCreator.h; sourceTree = "<group>"; };
+		455CBEF219DEEAAF00496725 /* PDFCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDFCreator.m; path = PDFCreator/PDFCreator.m; sourceTree = "<group>"; };
 		45B8F2AD19D9A94300741B4B /* DACircularProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DACircularProgressView.h; sourceTree = "<group>"; };
 		45B8F2AE19D9A94300741B4B /* DACircularProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DACircularProgressView.m; sourceTree = "<group>"; };
 		45B8F2B019D9A94300741B4B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
@@ -1274,6 +1279,15 @@
 			path = PSTCollectionView;
 			sourceTree = "<group>";
 		};
+		455CBEEE19DEEA0B00496725 /* PDFCreator */ = {
+			isa = PBXGroup;
+			children = (
+				455CBEF119DEEAAF00496725 /* PDFCreator.h */,
+				455CBEF219DEEAAF00496725 /* PDFCreator.m */,
+			);
+			name = PDFCreator;
+			sourceTree = "<group>";
+		};
 		45B8F2AB19D9A94300741B4B /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -1449,6 +1463,7 @@
 		5CA3026619B6EA9500A1337A /* OpenCVTest */ = {
 			isa = PBXGroup;
 			children = (
+				455CBEEE19DEEA0B00496725 /* PDFCreator */,
 				5CF8E2FE19D99EBD00B6EE33 /* WEBSERVICE_OCR */,
 				5CA3026F19B6EA9500A1337A /* AppDelegate.h */,
 				5CA3027019B6EA9500A1337A /* AppDelegate.m */,
@@ -1472,6 +1487,7 @@
 				5CA3026919B6EA9500A1337A /* InfoPlist.strings */,
 				5CA3026C19B6EA9500A1337A /* main.m */,
 				5CA3026E19B6EA9500A1337A /* OpenCVTest-Prefix.pch */,
+				455CBEEC19DEBCFD00496725 /* NumberPlates.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -2260,6 +2276,7 @@
 				5CF8DFFA19D9386D00B6EE33 /* 165.JPG in Resources */,
 				5CF8E02919D9386D00B6EE33 /* 207.JPG in Resources */,
 				5CF8E02019D9386D00B6EE33 /* 2.JPG in Resources */,
+				455CBEED19DEBCFD00496725 /* NumberPlates.plist in Resources */,
 				5CF8DEE019D9386D00B6EE33 /* detectsample16.bmp in Resources */,
 				5CF8E0B119D9386D00B6EE33 /* 33.JPG in Resources */,
 				5CF8E0DB19D9386D00B6EE33 /* 368.jpg in Resources */,
@@ -2740,6 +2757,7 @@
 				45B8F30F19D9A94300741B4B /* UIButton+WebCache.m in Sources */,
 				4531213119DA972E00FF7EA7 /* PSTCollectionViewFlowLayout.m in Sources */,
 				4531213019DA972E00FF7EA7 /* PSTCollectionViewData.m in Sources */,
+				455CBEF319DEEAAF00496725 /* PDFCreator.m in Sources */,
 				5C198ECC19C1D606001EBF92 /* DetectRegions.cpp in Sources */,
 				45B8F30B19D9A94300741B4B /* SDWebImageDownloader.m in Sources */,
 				5CA3027119B6EA9500A1337A /* AppDelegate.m in Sources */,

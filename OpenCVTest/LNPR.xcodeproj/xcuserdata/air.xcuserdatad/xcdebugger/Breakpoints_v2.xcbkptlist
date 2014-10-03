@@ -9,14 +9,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "OpenCVTest/ViewController.m"
-            timestampString = "433947730.481942"
+            filePath = "OpenCVTest/ImageProcessorImplementation.mm"
+            timestampString = "434017525.161314"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "435"
-            endingLineNumber = "435"
-            landmarkName = "-stringWithNumbersOnly:"
-            landmarkType = "5">
+            startingLineNumber = "883"
+            endingLineNumber = "883">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

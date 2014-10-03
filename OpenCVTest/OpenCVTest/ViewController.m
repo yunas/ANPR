@@ -13,10 +13,22 @@
 
 #import "MBProgressHUD.h"
 #import "iToast.h"
+#import "PDFCreator.h"
+
 
 
 #define kOCRWS_UserName @"ashaheen"
 #define kOCRWS_License  @"4FC611E1-5782-4C9A-AEA6-8A1B88C874C8"
+
+#define kExpected   @"Expected"
+#define kPractical  @"Practical"
+#define kStatus     @"Status"
+
+#import "PDFCreator.h"
+
+
+typedef void (^ResponseBlock)(NSString* plateNumber);
+typedef void(^FailureBlock) (NSError *error);
 
 
 @interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
@@ -36,14 +48,8 @@
 
 @implementation ViewController {
     ImageProcessorImplementation *processor;
-    
-    UIImage *resultImage;
-    UIImage *sourceImage;
-    
-    NSUInteger processingstep;
-    NSUInteger count;
-    
-    MBProgressHUD *_hud;
+    NSDictionary *numberPlates;
+    NSMutableArray *reportsArr;
 }
 
 #pragma mark - Custom Inits
@@ -67,29 +73,88 @@
     }
 }
 
+
+#pragma mark - Automation
+
+
+- (void)generatePdf {
+    
+    PDFCreator *pdfCreator = [PDFCreator new];
+    [pdfCreator generatePdf:reportsArr];
+    
+}
+
+
+-(void) saveResult:(NSString *)response forIndex:(int)index{
+  
+    if ([[numberPlates objectForKey:[NSString stringWithFormat:@"l%d",index]] isEqualToString:response]) {
+            NSDictionary *dict = @{@"Expected":[numberPlates objectForKey:[NSString stringWithFormat:@"l%d",index]],
+                                   @"Practical":response,
+                                   @"Status":@"Matched"};
+        [reportsArr addObject:dict];
+    }
+    else{
+        NSDictionary *dict = @{@"Expected":[numberPlates objectForKey:[NSString stringWithFormat:@"l%d",index]],
+                               @"Practical":response,
+                               @"Status":@"NotMatched"};
+        
+        [reportsArr addObject:dict];
+    }
+    
+    
+    
+    
+}
+
+
+-(void) automateFromIndex:(int)fromIndex toImageIndex:(int)toIndex{
+
+//    if (fromIndex <= toIndex) {
+//        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.JPG",fromIndex]];
+//        
+//        [self detectPlateNumberFromImage:image withResponseBlock:^(NSString *plateNumber) {
+//            [self saveResult:plateNumber forIndex:fromIndex];
+//            NSLog(@"%@",plateNumber);
+//            [self automateFromIndex:fromIndex+1 toImageIndex:toIndex];
+//            
+//        } andErrorBlock:^(NSError *error) {
+//            [self saveResult:error.localizedDescription forIndex:fromIndex];
+//            NSLog(@"%@",error.localizedDescription);
+//            [self automateFromIndex:fromIndex+1 toImageIndex:toIndex];
+//            NSLog(@"%@",error.localizedDescription);
+//        }];
+//    }
+//    else if (fromIndex > toIndex) {
+        [self generatePdf];
+//    }
+    
+    NSLog(@"%d,%d",fromIndex, toIndex);
+    
+}
+
+
 #pragma mark - Standard Methods
+-(void) initTest{
+    
+    numberPlates = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"NumberPlates" ofType:@"plist"]];
+    reportsArr = [NSMutableArray new];
+    [self automateFromIndex:1 toImageIndex:2];
+
+}
 
 - (void)viewDidLoad {
     
     [super viewDidLoad];
     
-//    NSString *testStr = @"B i MD 2052123J ";
-//    NSLog(@"%@",[self filterPlateNumberFromOCRString:testStr]);
-//    
-//    return;
-    
-    count = 1;
     processor = [[ImageProcessorImplementation alloc] init];
     [self initCustomView];
+    [self performSelector:@selector(initTest) withObject:nil afterDelay:2.0];
     
-//    [ImageProcessorImplementation trainSVM];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    sourceImage = inputImageView.image;
-    
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -159,116 +224,108 @@
     [actionSheet showInView:self.view];
 }
 
+-(void) showHudWithText:(NSString *)text{
+    MBProgressHUD* hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = text;
+    [hud show:YES];
+
+}
+
 - (IBAction)processandsave:(id)sender {
     
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = @"Detecting number plate.";
-    [hud show:YES];
-    _hud = hud;
     
     /*
      Perform plate detection on predefined images.
     */
     
-    resultImage = nil;
-    outputImageView.image = resultImage;
-    
-    NSLog(@"%lu",(unsigned long)count);
-//    if (count<=30) {
-//        [self plateInPredefinedImage:@(count)];
-//        count++;
-//    }
-//    else {
-//        [[iToast makeText:@"No more test image available."] show:iToastTypeInfo];
-//    }
-//    return;
-    
-    /*
-     Loop throuhg selected images
-    */
-    
-//    for (int i=1; i<=78; i++) {
-//        [self performSelector:@selector(plateInPredefinedImage:) withObject:@(i) afterDelay:5];
-//    }
-//    return;
-    
-    /*
-      use selected image.
-    */
+    [self showHudWithText:@"Detecting Number Plate..."];
+    [self detectPlateNumberFromImage:inputImageView.image
+                   withResponseBlock:^(NSString *plateNumber) {
+                       NSString* message = [NSString stringWithFormat:@"Detected plate number is \n \"%@\"",plateNumber];
 
-    inputImageView.image = sourceImage;
-    
-    [self operation:[NSString stringWithFormat:@"l%lu",(unsigned long)count]];
-    
-    // We will be using source image for further processing.
-
+                       UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@""
+                                                                      message:message
+                                                                     delegate:nil
+                                                            cancelButtonTitle:@"ok"
+                                                            otherButtonTitles:nil];
+                       [alert show];
+                       
+                   } andErrorBlock:^(NSError *error) {
+                       
+                       UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error"
+                                                                      message:error.localizedDescription
+                                                                     delegate:nil
+                                                            cancelButtonTitle:@"ok"
+                                                            otherButtonTitles:nil];
+                       [alert show];
+                       
+                   }];
 }
 
 - (void)hideHUD {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
 
-- (void)operation:(NSString*)name {
+
+-(void) saveImage:(UIImage *)img{
+  
+    NSData *data = UIImageJPEGRepresentation(img, 1);
+    NSError *error = nil;
+    [data writeToFile:[self filePath:@"plateImg"] options:NSDataWritingAtomic error:&error];
+   
+}
+
+- (void)detectPlateNumberFromImage:(UIImage *)srcImage
+                 withResponseBlock:(ResponseBlock)responseBlock
+                     andErrorBlock:(FailureBlock)failureBlock
+{
     
     dispatch_async(dispatch_queue_create("pre processing", 0), ^{
         
-        UIImage *image = [ImageProcessorImplementation numberPlateFromCarImage:sourceImage imageName:name edgeDetectionType:EdgeDetectionTypeSobel];
+        UIImage *plateImg = [ImageProcessorImplementation numberPlateFromCarImage:srcImage
+                                                                     imageName:@"imgName.png"
+                                                             edgeDetectionType:EdgeDetectionTypeSobel];
         
         dispatch_async(dispatch_get_main_queue(), ^{
+
+            outputImageView.image = plateImg;
+            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+
+            [self showHudWithText:@"Recognizing Numbers in plate."];
             
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-            
-            [_hud hide:YES];
-            
-            resultImage = image;
-            outputImageView.image = resultImage;
-            
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud.mode = MBProgressHUDModeIndeterminate;
-            hud.labelText = @"Detecting numbers in plate.";
-            [hud show:YES];
-            _hud = hud;
-            
-            if (image) {
+            if (plateImg) {
                                 
                 dispatch_async(dispatch_queue_create("web service", 0), ^{
                 
                     NSError *error = nil;
                     NSString *plateNumber = @"";
-                    NSString *ocrText = @"";//[self OCRTextFromImage:image withError:&error];
+                    NSString *ocrText = [self OCRTextFromImage:plateImg withError:&error];
                     if (!error) {
                         plateNumber = [self filterPlateNumberFromOCRString:ocrText];
                     }
                     else{
-                        plateNumber = [error localizedDescription];
+                        failureBlock(error);
                     }
 
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                        [_hud hide:YES afterDelay:0.2];
-                        
-                        alert.message = [NSString stringWithFormat:@"Detected plate number is \n \"%@\"",plateNumber];
-                        [alert show];
+  
+                        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                        responseBlock(plateNumber);
                     });
                 });
                 
-//                [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
-                NSData *data = UIImageJPEGRepresentation(image, 1);
-                NSError *error = nil;
-                [data writeToFile:[self filePath:[NSString stringWithFormat:@"plate%lu",(unsigned long)count]] options:NSDataWritingAtomic error:&error];
+                [self saveImage:plateImg];
             }
             else {
                 
-                [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.2];
-
-                alert.message = @"No plate detected.";
-                [alert show];
-                
-                NSLog(@"number plate not found for image:%lu.JPG",(unsigned long)count-1);
+                [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                NSError *error = [[NSError alloc]initWithDomain:@"420" code:420 userInfo:@{@"message":@"No plate detected."}];
+                failureBlock(error);
             }
         });
     });
+
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -287,19 +344,16 @@
         rotatedImage = originalImage;
 
     if (rotatedImage) {
-        sourceImage = nil;
-        
         if (!CGRectIsEmpty(croppedRect)) {
             CGImageRef ref= CGImageCreateWithImageInRect(rotatedImage.CGImage, croppedRect);
-            sourceImage= [[UIImage imageWithCGImage:ref] scaleImageKeepingAspectRatiotoSize:CGSizeMake(432.f, 302.f)];
+            inputImageView.image= [[UIImage imageWithCGImage:ref] scaleImageKeepingAspectRatiotoSize:CGSizeMake(432.f, 302.f)];
             CGImageRelease(ref);
         }
         else {
-            sourceImage= [rotatedImage scaleImageToSize:CGSizeMake(432.f, 302.f)];
+            inputImageView.image= [rotatedImage scaleImageToSize:CGSizeMake(432.f, 302.f)];
         }
     }
 
-    [inputImageView setImage:sourceImage];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -390,8 +444,6 @@
     NSUInteger index =  [photoBrowser currentIndex];
     MWPhoto * photo = (newData)?bmpPhotos[index]:photos [index];
     [inputImageView setImage:photo.image];
-    sourceImage = photo.image;
-
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -404,31 +456,6 @@
     NSString *filePath = [documentsPath stringByAppendingFormat:@"/%@.jpg",name];
     
     return filePath;
-}
-
-
-- (void)plateInPredefinedImage:(NSNumber*)index {
-    /*
-     Loop through all predefined images and get result
-    */
-    
-    NSString *path =[[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"l%ld.JPG",(long)[index integerValue]] ofType:nil];
-    
-    UIImage *originalImage = [UIImage imageWithContentsOfFile:path];
-    
-    if (!originalImage) {
-        [_hud hide:YES];
-        return;
-    }
-    
-    if (originalImage.imageOrientation!=UIImageOrientationUp)
-        sourceImage = [originalImage rotate:originalImage.imageOrientation];
-    else
-        sourceImage = originalImage;
-    
-    inputImageView.image = sourceImage;
-    
-    [self operation:[NSString stringWithFormat:@"l%ld",(long)[index integerValue]]];
 }
 
 
