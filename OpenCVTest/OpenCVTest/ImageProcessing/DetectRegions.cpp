@@ -21,7 +21,7 @@ DetectRegions::DetectRegions(){
     aspectRatio = 4.6429;
     minArea = 25;
     maxArea = 150;
-    error = 0.4;
+    error = 0.5;
 }
 
 bool DetectRegions::verifySizes(RotatedRect mr) {

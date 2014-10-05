@@ -280,13 +280,24 @@ using namespace std;
     }
     watchTestImg = [UIImage imageWithCVMat:input_imgDebug];
     
-    RotatedRect possiblePlateRect = getOnePossiblePlateRegion(rects, 0.4);
+    RotatedRect possiblePlateRect = getOnePossiblePlateRegion(rects, 0.5);
     rectangle(input_imgDebug, possiblePlateRect.boundingRect(), Scalar(0,255,0),3);
     watchTestImg = [UIImage imageWithCVMat:input_imgDebug];
 
     
     cout<<"number of possible regions:"<<rects.size()<<endl;
+
+    if (rects.size() == 0){
+        return nil;
+    }
+    else if (rects.size() == 1){
+        if (possiblePlateRect.size == cv::Size2f(0,0)){
+            return nil;
+        }
+    }
     
+    cout<<"possiblePlateRect.boundingRect() => "<<possiblePlateRect.boundingRect()<<possiblePlateRect.angle<<endl;
+        
     return [ImageProcessorImplementation extractPlateImageFrom:input_img region:possiblePlateRect];
 }
 
@@ -948,11 +959,9 @@ bool verifySizes(cv::RotatedRect mr, float error){
     float rmin= aspect-aspect*error;
     float rmax= aspect+aspect*error;
     
-//    if (!(mr.angle > -95 && mr.angle < -75)) {
-//        return false;
-//    }
-    
-
+    if (!((mr.angle >= -91 && mr.angle <= -85) || (mr.angle >= -0 && mr.angle >= -0.5 ))) {
+        return false;
+    }
     
     int area= mr.size.height * mr.size.width;
     float r= (float)mr.size.width / (float)mr.size.height;

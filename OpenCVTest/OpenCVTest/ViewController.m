@@ -138,7 +138,7 @@ typedef void(^FailureBlock) (NSError *error);
     
     numberPlates = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"NumberPlates" ofType:@"plist"]];
     reportsArr = [NSMutableArray new];
-    [self automateFromIndex:11 toImageIndex:11];
+    [self automateFromIndex:17 toImageIndex:17];
 
 }
 
