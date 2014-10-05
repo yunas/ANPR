@@ -22,7 +22,7 @@
     CGSize pageSize;
 }
 
-- (void)generatePdf:(NSArray*)reportsArr;
+- (NSString*) generatePdf:(NSArray*)reportsArr;
 
 
 

@@ -99,7 +99,7 @@
                          @{NSFontAttributeName:theFont}];
     
     CGRect renderingRect = CGRectMake(kBorderInset + kMarginInset + (200.0 *columnNumber) ,
-                                      kBorderInset + kMarginInset + (20.0 *rowNumber),
+                                      kBorderInset + kMarginInset + 2 + (20.0 *rowNumber) + 20,
                                       200,
                                       stringSize.height);
     
@@ -123,8 +123,8 @@
     
     CGContextSetStrokeColorWithColor(currentContext, [UIColor blueColor].CGColor);
     
-    CGPoint startPoint = CGPointMake(kMarginInset + kBorderInset, kMarginInset + kBorderInset + 40.0);
-    CGPoint endPoint = CGPointMake(pageSize.width - 2*kMarginInset -2*kBorderInset, kMarginInset + kBorderInset + 40.0);
+    CGPoint startPoint = CGPointMake(kMarginInset + kBorderInset, kMarginInset + kBorderInset + 60.0);
+    CGPoint endPoint = CGPointMake(pageSize.width - 2*kMarginInset -10 , kMarginInset + kBorderInset + 60.0);
     
     CGContextBeginPath(currentContext);
     CGContextMoveToPoint(currentContext, startPoint.x, startPoint.y);
@@ -164,16 +164,17 @@
         //Draw a line below the header.
         [self drawLine];
 
-        int row = 1;
+        [self drawText:@"Expected"  ForColumn:0 forRow:1];
+        [self drawText:@"Observed"  ForColumn:1 forRow:1];
+        [self drawText:@"Status"    ForColumn:2 forRow:1];
+        
+        int row = 2;
         for (NSDictionary *report in reportsArr) {
             //Draw some text for the page.
-            int col = 0;
-            for (NSString *key in [report allKeys]) {
-                [self drawText:report[key] ForColumn:col forRow:row];
-                col++;
-            }
+            [self drawText:report[@"Expected"]  ForColumn:0 forRow:row];
+            [self drawText:report[@"Observed"]  ForColumn:1 forRow:row];
+            [self drawText:report[@"Status"]    ForColumn:2 forRow:row];
             row++;
-
         }
         
 //        //Draw an image
@@ -188,7 +189,7 @@
 
 #pragma mark - View lifecycle
 
-- (void)generatePdf:(NSArray*)reportsArr
+- (NSString*) generatePdf:(NSArray*)reportsArr
 {
     pageSize = CGSizeMake(612, 792);
     NSString *fileName = @"Report.pdf";
@@ -197,6 +198,8 @@
     NSString *pdfFileName = [documentsDirectory stringByAppendingPathComponent:fileName];
     
     [self generatePdfWithFilePath:pdfFileName withArray:reportsArr];
+  
+    return pdfFileName;
 }
 
 @end

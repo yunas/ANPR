@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		450A98FF19E0EA3B00D0BF40 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 450A98FE19E0EA3B00D0BF40 /* MessageUI.framework */; };
 		4531212C19DA972E00FF7EA7 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531211119DA972E00FF7EA7 /* NSIndexPath+PSTCollectionViewAdditions.m */; };
 		4531212D19DA972E00FF7EA7 /* PSTCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531211319DA972E00FF7EA7 /* PSTCollectionView.m */; };
 		4531212E19DA972E00FF7EA7 /* PSTCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531211519DA972E00FF7EA7 /* PSTCollectionViewCell.m */; };
@@ -583,6 +584,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		450A98FE19E0EA3B00D0BF40 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		4531211019DA972E00FF7EA7 /* NSIndexPath+PSTCollectionViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexPath+PSTCollectionViewAdditions.h"; sourceTree = "<group>"; };
 		4531211119DA972E00FF7EA7 /* NSIndexPath+PSTCollectionViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexPath+PSTCollectionViewAdditions.m"; sourceTree = "<group>"; };
 		4531211219DA972E00FF7EA7 /* PSTCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTCollectionView.h; sourceTree = "<group>"; };
@@ -1218,6 +1220,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				450A98FF19E0EA3B00D0BF40 /* MessageUI.framework in Frameworks */,
 				5CF8E31219D99F6D00B6EE33 /* libxml2.dylib in Frameworks */,
 				5C38BAA619C1B70C0083CE87 /* SystemConfiguration.framework in Frameworks */,
 				5C5A9EF519B8A4950080DCEC /* CoreMedia.framework in Frameworks */,
@@ -1445,6 +1448,7 @@
 		5CA3025F19B6EA9400A1337A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				450A98FE19E0EA3B00D0BF40 /* MessageUI.framework */,
 				5CF8E31119D99F6D00B6EE33 /* libxml2.dylib */,
 				4534C93F19CAE8B800E563BC /* opencv2.framework */,
 				5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */,

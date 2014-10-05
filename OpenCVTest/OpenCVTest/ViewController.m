@@ -37,7 +37,6 @@ typedef void(^FailureBlock) (NSError *error);
     __weak IBOutlet UIImageView *outputImageView;
     
     UIImagePickerController *imagePicker;
-    __weak IBOutlet UIActivityIndicatorView *activityIndicatorView;
     
     NSMutableArray *photos;
     NSMutableArray *bmpPhotos;
@@ -80,7 +79,8 @@ typedef void(^FailureBlock) (NSError *error);
 - (void)generatePdf {
     
     PDFCreator *pdfCreator = [PDFCreator new];
-    [pdfCreator generatePdf:reportsArr];
+    NSString *reportPath = [pdfCreator generatePdf:reportsArr];
+    [self shareReportViaMail:reportPath];
     
 }
 
@@ -89,13 +89,13 @@ typedef void(^FailureBlock) (NSError *error);
   
     if ([[numberPlates objectForKey:[NSString stringWithFormat:@"l%d",index]] isEqualToString:response]) {
             NSDictionary *dict = @{@"Expected":[numberPlates objectForKey:[NSString stringWithFormat:@"l%d",index]],
-                                   @"Practical":response,
+                                   @"Observed":response,
                                    @"Status":@"Matched"};
         [reportsArr addObject:dict];
     }
     else{
         NSDictionary *dict = @{@"Expected":[numberPlates objectForKey:[NSString stringWithFormat:@"l%d",index]],
-                               @"Practical":response,
+                               @"Observed":response,
                                @"Status":@"NotMatched"};
         
         [reportsArr addObject:dict];
@@ -111,6 +111,7 @@ typedef void(^FailureBlock) (NSError *error);
 
     if (fromIndex <= toIndex) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"l%d.JPG",fromIndex]];
+        [inputImageView setImage:image];
         
         [self detectPlateNumberFromImage:image withResponseBlock:^(NSString *plateNumber) {
             [self saveResult:plateNumber forIndex:fromIndex];
@@ -135,11 +136,7 @@ typedef void(^FailureBlock) (NSError *error);
 
 #pragma mark - Standard Methods
 -(void) initTest{
-    
-    numberPlates = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"NumberPlates" ofType:@"plist"]];
-    reportsArr = [NSMutableArray new];
-    [self automateFromIndex:17 toImageIndex:17];
-
+//    [self generatePdf];
 }
 
 - (void)viewDidLoad {
@@ -189,6 +186,15 @@ typedef void(^FailureBlock) (NSError *error);
     });
 
 }
+- (IBAction)automateProcess:(id)sender {
+  
+    numberPlates = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"NumberPlates" ofType:@"plist"]];
+    reportsArr = [NSMutableArray new];
+//    [reportsArr addObject:@{@"Expected":@"Expected",@"Status":@"Status",@"Observed":@"Observed"}];
+    
+    [self automateFromIndex:1 toImageIndex:30];
+}
+
 
 - (IBAction)takePhoto:(id)sender {
     
@@ -292,7 +298,6 @@ typedef void(^FailureBlock) (NSError *error);
             outputImageView.image = plateImg;
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
-            return ;
             [self showHudWithText:@"Recognizing Numbers in plate."];
 
             if (plateImg) {
@@ -576,6 +581,42 @@ typedef void(^FailureBlock) (NSError *error);
     NSLog(@"WEB-OCR-TEXT: %@",plateNumber);
     
     return plateNumber;
+}
+
+#pragma mark - 
+
+-(void) shareReportViaMail:(NSString *)reportPath{
+    
+
+    MFMailComposeViewController *composer =[MFMailComposeViewController new];
+    [composer setMailComposeDelegate:self];
+    if([MFMailComposeViewController canSendMail])
+    {
+        [composer setToRecipients:@[]];
+        [composer setSubject:@"Report - LNPR"];
+        [composer setMessageBody:@"LNPR Report attached" isHTML:NO];
+        NSData *data = [NSData dataWithContentsOfFile:reportPath];
+        [composer addAttachmentData:data mimeType:@"application/pdf" fileName:@"Report"];
+        [composer setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        [self presentViewController:composer animated:YES completion:nil];
+    }
+    else{
+        UIAlertView *alrt=[[UIAlertView alloc]initWithTitle:@"Error" message:@"" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alrt show];
+        
+    }
+}
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error{
+    if(error)
+    {
+        UIAlertView *alrt=[[UIAlertView alloc]initWithTitle:@"Error" message:@"" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+        [alrt show];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    
 }
 
 @end
