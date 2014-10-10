@@ -38,7 +38,7 @@
         
         cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [cancelButton setImage:[UIImage imageNamed:@"backFromCamera"] forState:UIControlStateNormal];
-        [cancelButton setFrame:CGRectMake(10.f, 20.f, 30.f, 30.f)];
+        [cancelButton setFrame:CGRectMake(10.f, 32.f, 30.f, 30.f)];
         [cancelButton addTarget:self action:@selector(hideCameraView:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:cancelButton];
         
@@ -86,12 +86,10 @@
     captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [canvasView.layer addSublayer:captureVideoPreviewLayer];
     
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    if ([device hasFlash] && [device isFlashAvailable]) {
-        [device setFlashMode:AVCaptureFlashModeAuto];
-    }
+    AVCaptureDevice *device = [self backFacingCameraIfAvailable];
     
     NSError *error = nil;
+    
     AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
     if (!input) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Camera not found. Please use Photo Gallery instead." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
@@ -128,12 +126,61 @@
         captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     }
  
-    if ([captureDevice hasFlash] && [captureDevice isFlashAvailable]) {
-        [captureDevice setFlashMode:AVCaptureFlashModeAuto];
+    NSError *error = nil;
+    if ([captureDevice lockForConfiguration:&error]) {
+        if ([captureDevice hasFlash] && [captureDevice isFlashAvailable]) {
+            [captureDevice setFlashMode:AVCaptureFlashModeAuto];
+        }
+        if ([captureDevice hasTorch] && [captureDevice isTorchAvailable]) {
+            [captureDevice setTorchMode:AVCaptureTorchModeAuto];
+        }
     }
+    else {
+        NSLog(@"%@",[error localizedDescription]);
+    }
+    
+    [captureDevice unlockForConfiguration];
     
     return captureDevice;
 }
+
+-(AVCaptureDevice *)backFacingCameraIfAvailable {
+    
+    NSArray *videoDevices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    
+    AVCaptureDevice *captureDevice = nil;
+    
+    for (AVCaptureDevice *device in videoDevices){
+        
+        if (device.position == AVCaptureDevicePositionBack) {
+            captureDevice = device;
+            break;
+        }
+    }
+    
+    //  couldn't find one on the front, so just get the default video device.
+    if (!captureDevice) {
+        captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    }
+    
+    NSError *error = nil;
+    if ([captureDevice lockForConfiguration:&error]) {
+        if ([captureDevice hasFlash] && [captureDevice isFlashAvailable]) {
+            [captureDevice setFlashMode:AVCaptureFlashModeAuto];
+        }
+        if ([captureDevice hasTorch] && [captureDevice isTorchAvailable]) {
+            [captureDevice setTorchMode:AVCaptureTorchModeAuto];
+        }
+    }
+    else {
+        NSLog(@"%@",[error localizedDescription]);
+    }
+    
+    [captureDevice unlockForConfiguration];
+    
+    return captureDevice;
+}
+
 
 #pragma mark IBActions
 
@@ -185,7 +232,7 @@
     AVCaptureDevice *device = nil;
     
     if (frontCameraSelected) {
-        device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+        device = [self backFacingCameraIfAvailable];
         frontCameraSelected = NO;
     }
     else {

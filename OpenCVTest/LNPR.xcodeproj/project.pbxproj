@@ -1646,20 +1646,20 @@
 		5CA3026619B6EA9500A1337A /* OpenCVTest */ = {
 			isa = PBXGroup;
 			children = (
-				455CBEEE19DEEA0B00496725 /* PDFCreator */,
-				5CF8E2FE19D99EBD00B6EE33 /* WEBSERVICE_OCR */,
 				5CA3026F19B6EA9500A1337A /* AppDelegate.h */,
-				5C0AD0F419E6C30400070335 /* CameraOverlayView */,
 				5CA3027019B6EA9500A1337A /* AppDelegate.m */,
+				5C0AD0F419E6C30400070335 /* CameraOverlayView */,
 				5C198EC719C1D606001EBF92 /* ImageProcessing */,
 				5CBD8F9C19BD87BD00D5F218 /* ImageProcessorImplementation.h */,
 				5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */,
 				5CA3027819B6EA9500A1337A /* Images.xcassets */,
 				5CA3027219B6EA9500A1337A /* Main.storyboard */,
+				455CBEEE19DEEA0B00496725 /* PDFCreator */,
 				5CA3026719B6EA9500A1337A /* Supporting Files */,
 				5CF8E12419D9446100B6EE33 /* UIImage extension */,
 				5CA3027519B6EA9500A1337A /* ViewController.h */,
 				5CA3027619B6EA9500A1337A /* ViewController.m */,
+				5CF8E2FE19D99EBD00B6EE33 /* WEBSERVICE_OCR */,
 			);
 			path = OpenCVTest;
 			sourceTree = "<group>";

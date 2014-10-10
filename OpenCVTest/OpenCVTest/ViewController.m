@@ -356,18 +356,14 @@ typedef void(^FailureBlock) (NSError *error);
             CGImageRef ref= CGImageCreateWithImageInRect(rotatedImage.CGImage, croppedRect);
             
             UIImage *img = [UIImage imageWithCGImage:ref];
-            
-            NSLog(@"%@",img);
-            
             inputImageView.image= [img resizeImageToWidth:432.f];
+            
             CGImageRelease(ref);
         }
         else {
             inputImageView.image= [rotatedImage resizeImageToWidth:432.f];
         }
     }
-    
-    NSLog(@"%@",inputImageView.image);
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
@@ -397,8 +393,18 @@ typedef void(^FailureBlock) (NSError *error);
         if (buttonIndex == 0) {
             
             CameraView *cameraView = [[CameraView alloc] initWithFrame:self.view.bounds completionBlovk:^(UIImage *img) {
-                inputImageView.image = img;
+                
+                UIImage *rotatedImage = nil;
+                
+                if (img.imageOrientation!=UIImageOrientationUp)
+                    rotatedImage = [img rotate:img.imageOrientation];
+                else
+                    rotatedImage = img;
+                
+                NSLog(@"%@",NSStringFromCGSize(rotatedImage.size));
+                inputImageView.image = rotatedImage;
             }];
+            
             [self.view addSubview:cameraView];
             
 //            [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
