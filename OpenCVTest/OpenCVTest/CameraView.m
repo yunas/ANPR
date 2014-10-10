@@ -7,6 +7,7 @@
 //
 
 #import "CameraView.h"
+#include "UIImage+operation.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <ImageIO/ImageIO.h>
@@ -75,42 +76,10 @@
 
 #pragma mark AVFoundation
 
-- (void)startSession {
-    
-    session = [[AVCaptureSession alloc] init];
-    session.sessionPreset = AVCaptureSessionPresetMedium;
-    
-    AVCaptureVideoPreviewLayer *captureVideoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:session];
-    CGRect frame = canvasView.bounds;
-    captureVideoPreviewLayer.frame = frame;
-    captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    [canvasView.layer addSublayer:captureVideoPreviewLayer];
-    
-    AVCaptureDevice *device = [self backFacingCameraIfAvailable];
-    
-    NSError *error = nil;
-    
-    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
-    if (!input) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Camera not found. Please use Photo Gallery instead." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [alert show];
-    }
-    
-    [session addInput:input];
-    
-    stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
-    NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
-    [stillImageOutput setOutputSettings:outputSettings];
-    
-    [session addOutput:stillImageOutput];
-    
-    [session startRunning];
-}
-
 -(AVCaptureDevice *)frontFacingCameraIfAvailable {
     
     NSArray *videoDevices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-
+    
     AVCaptureDevice *captureDevice = nil;
     
     for (AVCaptureDevice *device in videoDevices){
@@ -125,7 +94,7 @@
     if (!captureDevice) {
         captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     }
- 
+    
     NSError *error = nil;
     if ([captureDevice lockForConfiguration:&error]) {
         if ([captureDevice hasFlash] && [captureDevice isFlashAvailable]) {
@@ -181,6 +150,41 @@
     return captureDevice;
 }
 
+- (void)startSession {
+    
+    session = [[AVCaptureSession alloc] init];
+    session.sessionPreset = AVCaptureSessionPresetMedium;
+    
+    AVCaptureVideoPreviewLayer *captureVideoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:session];
+    CGRect frame = canvasView.bounds;
+    [canvasView.layer setMasksToBounds:YES];
+    captureVideoPreviewLayer.frame = frame;
+    captureVideoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    [canvasView.layer addSublayer:captureVideoPreviewLayer];
+    
+    AVCaptureDevice *device = [self backFacingCameraIfAvailable];
+    
+    NSError *error = nil;
+    
+    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
+    if (!input) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Camera not found. Please use Photo Gallery instead." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alert show];
+    }
+    
+    [session addInput:input];
+    
+    stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
+    NSDictionary *outputSettings = @{AVVideoCodecKey: AVVideoCodecJPEG,
+                                     (id)kCVPixelBufferWidthKey: @(432.f),
+                                     (id)kCVPixelBufferHeightKey: @(302)};
+    
+    [stillImageOutput setOutputSettings:outputSettings];
+    
+    [session addOutput:stillImageOutput];
+    
+    [session startRunning];
+}
 
 #pragma mark IBActions
 
@@ -206,6 +210,9 @@
     
     NSLog(@"about to request a capture from: %@", stillImageOutput);
     
+    // Update the orientation on the still image output video connection before capturing.
+    [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+    
     [stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
      {
          CFDictionaryRef exifAttachments = CMGetAttachment( imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
@@ -220,7 +227,22 @@
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          UIImage *image = [[UIImage alloc] initWithData:imageData];
 
-         _block(image);
+         UIImage *rotatedImage = nil;
+         
+         if (image.imageOrientation!=UIImageOrientationUp)
+             rotatedImage = [image rotate:image.imageOrientation];
+         else
+             rotatedImage = image;
+         
+         UIImage *photoImage = [rotatedImage copy];
+         
+         CGRect refRect = canvasView.frame; //Define this to the exact frame which you want to crop the larger image to i.e. with smaller frame.size.height
+         CGFloat deviceScale = photoImage.scale;
+         CGImageRef imageRef = CGImageCreateWithImageInRect(photoImage.CGImage, refRect);
+         
+         UIImage *finalPhoto = [[UIImage alloc] initWithCGImage:imageRef scale:deviceScale orientation:photoImage.imageOrientation];
+         
+         _block(rotatedImage);
          
          [self hideCameraView:sender];
          

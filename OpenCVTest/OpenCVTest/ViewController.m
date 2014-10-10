@@ -394,17 +394,16 @@ typedef void(^FailureBlock) (NSError *error);
             
             CameraView *cameraView = [[CameraView alloc] initWithFrame:self.view.bounds completionBlovk:^(UIImage *img) {
                 
-                UIImage *rotatedImage = nil;
-                
-                if (img.imageOrientation!=UIImageOrientationUp)
-                    rotatedImage = [img rotate:img.imageOrientation];
-                else
-                    rotatedImage = img;
-                
-                NSLog(@"%@",NSStringFromCGSize(rotatedImage.size));
-                inputImageView.image = rotatedImage;
+                NSLog(@"%@",NSStringFromCGSize(img.size));
+                inputImageView.image = [img resizeImageToWidth:432];
             }];
             
+            [cameraView.layer setOpacity:0];
+            
+            [UIView animateWithDuration:.25 animations:^{
+                [cameraView.layer setOpacity:1.0];
+            }];
+             
             [self.view addSubview:cameraView];
             
 //            [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];

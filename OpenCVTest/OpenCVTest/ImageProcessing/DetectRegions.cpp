@@ -182,7 +182,7 @@ Mat DetectRegions::getBlurMat(Mat source) {
 Mat DetectRegions::getSobelFilteredMat(Mat img_gray) {
     Mat img_sobel;
 
-    Sobel(img_gray, img_sobel, CV_8U, 1, 1, 3, 1, 0, BORDER_DEFAULT);
+    Sobel(img_gray, img_sobel, CV_8U, 1, 0, 3, 1, 0, BORDER_DEFAULT);
     
     return img_sobel;
 }

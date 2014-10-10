@@ -290,7 +290,6 @@ using namespace std;
             
             //Get rotation matrix
             Mat rotmat = detectRegions.getRotated2by3MatFromDetectedRectangle(minRect);
-            watchTestImg = [UIImage imageWithCVMat:rotmat];
             
             //Create and rotate image
             Mat img_rotated;
@@ -998,7 +997,7 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error) {
 
 bool verifySizes(cv::RotatedRect mr, float error){
     
-    //Spain car plate size: 520x110 aspect 4.6429
+    //Spain car plate size: 520x112 aspect 4.6429
     float aspect=4.6429;
     //Set a min and max area. All other patchs are discarded
     int min= 15*aspect*15; // minimum area
