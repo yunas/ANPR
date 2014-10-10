@@ -54,8 +54,6 @@
 		45FB955719CAF5EB0022B30A /* MWZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FB950619CAF5EA0022B30A /* MWZoomingScrollView.m */; };
 		45FB957919CAF5EB0022B30A /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 45FB954F19CAF5EB0022B30A /* MWPhotoBrowser.bundle */; };
 		5C08A6EF19C716C900ACC4B7 /* HarissDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */; };
-		5C0AD0F019E6BFF500070335 /* CameraOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C0AD0EF19E6BFF500070335 /* CameraOverlayView.xib */; };
-		5C0AD0F319E6C2FE00070335 /* CameraOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C0AD0F219E6C2FE00070335 /* CameraOverlayView.m */; };
 		5C0AD0F619E6D14E00070335 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C0AD0F519E6D14E00070335 /* AVFoundation.framework */; };
 		5C198ECC19C1D606001EBF92 /* DetectRegions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C198EC819C1D606001EBF92 /* DetectRegions.cpp */; };
 		5C198ECD19C1D606001EBF92 /* Plate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C198ECA19C1D606001EBF92 /* Plate.cpp */; };
@@ -164,6 +162,7 @@
 		5CE2D00319DBD24100FCC64C /* l29.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5CE2CFF319DBD24100FCC64C /* l29.JPG */; };
 		5CE2D00419DBD24100FCC64C /* l30.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5CE2CFF419DBD24100FCC64C /* l30.JPG */; };
 		5CE4D98519D4378300D19267 /* SVM.xml in Resources */ = {isa = PBXBuildFile; fileRef = 5CE4D98419D4378300D19267 /* SVM.xml */; };
+		5CE5321C19E79CDD00EAB7B9 /* CameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE5321B19E79CDD00EAB7B9 /* CameraView.m */; };
 		5CEC104C19C8215E00BDFCF4 /* TrainSVM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5CEC104A19C8215E00BDFCF4 /* TrainSVM.cpp */; };
 		5CF8DED919D9386D00B6EE33 /* detectsample1.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 5CF8DC8919D9386900B6EE33 /* detectsample1.bmp */; };
 		5CF8DEDA19D9386D00B6EE33 /* detectsample10.bmp in Resources */ = {isa = PBXBuildFile; fileRef = 5CF8DC8A19D9386900B6EE33 /* detectsample10.bmp */; };
@@ -732,9 +731,6 @@
 		45FB954F19CAF5EB0022B30A /* MWPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MWPhotoBrowser.bundle; sourceTree = "<group>"; };
 		5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HarissDetector.cpp; sourceTree = "<group>"; };
 		5C08A6EE19C716C900ACC4B7 /* HarissDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HarissDetector.h; sourceTree = "<group>"; };
-		5C0AD0EF19E6BFF500070335 /* CameraOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraOverlayView.xib; sourceTree = "<group>"; };
-		5C0AD0F119E6C2FE00070335 /* CameraOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraOverlayView.h; sourceTree = "<group>"; };
-		5C0AD0F219E6C2FE00070335 /* CameraOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraOverlayView.m; sourceTree = "<group>"; };
 		5C0AD0F519E6D14E00070335 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5C198EC819C1D606001EBF92 /* DetectRegions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetectRegions.cpp; sourceTree = "<group>"; };
 		5C198EC919C1D606001EBF92 /* DetectRegions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetectRegions.h; sourceTree = "<group>"; };
@@ -852,6 +848,8 @@
 		5CE2CFF319DBD24100FCC64C /* l29.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l29.JPG; sourceTree = "<group>"; };
 		5CE2CFF419DBD24100FCC64C /* l30.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l30.JPG; sourceTree = "<group>"; };
 		5CE4D98419D4378300D19267 /* SVM.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SVM.xml; sourceTree = "<group>"; };
+		5CE5321A19E79CDD00EAB7B9 /* CameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraView.h; sourceTree = "<group>"; };
+		5CE5321B19E79CDD00EAB7B9 /* CameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraView.m; sourceTree = "<group>"; };
 		5CEC104A19C8215E00BDFCF4 /* TrainSVM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrainSVM.cpp; sourceTree = "<group>"; };
 		5CEC104B19C8215E00BDFCF4 /* TrainSVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrainSVM.h; sourceTree = "<group>"; };
 		5CF8DC8919D9386900B6EE33 /* detectsample1.bmp */ = {isa = PBXFileReference; lastKnownFileType = image.bmp; path = detectsample1.bmp; sourceTree = "<group>"; };
@@ -1529,9 +1527,8 @@
 		5C0AD0F419E6C30400070335 /* CameraOverlayView */ = {
 			isa = PBXGroup;
 			children = (
-				5C0AD0EF19E6BFF500070335 /* CameraOverlayView.xib */,
-				5C0AD0F119E6C2FE00070335 /* CameraOverlayView.h */,
-				5C0AD0F219E6C2FE00070335 /* CameraOverlayView.m */,
+				5CE5321A19E79CDD00EAB7B9 /* CameraView.h */,
+				5CE5321B19E79CDD00EAB7B9 /* CameraView.m */,
 			);
 			name = CameraOverlayView;
 			sourceTree = "<group>";
@@ -2652,7 +2649,6 @@
 				5CF8E06719D9386D00B6EE33 /* 263.JPG in Resources */,
 				5CE2CFC519DBC59700FCC64C /* l6.JPG in Resources */,
 				5CE2CFC119DBC59700FCC64C /* l20.JPG in Resources */,
-				5C0AD0F019E6BFF500070335 /* CameraOverlayView.xib in Resources */,
 				5CE2CFFE19DBD24100FCC64C /* l24.JPG in Resources */,
 				5CF8E0D919D9386D00B6EE33 /* 366.jpg in Resources */,
 				5CF8E02E19D9386D00B6EE33 /* 211.JPG in Resources */,
@@ -2956,7 +2952,6 @@
 				4531212F19DA972E00FF7EA7 /* PSTCollectionViewController.m in Sources */,
 				5C198ECD19C1D606001EBF92 /* Plate.cpp in Sources */,
 				5CF8E12919D9446100B6EE33 /* UIImage+OpenCV.mm in Sources */,
-				5C0AD0F319E6C2FE00070335 /* CameraOverlayView.m in Sources */,
 				45B8F30E19D9A94300741B4B /* SDWebImagePrefetcher.m in Sources */,
 				4531212E19DA972E00FF7EA7 /* PSTCollectionViewCell.m in Sources */,
 				4531213519DA972E00FF7EA7 /* PSTGridLayoutInfo.m in Sources */,
@@ -2976,6 +2971,7 @@
 				4531212C19DA972E00FF7EA7 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
 				45B8F31319D9A94300741B4B /* UIImageView+WebCache.m in Sources */,
 				45FB955319CAF5EB0022B30A /* MWPhoto.m in Sources */,
+				5CE5321C19E79CDD00EAB7B9 /* CameraView.m in Sources */,
 				5CF8E30C19D99EBD00B6EE33 /* NSDate+ISO8601Unparsing.m in Sources */,
 				45B8F31019D9A94300741B4B /* UIImage+GIF.m in Sources */,
 				5CBD8F9E19BD87BD00D5F218 /* ImageProcessorImplementation.mm in Sources */,

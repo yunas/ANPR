@@ -6,10 +6,6 @@
 //  Copyright (c) 2014 Muhammad Rashid. All rights reserved.
 //
 
-
-#import <AVFoundation/AVFoundation.h>
-#import <ImageIO/ImageIO.h>
-
 #import "ViewController.h"
 #import "ImageProcessorImplementation.h"
 #include "UIImage+operation.h"
@@ -18,7 +14,7 @@
 #import "MBProgressHUD.h"
 #import "iToast.h"
 #import "PDFCreator.h"
-#import "CameraOverlayView.h"
+#import "CameraView.h"
 
 
 #define kOCRWS_UserName @"ashaheen"
@@ -45,8 +41,6 @@ typedef void(^FailureBlock) (NSError *error);
     NSMutableArray *photos;
     NSMutableArray *bmpPhotos;
     BOOL newData;
-    
-    AVCaptureStillImageOutput *stillImageOutput;
 }
 
 @end
@@ -55,7 +49,6 @@ typedef void(^FailureBlock) (NSError *error);
     ImageProcessorImplementation *processor;
     NSDictionary *numberPlates;
     NSMutableArray *reportsArr;
-    CameraOverlayView *overlay;
 }
 
 #pragma mark - Custom Inits
@@ -145,110 +138,13 @@ typedef void(^FailureBlock) (NSError *error);
     
     [super viewDidLoad];
     
-    
-    
-    
     processor = [[ImageProcessorImplementation alloc] init];
     [self initCustomView];
     [self performSelector:@selector(initTest) withObject:nil afterDelay:2.0];
-    
-    overlay = [CameraOverlayView loadFromNib];
-    overlay.frame = self.view.bounds;
-    [overlay.cancelButton addTarget:self action:@selector(imagePickerControllerDidCancel:) forControlEvents:UIControlEventTouchUpInside];
-    [overlay.captureButton addTarget:self action:@selector(didTaptakePictureButton:) forControlEvents:UIControlEventTouchUpInside];
 }
 
--(AVCaptureDevice *)backFacingCameraIfAvailable{
-    
-    NSArray *videoDevices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    AVCaptureDevice *captureDevice = nil;
-    
-    for (AVCaptureDevice *device in videoDevices){
-        
-        if (device.position == AVCaptureDevicePositionBack){
-            
-            captureDevice = device;
-            break;
-        }
-    }
-    
-    //  couldn't find one on the front, so just get the default video device.
-    if (!captureDevice){
-        
-        captureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    }
-    
-    return captureDevice;
-}
-- (IBAction)scanButtonPressed:(id)sender
-{
-    AVCaptureConnection *videoConnection = nil;
-    for (AVCaptureConnection *connection in stillImageOutput.connections)
-    {
-        for (AVCaptureInputPort *port in [connection inputPorts])
-        {
-            if ([[port mediaType] isEqual:AVMediaTypeVideo] )
-            {
-                videoConnection = connection;
-                break;
-            }
-        }
-        if (videoConnection) { break; }
-    }
-    
-    NSLog(@"about to request a capture from: %@", stillImageOutput);
-    [stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
-     {
-         CFDictionaryRef exifAttachments = CMGetAttachment( imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
-         if (exifAttachments)
-         {
-             // Do something with the attachments.
-             NSLog(@"attachements: %@", exifAttachments);
-         }
-         else
-             NSLog(@"no attachments");
-         
-         NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
-         UIImage *image = [[UIImage alloc] initWithData:imageData];
-         
-         outputImageView.image = image;
-     }];
-}
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    AVCaptureSession *session = [[AVCaptureSession alloc] init];
-    session.sessionPreset = AVCaptureSessionPresetMedium;
-    
-    AVCaptureVideoPreviewLayer *captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
-    
-    CGRect frame = inputImageView.bounds;
-    frame.size.width *=2;
-    
-    captureVideoPreviewLayer.frame = frame;
-    [inputImageView.layer addSublayer:captureVideoPreviewLayer];
-    
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    
-    NSError *error = nil;
-    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
-    if (!input)
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Camera not found. Please use Photo Gallery instead." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-        [alert show];
-    }
-    
-    [session addInput:input];
-    
-    stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
-    NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
-    [stillImageOutput setOutputSettings:outputSettings];
-    
-    [session addOutput:stillImageOutput];
-    
-    [session startRunning];
-
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -292,12 +188,10 @@ typedef void(^FailureBlock) (NSError *error);
     [self automateFromIndex:1 toImageIndex:30];
 }
 
-
 - (IBAction)takePhoto:(id)sender {
     
     outputImageView.image = nil;
     
-    [self scanButtonPressed:sender]; return;
     if (!imagePicker) {
         imagePicker = [UIImagePickerController new];
     }
@@ -501,15 +395,17 @@ typedef void(^FailureBlock) (NSError *error);
     }
     else if(actionSheet.tag == 200 && buttonIndex != actionSheet.cancelButtonIndex){
         if (buttonIndex == 0) {
-            [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
             
-            NSLog(@"%@", NSStringFromCGRect(self.view.bounds));
-            [imagePicker setCameraOverlayView:overlay];
-            [imagePicker setShowsCameraControls:NO];
-            imagePicker.cameraFlashMode = UIImagePickerControllerCameraFlashModeAuto;
+            CameraView *cameraView = [[CameraView alloc] initWithFrame:self.view.bounds completionBlovk:^(UIImage *img) {
+                inputImageView.image = img;
+            }];
+            [self.view addSubview:cameraView];
+            
+//            [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+//            [imagePicker setShowsCameraControls:YES];
+//            imagePicker.cameraFlashMode = UIImagePickerControllerCameraFlashModeAuto;
+//            [self presentViewController:imagePicker animated:YES completion:nil];
 
-            [self presentViewController:imagePicker animated:YES completion:nil];
-            overlay.frame = self.view.bounds;
         }
         else if (buttonIndex == 1) {
             [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary|UIImagePickerControllerSourceTypeSavedPhotosAlbum];
