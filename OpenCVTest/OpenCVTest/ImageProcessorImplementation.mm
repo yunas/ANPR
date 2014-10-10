@@ -230,7 +230,7 @@ using namespace std;
     detectRegions.saveRegions = YES;
     detectRegions.showSteps = false;
     
-    //    posible_regions = detectRegions.run(input_img);
+    // posible_regions = detectRegions.run(input_img);
     
     UIImage *watchTestImg = nil;
     
@@ -362,9 +362,9 @@ using namespace std;
     //SVM for each plate region to get valid car plates
     //Read file storage.
     
-    //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    //    NSString *docs = [paths objectAtIndex:0];
-    //    NSString *vocabPath = [docs stringByAppendingPathComponent:@"SVM.xml"];
+//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//    NSString *docs = [paths objectAtIndex:0];
+//    NSString *vocabPath = [docs stringByAppendingPathComponent:@"SVM.xml"];
     
     NSString *vocabPath = [[NSBundle mainBundle] pathForResource:@"SVM.xml" ofType:nil];
     FileStorage fs([vocabPath UTF8String], FileStorage::READ);

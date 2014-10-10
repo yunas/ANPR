@@ -183,4 +183,35 @@ static CGRect swapWidthAndHeight(CGRect rect)
     
     return img;
 }
+
+- (UIImage *)croppedImage:(CGRect)bounds {
+    
+    UIImage *image = [self rotate:UIImageOrientationUp];
+    CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], bounds);
+    UIImage *croppedImage = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    return croppedImage;
+}
+
+- (UIImage*)resizeImageToWidth:(CGFloat)width {
+    
+    UIImage *sourceImage = self;
+    
+    CGSize imageSize = sourceImage.size;
+    
+    CGFloat scaleFactor = width/imageSize.width;
+    
+    CGSize newSize = CGSizeMake(width, imageSize.height*scaleFactor);
+    
+    CGRect rect = (CGRect){.origin=CGPointZero, .size=newSize};
+
+    UIGraphicsBeginImageContext(rect.size);
+    [sourceImage drawInRect:rect];
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return img;
+    
+}
+
 @end

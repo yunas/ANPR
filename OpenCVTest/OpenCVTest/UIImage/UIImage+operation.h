@@ -14,5 +14,7 @@
 - (UIImage *)scaleImageKeepingAspectRatiotoSize:(CGSize)newSize;
 - (UIImage*)scaleImageToRatina:(CGSize)newSize;
 - (UIImage *)scaleImageToSize:(CGSize)newSize;
+- (UIImage *)croppedImage:(CGRect)bounds;
+- (UIImage*)resizeImageToWidth:(CGFloat)width;
 @end
 
