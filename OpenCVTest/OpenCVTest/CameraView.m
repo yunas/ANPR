@@ -53,6 +53,7 @@
         [switchButton setFrame:CGRectMake(CGRectGetWidth(frame)-60.f, CGRectGetMidY(cancelButton.frame)-15, 50.f, 30.f)];
         switchButton.layer.cornerRadius = 10.f;
         [switchButton addTarget:self action:@selector(switchCamera:) forControlEvents:UIControlEventTouchUpInside];
+        switchButton.hidden = YES;
         [self addSubview:switchButton];
         
         CGRect imgFrame = CGRectMake(0, CGRectGetMaxY(cancelButton.frame)+10.f, CGRectGetWidth(frame), 250);
@@ -241,6 +242,8 @@
          CGImageRef imageRef = CGImageCreateWithImageInRect(photoImage.CGImage, refRect);
          
          UIImage *finalPhoto = [[UIImage alloc] initWithCGImage:imageRef scale:deviceScale orientation:photoImage.imageOrientation];
+         
+         NSLog(@"finalPhoto.size: %@",NSStringFromCGSize(finalPhoto.size));
          
          _block(rotatedImage);
          

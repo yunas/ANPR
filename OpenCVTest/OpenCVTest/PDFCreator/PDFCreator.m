@@ -38,7 +38,7 @@
 
 - (void)drawPageNumber:(NSInteger)pageNumber
 {
-    NSString* pageNumberString = [NSString stringWithFormat:@"Page %d", pageNumber];
+    NSString* pageNumberString = [NSString stringWithFormat:@"Page %ld", (long)pageNumber];
     UIFont* theFont = [UIFont systemFontOfSize:17.0];
     
     CGSize pageNumberStringSize = [pageNumberString sizeWithAttributes:

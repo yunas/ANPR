@@ -56,7 +56,7 @@ typedef void(^FailureBlock) (NSError *error);
 -(void) initCustomView{
     
     photos = [NSMutableArray new];
-    for(int i = 1; i <= 30 ; i++){
+    for(int i = 81; i <= 82 ; i++){
         NSString *urlStr = [NSString stringWithFormat:@"l%d.JPG",i];
         MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
         [photo setCaption:[NSString stringWithFormat:@"%d",i]];
@@ -185,7 +185,7 @@ typedef void(^FailureBlock) (NSError *error);
     reportsArr = [NSMutableArray new];
 //    [reportsArr addObject:@{@"Expected":@"Expected",@"Status":@"Status",@"Observed":@"Observed"}];
     
-    [self automateFromIndex:1 toImageIndex:30];
+    [self automateFromIndex:31 toImageIndex:40];
 }
 
 - (IBAction)takePhoto:(id)sender {
@@ -302,7 +302,7 @@ typedef void(^FailureBlock) (NSError *error);
                 
                     NSError *error = nil;
                     NSString *plateNumber = @"";
-                    NSString *ocrText =  @""; //[self OCRTextFromImage:plateImg withError:&error];
+                    NSString *ocrText = [self OCRTextFromImage:plateImg withError:&error];
                     if (!error) {
                         plateNumber = [self filterPlateNumberFromOCRString:ocrText];
                     }

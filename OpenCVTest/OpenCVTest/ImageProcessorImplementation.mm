@@ -264,7 +264,6 @@ using namespace std;
     vector<RotatedRect> rects;
     rects = detectRegions.getPossibleRegionsAfterFindContour(img_threshold);
     
-    
     cout<<"number of possible regions:"<<rects.size()<<endl;
     
     // for flood fill
@@ -322,8 +321,8 @@ using namespace std;
             posible_regions.push_back(Plate(new_image,minRect.boundingRect()));
             watchTestImg = [UIImage imageWithCVMat:new_image];
             
-            //            Mat contrast_image = detectRegions.enhanceContrast(resultResized);
-            //            posible_regions.push_back(Plate(contrast_image,minRect.boundingRect()));
+//            Mat contrast_image = detectRegions.enhanceContrast(resultResized);
+//            posible_regions.push_back(Plate(contrast_image,minRect.boundingRect()));
         }
     }
     
