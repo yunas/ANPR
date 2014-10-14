@@ -310,10 +310,8 @@ using namespace std;
             watchTestImg = [UIImage imageWithCVMat:grayResult];
             
             Mat new_image = detectRegions.enhanceContrast(resultResized);
-            //            posible_regions.push_back(Plate(new_image,minRect.boundingRect()));
+//            posible_regions.push_back(Plate(new_image,minRect.boundingRect()));
             watchTestImg = [UIImage imageWithCVMat:new_image];
-            
-            
             
             cv::Mat blackNWhiteMat = [watchTestImg CVMat];
             blackNWhiteMat = detectRegions.getGrayScaleMat(blackNWhiteMat);
