@@ -39,8 +39,6 @@ typedef void(^FailureBlock) (NSError *error);
     UIImagePickerController *imagePicker;
     
     NSMutableArray *photos;
-    NSMutableArray *bmpPhotos;
-    BOOL newData;
 }
 
 @end
@@ -56,19 +54,11 @@ typedef void(^FailureBlock) (NSError *error);
 -(void) initCustomView{
     
     photos = [NSMutableArray new];
-    for(int i = 1; i <= 30 ; i++){
+    for(int i = 32; i <= 44 ; i++){
         NSString *urlStr = [NSString stringWithFormat:@"l%d.JPG",i];
         MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
         [photo setCaption:[NSString stringWithFormat:@"%d",i]];
         [photos addObject:photo];
-    }
-    
-    bmpPhotos = [NSMutableArray new];
-    for(int i = 1; i <= 50 ; i++){
-        NSString *urlStr = [NSString stringWithFormat:@"detectsample%d.bmp",i];
-        MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
-        [photo setCaption:[NSString stringWithFormat:@"%d",i]];
-        [bmpPhotos addObject:photo];
     }
 }
 
@@ -185,7 +175,7 @@ typedef void(^FailureBlock) (NSError *error);
     reportsArr = [NSMutableArray new];
 //    [reportsArr addObject:@{@"Expected":@"Expected",@"Status":@"Status",@"Observed":@"Observed"}];
     
-    [self automateFromIndex:1 toImageIndex:30];
+    [self automateFromIndex:31 toImageIndex:44];
 }
 
 - (IBAction)takePhoto:(id)sender {
@@ -208,7 +198,10 @@ typedef void(^FailureBlock) (NSError *error);
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Take photo", @"Choose From Photo library", @"Choose Existing", nil];
+                                                        otherButtonTitles:@"Take photo",
+                                                                          @"Choose From Photo library",
+                                                                          @"Choose Existing",
+                                                                          nil];
         actionSheet.tag = 200;
     } else {
         
@@ -216,7 +209,9 @@ typedef void(^FailureBlock) (NSError *error);
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Choose From Photo library", @"Choose Existing", nil];
+                                                        otherButtonTitles:@"Choose From Photo library",
+                                                                          @"Choose Existing",
+                                                                          nil];
         actionSheet.tag = 100;
     }
     [actionSheet showInView:self.view];
@@ -293,7 +288,6 @@ typedef void(^FailureBlock) (NSError *error);
 
             outputImageView.image = plateImg;
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-
             [self showHudWithText:@"Recognizing Numbers in plate."];
 
             if (plateImg) {
@@ -302,7 +296,7 @@ typedef void(^FailureBlock) (NSError *error);
                 
                     NSError *error = nil;
                     NSString *plateNumber = @"";
-                    NSString *ocrText =  @""; //[self OCRTextFromImage:plateImg withError:&error];
+                    NSString *ocrText = [self OCRTextFromImage:plateImg withError:&error];
                     if (!error) {
                         plateNumber = [self filterPlateNumberFromOCRString:ocrText];
                     }
@@ -381,11 +375,6 @@ typedef void(^FailureBlock) (NSError *error);
             [self presentViewController:imagePicker animated:YES completion:nil];
         }
         else if (buttonIndex == 1) {
-            newData = NO;
-            [self openLibrary];
-        }
-        else if (buttonIndex == 2){
-            newData = YES;
             [self openLibrary];
         }
     }
@@ -416,12 +405,7 @@ typedef void(^FailureBlock) (NSError *error);
             [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary|UIImagePickerControllerSourceTypeSavedPhotosAlbum];
             [self presentViewController:imagePicker animated:YES completion:nil];
         }
-        else if (buttonIndex == 2){
-            newData = NO;
-            [self openLibrary];
-        }
-        else if (buttonIndex == 3) {
-            newData = YES;
+        else if (buttonIndex == 2) {
             [self openLibrary];
         }
 
@@ -432,26 +416,21 @@ typedef void(^FailureBlock) (NSError *error);
 #pragma mark - MWPhotoBrowserDelegate
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
-    return (newData)?bmpPhotos.count:photos.count;
+    return photos.count;
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
     
-    if (newData && index<bmpPhotos.count) {
-        return bmpPhotos[index];
-    }
-    else if (index < photos.count && !newData) {
-        return [photos objectAtIndex:index];
+    if (index < photos.count) {
+        return photos[index];
     }
     return nil;
 }
 
 - (id <MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser thumbPhotoAtIndex:(NSUInteger)index {
-    if (newData && index<bmpPhotos.count) {
-        return bmpPhotos[index];
-    }
-    else if (index < photos.count && !newData) {
-        return [photos objectAtIndex:index];
+    
+    if (index < photos.count) {
+        return photos[index];
     }
     return nil;
 }
@@ -470,7 +449,7 @@ typedef void(^FailureBlock) (NSError *error);
 //    NSLog(@"Did finish modal presentation");
 
     NSUInteger index =  [photoBrowser currentIndex];
-    MWPhoto * photo = (newData)?bmpPhotos[index]:photos [index];
+    MWPhoto * photo = photos [index];
     [inputImageView setImage:photo.image];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
