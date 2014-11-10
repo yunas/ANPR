@@ -39,6 +39,8 @@ typedef void(^FailureBlock) (NSError *error);
     UIImagePickerController *imagePicker;
     
     NSMutableArray *photos;
+    
+    NSInteger count;
 }
 
 @end
@@ -54,7 +56,7 @@ typedef void(^FailureBlock) (NSError *error);
 -(void) initCustomView{
     
     photos = [NSMutableArray new];
-    for(int i = 32; i <= 44 ; i++){
+    for(int i = 1; i <= 36 ; i++){
         NSString *urlStr = [NSString stringWithFormat:@"l%d.JPG",i];
         MWPhoto * photo = [MWPhoto photoWithImage:[UIImage imageNamed:urlStr]];
         [photo setCaption:[NSString stringWithFormat:@"%d",i]];
@@ -112,8 +114,9 @@ typedef void(^FailureBlock) (NSError *error);
     }
     else if (fromIndex > toIndex) {
         [self generatePdf];
+        count = 0;
     }
-    
+    count++;
     NSLog(@"%d,%d",fromIndex, toIndex);
     
 }
@@ -131,6 +134,8 @@ typedef void(^FailureBlock) (NSError *error);
     processor = [[ImageProcessorImplementation alloc] init];
     [self initCustomView];
     [self performSelector:@selector(initTest) withObject:nil afterDelay:2.0];
+    
+    count = 0;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -167,7 +172,7 @@ typedef void(^FailureBlock) (NSError *error);
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
     });
-
+    
 }
 - (IBAction)automateProcess:(id)sender {
   
@@ -175,7 +180,7 @@ typedef void(^FailureBlock) (NSError *error);
     reportsArr = [NSMutableArray new];
 //    [reportsArr addObject:@{@"Expected":@"Expected",@"Status":@"Status",@"Observed":@"Observed"}];
     
-    [self automateFromIndex:31 toImageIndex:44];
+    [self automateFromIndex:1 toImageIndex:36];
 }
 
 - (IBAction)takePhoto:(id)sender {
@@ -269,7 +274,9 @@ typedef void(^FailureBlock) (NSError *error);
   
     NSData *data = UIImageJPEGRepresentation(img, 1);
     NSError *error = nil;
-    [data writeToFile:[self filePath:@"plateImg"] options:NSDataWritingAtomic error:&error];
+    [data writeToFile:[self filePath:[NSString stringWithFormat:@"plateImg_%ld",(long)count]] options:NSDataWritingAtomic error:&error];
+    
+    UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil);
    
 }
 
@@ -289,14 +296,14 @@ typedef void(^FailureBlock) (NSError *error);
             outputImageView.image = plateImg;
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             [self showHudWithText:@"Recognizing Numbers in plate."];
-
+            
             if (plateImg) {
                                 
                 dispatch_async(dispatch_queue_create("web service", 0), ^{
                 
                     NSError *error = nil;
                     NSString *plateNumber = @"";
-                    NSString *ocrText = [self OCRTextFromImage:plateImg withError:&error];
+                    NSString *ocrText = @""; //[self OCRTextFromImage:plateImg withError:&error];
                     if (!error) {
                         plateNumber = [self filterPlateNumberFromOCRString:ocrText];
                     }

@@ -7,11 +7,22 @@
 //
 
 #import "AppDelegate.h"
+#import <sys/utsname.h>
 
 @implementation AppDelegate
 
 
+- (NSString*) machineName{
+    struct utsname systemInfo;
+    uname(&systemInfo);
+    NSString *result = [NSString stringWithCString:systemInfo.machine
+                                          encoding:NSUTF8StringEncoding];
+    return result;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    NSLog(@"%@",[self machineName]);
     
     // Override point for customization after application launch.
     return YES;
