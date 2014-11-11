@@ -8,9 +8,45 @@
 
 #import "AppDelegate.h"
 #import <sys/utsname.h>
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#include <mach/machine.h>
+
 
 @implementation AppDelegate
 
+
+- (NSString *) getCPUType
+{
+    NSMutableString *cpu = [[NSMutableString alloc] init];
+    size_t size;
+    cpu_type_t type;
+    cpu_subtype_t subtype;
+    size = sizeof(type);
+    sysctlbyname("hw.cputype", &type, &size, NULL, 0);
+    
+    size = sizeof(subtype);
+    sysctlbyname("hw.cpusubtype", &subtype, &size, NULL, 0);
+    
+    // values for cputype and cpusubtype defined in mach/machine.h
+    if (type == CPU_TYPE_X86)
+    {
+        [cpu appendString:@"x86 "];
+        // check for subtype ...
+        
+    } else if (type == CPU_TYPE_ARM)
+    {
+        [cpu appendString:@"ARM"];
+        switch(subtype)
+        {
+            case CPU_SUBTYPE_ARM_V7:
+                [cpu appendString:@"V7"];
+                break;
+                // ...
+        }
+    }
+    return cpu;
+}
 
 - (NSString*) machineName{
     struct utsname systemInfo;
@@ -22,7 +58,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    NSLog(@"%@",[self machineName]);
+    if (sizeof(void*) == 4) {
+        NSLog(@"heen:32");
+    } else if (sizeof(void*) == 8) {
+        NSLog(@"heen:64");
+    }
     
     // Override point for customization after application launch.
     return YES;
