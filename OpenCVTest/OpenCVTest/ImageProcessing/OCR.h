@@ -12,6 +12,8 @@
 #ifndef OCR_h
 #define OCR_h
 
+#import <opencv2/opencv.hpp>
+
 #include <string.h>
 #include <vector>
 

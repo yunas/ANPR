@@ -303,7 +303,7 @@ typedef void(^FailureBlock) (NSError *error);
                 
                     NSError *error = nil;
                     NSString *plateNumber = @"";
-                    NSString *ocrText = @""; //[self OCRTextFromImage:plateImg withError:&error];
+                    NSString *ocrText = [self OCRTextFromImage:plateImg withError:&error];
                     if (!error) {
                         plateNumber = [self filterPlateNumberFromOCRString:ocrText];
                     }

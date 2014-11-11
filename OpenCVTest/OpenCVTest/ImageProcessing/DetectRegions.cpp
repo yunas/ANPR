@@ -180,12 +180,9 @@ Mat DetectRegions::getBlurMat(Mat source) {
     return img_blur;
 }
 Mat DetectRegions::getSobelFilteredMat(Mat img_gray) {
+
     Mat img_sobel;
-    
-//    Sobel(img_gray, img_sobel, CV_8U, 1, 0, CV_SCHARR, 1, 0, BORDER_DEFAULT);
-    
     Sobel(img_gray, img_sobel, CV_8U, 1, 0, 3, 1, 0, BORDER_DEFAULT);
-    
     return img_sobel;
 }
 Mat DetectRegions::getThresholdMat(Mat img_sobel) {

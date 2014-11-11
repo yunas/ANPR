@@ -33,7 +33,7 @@ public:
     void setFilename(string f);
     bool saveRegions;
     bool showSteps;
-    vector<Plate> run(Mat input);
+    vector<Plate> run(cv::Mat input);
 
     vector<Plate> drawRegion(Mat input);
     Mat testingDrawRegion(Mat input);

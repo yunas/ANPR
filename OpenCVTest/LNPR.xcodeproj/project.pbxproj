@@ -21,7 +21,6 @@
 		4531213619DA972E00FF7EA7 /* PSTGridLayoutItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531212719DA972E00FF7EA7 /* PSTGridLayoutItem.m */; };
 		4531213719DA972E00FF7EA7 /* PSTGridLayoutRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531212919DA972E00FF7EA7 /* PSTGridLayoutRow.m */; };
 		4531213819DA972E00FF7EA7 /* PSTGridLayoutSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531212B19DA972E00FF7EA7 /* PSTGridLayoutSection.m */; };
-		4534C94019CAE8B800E563BC /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4534C93F19CAE8B800E563BC /* opencv2.framework */; };
 		455CBEED19DEBCFD00496725 /* NumberPlates.plist in Resources */ = {isa = PBXBuildFile; fileRef = 455CBEEC19DEBCFD00496725 /* NumberPlates.plist */; };
 		455CBEF319DEEAAF00496725 /* PDFCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 455CBEF219DEEAAF00496725 /* PDFCreator.m */; };
 		45B8F2F319D9A94300741B4B /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B8F2AE19D9A94300741B4B /* DACircularProgressView.m */; };
@@ -60,12 +59,13 @@
 		5C1AF25719DC4C2A00718334 /* l27.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5C1AF25519DC4C2A00718334 /* l27.JPG */; };
 		5C1AF25819DC4C2A00718334 /* l28.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5C1AF25619DC4C2A00718334 /* l28.JPG */; };
 		5C38BAA619C1B70C0083CE87 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */; };
-		5C5441E119C9809C009D1445 /* OCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C5441DE19C9809C009D1445 /* OCR.cpp */; };
-		5C5441E219C9809C009D1445 /* trainOCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C5441E019C9809C009D1445 /* trainOCR.cpp */; };
 		5C5A9EF019B8A4620080DCEC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EEF19B8A4620080DCEC /* libz.dylib */; };
 		5C5A9EF219B8A4770080DCEC /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EF119B8A4770080DCEC /* libc++.dylib */; };
 		5C5A9EF319B8A4890080DCEC /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EED19B8A44F0080DCEC /* ImageIO.framework */; };
 		5C5A9EF519B8A4950080DCEC /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EF419B8A4950080DCEC /* CoreMedia.framework */; };
+		5C7B78BE1A12183800886E80 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C7B78BD1A12183800886E80 /* opencv2.framework */; };
+		5C7B78C21A1218B100886E80 /* OCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C7B78BF1A1218B100886E80 /* OCR.cpp */; };
+		5C7B78C31A1218B100886E80 /* trainOCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C7B78C11A1218B100886E80 /* trainOCR.cpp */; };
 		5CA3026119B6EA9400A1337A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026019B6EA9400A1337A /* Foundation.framework */; };
 		5CA3026319B6EA9400A1337A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026219B6EA9400A1337A /* CoreGraphics.framework */; };
 		5CA3026519B6EA9500A1337A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026419B6EA9500A1337A /* UIKit.framework */; };
@@ -621,7 +621,6 @@
 		4531212919DA972E00FF7EA7 /* PSTGridLayoutRow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTGridLayoutRow.m; sourceTree = "<group>"; };
 		4531212A19DA972E00FF7EA7 /* PSTGridLayoutSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PSTGridLayoutSection.h; sourceTree = "<group>"; };
 		4531212B19DA972E00FF7EA7 /* PSTGridLayoutSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PSTGridLayoutSection.m; sourceTree = "<group>"; };
-		4534C93F19CAE8B800E563BC /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		455CBEEC19DEBCFD00496725 /* NumberPlates.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NumberPlates.plist; sourceTree = "<group>"; };
 		455CBEF119DEEAAF00496725 /* PDFCreator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PDFCreator.h; path = PDFCreator/PDFCreator.h; sourceTree = "<group>"; };
 		455CBEF219DEEAAF00496725 /* PDFCreator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PDFCreator.m; path = PDFCreator/PDFCreator.m; sourceTree = "<group>"; };
@@ -693,13 +692,14 @@
 		5C1AF25519DC4C2A00718334 /* l27.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l27.JPG; sourceTree = "<group>"; };
 		5C1AF25619DC4C2A00718334 /* l28.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l28.JPG; sourceTree = "<group>"; };
 		5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		5C5441DE19C9809C009D1445 /* OCR.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OCR.cpp; sourceTree = "<group>"; };
-		5C5441DF19C9809C009D1445 /* OCR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCR.h; sourceTree = "<group>"; };
-		5C5441E019C9809C009D1445 /* trainOCR.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = trainOCR.cpp; sourceTree = "<group>"; };
 		5C5A9EED19B8A44F0080DCEC /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		5C5A9EEF19B8A4620080DCEC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5C5A9EF119B8A4770080DCEC /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		5C5A9EF419B8A4950080DCEC /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		5C7B78BD1A12183800886E80 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
+		5C7B78BF1A1218B100886E80 /* OCR.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OCR.cpp; sourceTree = "<group>"; };
+		5C7B78C01A1218B100886E80 /* OCR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCR.h; sourceTree = "<group>"; };
+		5C7B78C11A1218B100886E80 /* trainOCR.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = trainOCR.cpp; sourceTree = "<group>"; };
 		5CA3025D19B6EA9400A1337A /* OpenCVTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenCVTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CA3026019B6EA9400A1337A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5CA3026219B6EA9400A1337A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1243,7 +1243,7 @@
 				5CF8E31219D99F6D00B6EE33 /* libxml2.dylib in Frameworks */,
 				5C38BAA619C1B70C0083CE87 /* SystemConfiguration.framework in Frameworks */,
 				5C5A9EF519B8A4950080DCEC /* CoreMedia.framework in Frameworks */,
-				4534C94019CAE8B800E563BC /* opencv2.framework in Frameworks */,
+				5C7B78BE1A12183800886E80 /* opencv2.framework in Frameworks */,
 				5C5A9EF219B8A4770080DCEC /* libc++.dylib in Frameworks */,
 				5C5A9EF019B8A4620080DCEC /* libz.dylib in Frameworks */,
 				5CA3026319B6EA9400A1337A /* CoreGraphics.framework in Frameworks */,
@@ -1475,10 +1475,10 @@
 		5CA3025F19B6EA9400A1337A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5C7B78BD1A12183800886E80 /* opencv2.framework */,
 				5C0AD0F519E6D14E00070335 /* AVFoundation.framework */,
 				450A98FE19E0EA3B00D0BF40 /* MessageUI.framework */,
 				5CF8E31119D99F6D00B6EE33 /* libxml2.dylib */,
-				4534C93F19CAE8B800E563BC /* opencv2.framework */,
 				5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */,
 				5C5A9EF419B8A4950080DCEC /* CoreMedia.framework */,
 				5C5A9EF119B8A4770080DCEC /* libc++.dylib */,
@@ -1614,14 +1614,14 @@
 			isa = PBXGroup;
 			children = (
 				5C198EC819C1D606001EBF92 /* DetectRegions.cpp */,
+				5C7B78BF1A1218B100886E80 /* OCR.cpp */,
+				5C7B78C01A1218B100886E80 /* OCR.h */,
+				5C7B78C11A1218B100886E80 /* trainOCR.cpp */,
 				5C198EC919C1D606001EBF92 /* DetectRegions.h */,
 				5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */,
 				5C08A6EE19C716C900ACC4B7 /* HarissDetector.h */,
-				5C5441DE19C9809C009D1445 /* OCR.cpp */,
-				5C5441DF19C9809C009D1445 /* OCR.h */,
 				5C198ECA19C1D606001EBF92 /* Plate.cpp */,
 				5C198ECB19C1D606001EBF92 /* Plate.h */,
-				5C5441E019C9809C009D1445 /* trainOCR.cpp */,
 			);
 			name = "Plate Detection";
 			sourceTree = "<group>";
@@ -2210,7 +2210,7 @@
 		5CA3025519B6EA9400A1337A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Muhammad Rashid";
 				TargetAttributes = {
 					5CA3025C19B6EA9400A1337A = {
@@ -2757,7 +2757,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C5441E119C9809C009D1445 /* OCR.cpp in Sources */,
 				5CF8E2FD19D99DC100B6EE33 /* iToast.m in Sources */,
 				45B8F30C19D9A94300741B4B /* SDWebImageDownloaderOperation.m in Sources */,
 				5CF8E12A19D9446100B6EE33 /* UIImage+operation.m in Sources */,
@@ -2792,13 +2791,13 @@
 				45B8F31019D9A94300741B4B /* UIImage+GIF.m in Sources */,
 				5CBD8F9E19BD87BD00D5F218 /* ImageProcessorImplementation.mm in Sources */,
 				45FB955419CAF5EB0022B30A /* MWPhotoBrowser.m in Sources */,
+				5C7B78C31A1218B100886E80 /* trainOCR.cpp in Sources */,
 				45B8F30D19D9A94300741B4B /* SDWebImageManager.m in Sources */,
 				4531212D19DA972E00FF7EA7 /* PSTCollectionView.m in Sources */,
 				4531213319DA972E00FF7EA7 /* PSTCollectionViewLayout.m in Sources */,
 				5CF8E30E19D99EBD00B6EE33 /* USAdditions.m in Sources */,
 				5CEC104C19C8215E00BDFCF4 /* TrainSVM.cpp in Sources */,
 				45B8F30619D9A94300741B4B /* NSData+GIF.m in Sources */,
-				5C5441E219C9809C009D1445 /* trainOCR.cpp in Sources */,
 				5CF8E30F19D99EBD00B6EE33 /* USGlobals.m in Sources */,
 				45FB955219CAF5EB0022B30A /* MWGridViewController.m in Sources */,
 				5CF8E31019D99EBD00B6EE33 /* xsd.m in Sources */,
@@ -2807,6 +2806,7 @@
 				45FB955019CAF5EB0022B30A /* MWCaptionView.m in Sources */,
 				45B8F30719D9A94300741B4B /* NSData+ImageContentType.m in Sources */,
 				5CA3027719B6EA9500A1337A /* ViewController.m in Sources */,
+				5C7B78C21A1218B100886E80 /* OCR.cpp in Sources */,
 				5CF8E30B19D99EBD00B6EE33 /* NSDate+ISO8601Parsing.m in Sources */,
 				45B8F30F19D9A94300741B4B /* UIButton+WebCache.m in Sources */,
 				4531213119DA972E00FF7EA7 /* PSTCollectionViewFlowLayout.m in Sources */,
@@ -2871,7 +2871,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2925,7 +2924,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;

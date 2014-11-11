@@ -12,6 +12,36 @@
 #import <AVFoundation/AVFoundation.h>
 #import <ImageIO/ImageIO.h>
 
+@interface Rectangle : UIView
+@property (nonatomic) CGFloat lineWidth;
+@end
+
+@implementation Rectangle
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    
+    self = [super initWithFrame:frame];
+    
+    if (self) {
+        self.backgroundColor = [UIColor clearColor];
+        self.lineWidth = 1.5f;
+    }
+    
+    return self;
+}
+
+- (void)drawRect:(CGRect)rect {
+    
+    [super drawRect:rect];
+    
+    CGRect subRect = CGRectInset(rect, _lineWidth, _lineWidth);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetStrokeColorWithColor(context, [UIColor greenColor].CGColor);
+    CGContextStrokeRectWithWidth(context, subRect, _lineWidth);
+}
+
+@end
 
 @interface CameraView () {
     AVCaptureStillImageOutput *stillImageOutput;
@@ -56,18 +86,26 @@
         switchButton.hidden = YES;
         [self addSubview:switchButton];
         
-        CGRect imgFrame = CGRectMake(0, CGRectGetMaxY(cancelButton.frame)+10.f, CGRectGetWidth(frame), 250);
-        canvasView = [[UIImageView alloc] initWithFrame:imgFrame];
-        [canvasView setBackgroundColor:[UIColor redColor]];
+        CGRect imgCaptureFrame = CGRectMake(0, CGRectGetMaxY(cancelButton.frame)+10.f, CGRectGetWidth(frame), 300.f);
+        canvasView = [[UIImageView alloc] initWithFrame:imgCaptureFrame];
+        [canvasView setBackgroundColor:[UIColor clearColor]];
         [self addSubview:canvasView];
         
         takePhotoButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [takePhotoButton setImage:[UIImage imageNamed:@"captureButton"] forState:UIControlStateNormal];
-        [takePhotoButton setFrame:CGRectMake(0, CGRectGetMaxY(imgFrame)+20.f, 57.5, 30.f)];
+        [takePhotoButton setFrame:CGRectMake(0, CGRectGetMaxY(imgCaptureFrame)+20.f, 57.5, 30.f)];
         CGPoint center = CGPointMake(self.center.x, takePhotoButton.center.y);
         takePhotoButton.center = center;
         [takePhotoButton addTarget:self action:@selector(takePicture:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:takePhotoButton];
+        
+        CGRect rectViewFrame = CGRectInset(imgCaptureFrame, imgCaptureFrame.size.width*0.2, imgCaptureFrame.size.height*0.4);
+        
+        NSLog(@"%@",NSStringFromCGRect(rectViewFrame));
+        
+        Rectangle *rectView = [[Rectangle alloc] initWithFrame:rectViewFrame];
+        rectView.userInteractionEnabled = NO;
+        [self addSubview:rectView];
         
         [self startSession];
     }
@@ -237,7 +275,11 @@
          
          UIImage *photoImage = [rotatedImage copy];
          
-         CGRect refRect = canvasView.frame; //Define this to the exact frame which you want to crop the larger image to i.e. with smaller frame.size.height
+         CGSize imageSize = photoImage.size;
+         
+         //Define this to the exact frame which you want to crop the larger image to i.e. with smaller frame.size.height
+         CGRect refRect = CGRectMake(imageSize.width*0.15, imageSize.height*0.2, imageSize.width*0.7, imageSize.height*0.6);
+         
          CGFloat deviceScale = photoImage.scale;
          CGImageRef imageRef = CGImageCreateWithImageInRect(photoImage.CGImage, refRect);
          
@@ -245,10 +287,9 @@
          
          NSLog(@"finalPhoto.size: %@",NSStringFromCGSize(finalPhoto.size));
          
-         _block(rotatedImage);
+         _block(finalPhoto);
          
          [self hideCameraView:sender];
-         
      }];
 }
 
