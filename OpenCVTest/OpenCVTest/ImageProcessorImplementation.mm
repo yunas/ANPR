@@ -117,32 +117,36 @@ using namespace std;
             img_rotated = detectRegions.rotateImageMat(input_img, rotmat);
             watchTestImg = [UIImage imageWithCVMat:img_rotated];
             
+            minRect.size.width +=2.5;
+            minRect.size.height +=10;
+            
             //Crop image
             Mat img_crop;
             img_crop = detectRegions.getCroppedMat(img_rotated, minRect);
             watchTestImg = [UIImage imageWithCVMat:img_crop];
             
-            Mat resultResized;
-            resultResized = detectRegions.getResizedMat(img_crop, cv::Size(300,69));
-            watchTestImg = [UIImage imageWithCVMat:resultResized];
+            Mat img_resized;
+            img_resized = detectRegions.getResizedMat(img_crop, cv::Size(300,69));
+            watchTestImg = [UIImage imageWithCVMat:img_resized];
             
             //Equalize croped image
-            Mat grayResult;
-            grayResult = detectRegions.getNormalisedGrayscaleMat(resultResized);
-            watchTestImg = [UIImage imageWithCVMat:grayResult];
+            Mat img_grayResult;
+            img_grayResult = detectRegions.getNormalisedGrayscaleMat(img_resized);
+            watchTestImg = [UIImage imageWithCVMat:img_grayResult];
             
-            Mat new_image = detectRegions.enhanceContrast(resultResized);
-            //            posible_regions.push_back(Plate(new_image,minRect.boundingRect()));
-            watchTestImg = [UIImage imageWithCVMat:new_image];
+            Mat img_contrast = detectRegions.enhanceContrast(img_grayResult);
+//            posible_regions.push_back(Plate(img_contrast,minRect.boundingRect()));
+            watchTestImg = [UIImage imageWithCVMat:img_contrast];
+
+            //12/11/2014
+//            cv::Mat blackNWhiteMat = [watchTestImg CVMat];
+//            blackNWhiteMat = detectRegions.getGrayScaleMat(blackNWhiteMat);
+//            img_contrast = detectRegions.getThresholdMat(blackNWhiteMat);
+            posible_regions.push_back(Plate(img_contrast,minRect.boundingRect()));
+            watchTestImg = [UIImage imageWithCVMat:img_contrast];
             
-            cv::Mat blackNWhiteMat = [watchTestImg CVMat];
-            blackNWhiteMat = detectRegions.getGrayScaleMat(blackNWhiteMat);
-            new_image = detectRegions.getThresholdMat(blackNWhiteMat);
-            posible_regions.push_back(Plate(new_image,minRect.boundingRect()));
-            watchTestImg = [UIImage imageWithCVMat:new_image];
-            
-            //            Mat contrast_image = detectRegions.enhanceContrast(resultResized);
-            //            posible_regions.push_back(Plate(contrast_image,minRect.boundingRect()));
+//            Mat contrast_image = detectRegions.enhanceContrast(img_resized);
+//            posible_regions.push_back(Plate(contrast_image,minRect.boundingRect()));
         }
     }
     
@@ -359,293 +363,11 @@ using namespace std;
     return newOutImg;
 }
 
-+ (Mat)preProcessingWithSobel:(Mat)input_img {
-
-    // Algo
-    // 1. pre processing => image to gray scale
-    // 2. Apply Gaussian Blur of 5x5
-    // 3. Apply Sobel filter
-    // 4. Apply threshold and morphological operation
-    // 5. Apply Contours to fetch Possible Regions
-    // 6.
-    
-    // input image
-    vector<Plate> posible_regions;
-    
-    DetectRegions detectRegions;
-    detectRegions.setFilename("12");
-    detectRegions.saveRegions = YES;
-    detectRegions.showSteps = false;
-    
-    UIImage *watchTestImg = nil;
-    
-    // pre processing => image to gray scale
-    cv::Mat img_gray = detectRegions.getGrayScaleMat(input_img);
-    
-    watchTestImg = [UIImage imageWithCVMat:img_gray];
-    
-    if (input_img.channels()==4) {
-        
-        Mat temp;
-        cv::cvtColor(input_img, temp, COLOR_BGRA2BGR);
-        temp.copyTo(input_img);
-    }
-    
-    // apply gaussian blur of 5x5
-    Mat img_blur = detectRegions.getBlurMat(img_gray);
-    
-    watchTestImg = [UIImage imageWithCVMat:img_blur];
-    //Finde vertical lines. Car plates have high density of vertical lines
-    Mat img_sobel;
-    img_sobel = detectRegions.getSobelFilteredMat(img_blur);
-    watchTestImg = [UIImage imageWithCVMat:img_sobel];
-    
-    //threshold image & Morphplogic operation close
-    Mat img_threshold;
-    img_threshold = detectRegions.getMorpholgyMat(img_sobel);
-    watchTestImg = [UIImage imageWithCVMat:img_threshold];
-    
-    return img_threshold;
-}
-
-+ (UIImage*)numberPlateFromCarImageOldImplementation:(UIImage*)image imageName:(NSString *)name {
-    
-    // Algo
-    // 1. pre processing => image to gray scale
-    // 2. Apply Gaussian Blur of 5x5
-    // 3. Apply Sobel filter
-    // 4. Apply threshold and morphological operation
-    // 5. Apply Contours to fetch Possible Regions
-    // 6.
-    
-    
-    // input image
-    cv::Mat input_img = [image CVMat];
-    cv::Mat input_imgDebug = [image CVMat];
-    
-    vector<Plate> posible_regions;
-    
-    DetectRegions detectRegions;
-    detectRegions.setFilename("12");
-    detectRegions.saveRegions = YES;
-    detectRegions.showSteps = false;
-    
-    UIImage *watchTestImg = nil;
-    
-    // pre processing => image to gray scale
-    cv::Mat img_gray = detectRegions.getGrayScaleMat(input_img);
-    
-    watchTestImg = [UIImage imageWithCVMat:img_gray];
-    
-    if (input_img.channels()==4) {
-        
-        Mat temp;
-        cv::cvtColor(input_img, temp, COLOR_BGRA2BGR);
-        temp.copyTo(input_img);
-    }
-    
-    // apply gaussian blur of 5x5
-    Mat img_blur = detectRegions.getBlurMat(img_gray);
-    
-    watchTestImg = [UIImage imageWithCVMat:img_blur];
-    //Finde vertical lines. Car plates have high density of vertical lines
-    Mat img_sobel;
-    img_sobel = detectRegions.getSobelFilteredMat(img_blur);
-    watchTestImg = [UIImage imageWithCVMat:img_sobel];
-    
-    //threshold image & Morphplogic operation close
-    Mat img_threshold;
-    img_threshold = detectRegions.getMorpholgyMat(img_sobel);
-    watchTestImg = [UIImage imageWithCVMat:img_threshold];
-    
-    //Find contours of possibles plates
-    vector<RotatedRect> rects;
-    rects = detectRegions.getPossibleRegionsAfterFindContour(img_threshold);
- 
-    for (int i = 0 ; i< rects.size(); i++) {
-        if (i == 0) {
-            rectangle(input_imgDebug, rects[i].boundingRect(), Scalar(255,0,0));
-        }
-        if (i == 1) {
-            rectangle(input_imgDebug, rects[i].boundingRect(), Scalar(0,255,0));
-        }
-        if (i == 2) {
-            rectangle(input_imgDebug, rects[i].boundingRect(), Scalar(0,0,255));
-        }
-
-        watchTestImg = [UIImage imageWithCVMat:input_imgDebug];
-    }
-    watchTestImg = [UIImage imageWithCVMat:input_imgDebug];
-    
-    RotatedRect possiblePlateRect = getOnePossiblePlateRegion(rects, 0.5);
-    rectangle(input_imgDebug, possiblePlateRect.boundingRect(), Scalar(0,255,0),3);
-    watchTestImg = [UIImage imageWithCVMat:input_imgDebug];
-
-    
-    cout<<"number of possible regions:"<<rects.size()<<endl;
-
-    if (rects.size() == 0){
-        return nil;
-    }
-    else if (rects.size() == 1){
-        if (possiblePlateRect.size == cv::Size2f(0,0)){
-            return nil;
-        }
-    }
-    
-    cout<<"possiblePlateRect.boundingRect() => "<<possiblePlateRect.boundingRect()<<possiblePlateRect.angle<<endl;
-        
-    return [ImageProcessorImplementation extractPlateImageFrom:input_img region:possiblePlateRect];
-}
-
-+ (UIImage*)extractPlateImageFrom:(Mat)input_img region:(RotatedRect)possiblePlateRect{
-    
-    DetectRegions detectRegions;
-    detectRegions.setFilename("12");
-    detectRegions.saveRegions = YES;
-    detectRegions.showSteps = false;
-    
-    vector<Plate> posible_regions;
-    UIImage *watchTestImg = nil;
-    
-    // for flood fill
-    cv::Mat result;
-    input_img.copyTo(result);
-    
-    Mat mask;
-    mask = detectRegions.getFloodFillMask(input_img, result, possiblePlateRect);
-    
-    watchTestImg = [UIImage imageWithCVMat:mask];
-    
-    RotatedRect minRect = detectRegions.getDetectedPlateRectFromMask(mask);
-    
-    //Get rotation matrix
-    Mat rotmat = detectRegions.getRotated2by3MatFromDetectedRectangle(minRect);
-    watchTestImg = [UIImage imageWithCVMat:rotmat];
-    
-    //Create and rotate image
-    Mat img_rotated;
-    img_rotated = detectRegions.rotateImageMat(input_img, rotmat);
-    watchTestImg = [UIImage imageWithCVMat:img_rotated];
-    
-    //Crop image
-    Mat img_crop;
-    img_crop = detectRegions.getCroppedMat(img_rotated, minRect);
-    watchTestImg = [UIImage imageWithCVMat:img_crop];
-    
-    Mat resultResized;
-    resultResized = detectRegions.getResizedMat(img_crop, cv::Size(300,69));
-    watchTestImg = [UIImage imageWithCVMat:resultResized];
-    
-    //Equalize croped image
-    Mat grayResult;
-    grayResult = detectRegions.getNormalisedGrayscaleMat(resultResized);
-    watchTestImg = [UIImage imageWithCVMat:grayResult];
-    
-    Mat new_image = detectRegions.enhanceContrast(resultResized);
-    watchTestImg = [UIImage imageWithCVMat:new_image];
-    
-    cv::Mat blackNWhiteMat = [watchTestImg CVMat];
-    blackNWhiteMat = detectRegions.getGrayScaleMat(blackNWhiteMat);
-    new_image = detectRegions.getThresholdMat(blackNWhiteMat);
-    posible_regions.push_back(Plate(new_image,minRect.boundingRect()));
-    watchTestImg = [UIImage imageWithCVMat:new_image];
-    
-    cout<<"detected plate regions:"<<posible_regions.size()<<endl;
-    
-    UIImage *outImage = nil;
-    NSData *data = nil;
-    NSString* filePath = nil;
-    
-    for (int i=0; i<posible_regions.size(); i++) {
-        
-        Plate rect = posible_regions[i];
-        
-        outImage = [UIImage imageWithCVMat:rect.plateImg];
-        
-        data = UIImageJPEGRepresentation(outImage, 1);
-        filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"detected_%d",i]];
-        [data writeToFile:filePath atomically:YES];
-    }
-    
-    return outImage;
-}
-
-
-+ (UIImage*)numberPlateWithSobelFromCarImage:(UIImage*)image imageName:(NSString *)name {
-
-    // Algo
-    // 1. pre processing => image to gray scale
-    // 2. Apply Gaussian Blur of 5x5
-    // 3. Apply Sobel filter
-    // 4. Apply threshold and morphological operation
-    // 5. Apply Contours to fetch Possible Regions
-    // 6.
-    
-    // input image
-    cv::Mat input_img = [image CVMat];
-    cv::Mat input_imgDebug = [image CVMat];
-    vector<Plate> posible_regions;
-    
-    DetectRegions detectRegions;
-    detectRegions.setFilename("12");
-    detectRegions.saveRegions = YES;
-    detectRegions.showSteps = false;
-    
-    UIImage *watchTestImg = nil;
-    
-    // pre processing => image to gray scale
-    cv::Mat img_gray = detectRegions.getGrayScaleMat(input_img);
-    
-    watchTestImg = [UIImage imageWithCVMat:img_gray];
-    
-    if (input_img.channels()==4) {
-        
-        Mat temp;
-        cv::cvtColor(input_img, temp, COLOR_BGRA2BGR);
-        temp.copyTo(input_img);
-    }
-    
-    // apply gaussian blur of 5x5
-    Mat img_blur = detectRegions.getBlurMat(img_gray);
-    
-    watchTestImg = [UIImage imageWithCVMat:img_blur];
-    //Finde vertical lines. Car plates have high density of vertical lines
-    Mat img_sobel;
-    img_sobel = detectRegions.getSobelFilteredMat(img_blur);
-    watchTestImg = [UIImage imageWithCVMat:img_sobel];
-    
-    //threshold image & Morphplogic operation close
-    Mat img_threshold;
-    img_threshold = detectRegions.getMorpholgyMat(img_sobel);
-    watchTestImg = [UIImage imageWithCVMat:img_threshold];
-    
-    //Find contours of possibles plates
-    vector<RotatedRect> rects;
-    rects = detectRegions.getPossibleRegionsAfterFindContour(img_threshold);
-    
-    for (int i = 0 ; i< rects.size(); i++) {
-        rectangle(input_imgDebug, rects[i].boundingRect(), Scalar(255,0,0));
-    }
-    watchTestImg = [UIImage imageWithCVMat:input_imgDebug];
-    
-    RotatedRect possiblePlateRect = getOnePossiblePlateRegion(rects, 0.5);
-    rectangle(input_img, possiblePlateRect.boundingRect(), Scalar(0,255,0),3);
-    watchTestImg = [UIImage imageWithCVMat:input_imgDebug];
-    
-    cout<<"number of possible regions:"<<rects.size()<<endl;
-    
-    return [ImageProcessorImplementation extractPlateImageFrom:input_img region:possiblePlateRect];
-}
-
-
 + (UIImage *)numberPlateFromCarImage:(UIImage*)src imageName:(NSString*)name edgeDetectionType:(EdgeDetectionType)type {
     
     UIImage *outImg = nil;
     
     if (type == EdgeDetectionTypeSobel) {
-//        outImg = [ImageProcessorImplementation numberPlateWithSobelFromCarImage:src imageName:name];
-//        outImg = [ImageProcessorImplementation numberPlateFromCarImageOldImplementation:src imageName:name];
         outImg = [ImageProcessorImplementation numberPlateFromCarImage:src imageName:name];
     }
     else if (type == EdgeDetectionTypeCanny) {
@@ -674,9 +396,8 @@ using namespace std;
 }
 
 + (UIImage *)ShiTomasiCornerDetector:(UIImage*)source {
+    
     cv::Mat input_image = [source CVMat];
-    
-    
     HarissDetector hariss;
     
     cv::Mat output = hariss.goodFeaturesToTrack_Demo(input_image);
@@ -939,7 +660,6 @@ using namespace std;
     return outImage;
 }
 
-
 #pragma mark - instance methods
 
 
@@ -988,7 +708,6 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error) {
     else {
         return newRects[0];
     }
-    
 }
 
 bool verifySizes(cv::RotatedRect mr, float error){

@@ -236,7 +236,6 @@ typedef void(^FailureBlock) (NSError *error);
 
 - (IBAction)processandsave:(id)sender {
     
-    
     /*
      Perform plate detection on predefined images.
     */
@@ -276,7 +275,7 @@ typedef void(^FailureBlock) (NSError *error);
     NSError *error = nil;
     [data writeToFile:[self filePath:[NSString stringWithFormat:@"plateImg_%ld",(long)count]] options:NSDataWritingAtomic error:&error];
     
-    UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil);
+//    UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil);
    
 }
 

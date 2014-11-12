@@ -99,7 +99,7 @@
         [takePhotoButton addTarget:self action:@selector(takePicture:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:takePhotoButton];
         
-        CGRect rectViewFrame = CGRectInset(imgCaptureFrame, imgCaptureFrame.size.width*0.2, imgCaptureFrame.size.height*0.4);
+        CGRect rectViewFrame = CGRectInset(imgCaptureFrame, imgCaptureFrame.size.width*0.3, imgCaptureFrame.size.height*0.43);
         
         NSLog(@"%@",NSStringFromCGRect(rectViewFrame));
         
@@ -278,7 +278,7 @@
          CGSize imageSize = photoImage.size;
          
          //Define this to the exact frame which you want to crop the larger image to i.e. with smaller frame.size.height
-         CGRect refRect = CGRectMake(imageSize.width*0.15, imageSize.height*0.2, imageSize.width*0.7, imageSize.height*0.6);
+         CGRect refRect = CGRectMake(imageSize.width*0.1, imageSize.height*0.2, imageSize.width*0.8, imageSize.height*0.6);
          
          CGFloat deviceScale = photoImage.scale;
          CGImageRef imageRef = CGImageCreateWithImageInRect(photoImage.CGImage, refRect);
