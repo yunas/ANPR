@@ -58,12 +58,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    if (sizeof(void*) == 4) {
-        NSLog(@"heen:32");
-    } else if (sizeof(void*) == 8) {
-        NSLog(@"heen:64");
-    }
-    
     // Override point for customization after application launch.
     return YES;
 }
