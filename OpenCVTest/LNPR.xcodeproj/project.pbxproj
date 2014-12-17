@@ -58,6 +58,8 @@
 		5C198ECD19C1D606001EBF92 /* Plate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C198ECA19C1D606001EBF92 /* Plate.cpp */; };
 		5C1AF25719DC4C2A00718334 /* l27.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5C1AF25519DC4C2A00718334 /* l27.JPG */; };
 		5C1AF25819DC4C2A00718334 /* l28.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5C1AF25619DC4C2A00718334 /* l28.JPG */; };
+		5C323EB31A3B190F006D6E9A /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CF8E31119D99F6D00B6EE33 /* libxml2.dylib */; };
+		5C323EB91A3B1D61006D6E9A /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 5C323EB81A3B1D61006D6E9A /* tessdata */; };
 		5C38BAA619C1B70C0083CE87 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */; };
 		5C5A9EF019B8A4620080DCEC /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EEF19B8A4620080DCEC /* libz.dylib */; };
 		5C5A9EF219B8A4770080DCEC /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EF119B8A4770080DCEC /* libc++.dylib */; };
@@ -578,7 +580,7 @@
 		5CF8E30E19D99EBD00B6EE33 /* USAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF8E30619D99EBD00B6EE33 /* USAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5CF8E30F19D99EBD00B6EE33 /* USGlobals.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF8E30819D99EBD00B6EE33 /* USGlobals.m */; };
 		5CF8E31019D99EBD00B6EE33 /* xsd.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF8E30A19D99EBD00B6EE33 /* xsd.m */; };
-		5CF8E31219D99F6D00B6EE33 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CF8E31119D99F6D00B6EE33 /* libxml2.dylib */; };
+		A77E8B19C6C7E62CDAF0E69E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B42964B975EADDDB443C7382 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -691,6 +693,7 @@
 		5C198ECB19C1D606001EBF92 /* Plate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Plate.h; sourceTree = "<group>"; };
 		5C1AF25519DC4C2A00718334 /* l27.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l27.JPG; sourceTree = "<group>"; };
 		5C1AF25619DC4C2A00718334 /* l28.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l28.JPG; sourceTree = "<group>"; };
+		5C323EB81A3B1D61006D6E9A /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
 		5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5C5A9EED19B8A44F0080DCEC /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		5C5A9EEF19B8A4620080DCEC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -1230,6 +1233,9 @@
 		5CF8E30919D99EBD00B6EE33 /* xsd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xsd.h; sourceTree = "<group>"; };
 		5CF8E30A19D99EBD00B6EE33 /* xsd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xsd.m; sourceTree = "<group>"; };
 		5CF8E31119D99F6D00B6EE33 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		9F8AD7DF46E3A15469D9D585 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		A752A2498A32FF0949F548BD /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		B42964B975EADDDB443C7382 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1237,10 +1243,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C323EB31A3B190F006D6E9A /* libxml2.dylib in Frameworks */,
 				5C5A9EF319B8A4890080DCEC /* ImageIO.framework in Frameworks */,
 				5C0AD0F619E6D14E00070335 /* AVFoundation.framework in Frameworks */,
 				450A98FF19E0EA3B00D0BF40 /* MessageUI.framework in Frameworks */,
-				5CF8E31219D99F6D00B6EE33 /* libxml2.dylib in Frameworks */,
 				5C38BAA619C1B70C0083CE87 /* SystemConfiguration.framework in Frameworks */,
 				5C5A9EF519B8A4950080DCEC /* CoreMedia.framework in Frameworks */,
 				5C7B78BE1A12183800886E80 /* opencv2.framework in Frameworks */,
@@ -1249,6 +1255,7 @@
 				5CA3026319B6EA9400A1337A /* CoreGraphics.framework in Frameworks */,
 				5CA3026519B6EA9500A1337A /* UIKit.framework in Frameworks */,
 				5CA3026119B6EA9400A1337A /* Foundation.framework in Frameworks */,
+				A77E8B19C6C7E62CDAF0E69E /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1265,6 +1272,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		26F3E82BDC22FABA291A0695 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9F8AD7DF46E3A15469D9D585 /* Pods.debug.xcconfig */,
+				A752A2498A32FF0949F548BD /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		4531210F19DA972E00FF7EA7 /* PSTCollectionView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1460,6 +1476,7 @@
 				5CA3028519B6EA9500A1337A /* OpenCVTestTests */,
 				5CA3025F19B6EA9400A1337A /* Frameworks */,
 				5CA3025E19B6EA9400A1337A /* Products */,
+				26F3E82BDC22FABA291A0695 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1475,17 +1492,18 @@
 		5CA3025F19B6EA9400A1337A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5C7B78BD1A12183800886E80 /* opencv2.framework */,
 				5C0AD0F519E6D14E00070335 /* AVFoundation.framework */,
-				450A98FE19E0EA3B00D0BF40 /* MessageUI.framework */,
-				5CF8E31119D99F6D00B6EE33 /* libxml2.dylib */,
-				5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */,
-				5C5A9EF419B8A4950080DCEC /* CoreMedia.framework */,
-				5C5A9EF119B8A4770080DCEC /* libc++.dylib */,
-				5C5A9EEF19B8A4620080DCEC /* libz.dylib */,
-				5C5A9EED19B8A44F0080DCEC /* ImageIO.framework */,
-				5CA3026019B6EA9400A1337A /* Foundation.framework */,
 				5CA3026219B6EA9400A1337A /* CoreGraphics.framework */,
+				5C5A9EF419B8A4950080DCEC /* CoreMedia.framework */,
+				5CA3026019B6EA9400A1337A /* Foundation.framework */,
+				5C5A9EED19B8A44F0080DCEC /* ImageIO.framework */,
+				5C5A9EF119B8A4770080DCEC /* libc++.dylib */,
+				B42964B975EADDDB443C7382 /* libPods.a */,
+				5CF8E31119D99F6D00B6EE33 /* libxml2.dylib */,
+				5C5A9EEF19B8A4620080DCEC /* libz.dylib */,
+				450A98FE19E0EA3B00D0BF40 /* MessageUI.framework */,
+				5C7B78BD1A12183800886E80 /* opencv2.framework */,
+				5C38BAA519C1B70C0083CE87 /* SystemConfiguration.framework */,
 				5CA3026419B6EA9500A1337A /* UIKit.framework */,
 				5CA3027F19B6EA9500A1337A /* XCTest.framework */,
 			);
@@ -1497,6 +1515,7 @@
 			children = (
 				5CA3026F19B6EA9500A1337A /* AppDelegate.h */,
 				5CA3027019B6EA9500A1337A /* AppDelegate.m */,
+				5C323EB81A3B1D61006D6E9A /* tessdata */,
 				5C0AD0F419E6C30400070335 /* CameraOverlayView */,
 				5C198EC719C1D606001EBF92 /* ImageProcessing */,
 				5CBD8F9C19BD87BD00D5F218 /* ImageProcessorImplementation.h */,
@@ -1570,6 +1589,14 @@
 			isa = PBXGroup;
 			children = (
 				5CE2CF4919DBC59700FCC64C /* l1.JPG */,
+				5CE2CF5419DBC59700FCC64C /* l2.JPG */,
+				5CE2CF5619DBC59700FCC64C /* l3.JPG */,
+				5CE2CF5719DBC59700FCC64C /* l4.JPG */,
+				5CE2CF5819DBC59700FCC64C /* l5.JPG */,
+				5CE2CF5919DBC59700FCC64C /* l6.JPG */,
+				5CE2CF5A19DBC59700FCC64C /* l7.JPG */,
+				5CE2CF5B19DBC59700FCC64C /* l8.JPG */,
+				5CE2CF5C19DBC59700FCC64C /* l9.JPG */,
 				5CE2CF4A19DBC59700FCC64C /* l10.JPG */,
 				5CE2CF4B19DBC59700FCC64C /* l11.JPG */,
 				5CE2CF4C19DBC59700FCC64C /* l12.JPG */,
@@ -1580,15 +1607,7 @@
 				5CE2CF5119DBC59700FCC64C /* l17.JPG */,
 				5CE2CF5219DBC59700FCC64C /* l18.JPG */,
 				5CE2CF5319DBC59700FCC64C /* l19.JPG */,
-				5CE2CF5419DBC59700FCC64C /* l2.JPG */,
 				5CE2CF5519DBC59700FCC64C /* l20.JPG */,
-				5CE2CF5619DBC59700FCC64C /* l3.JPG */,
-				5CE2CF5719DBC59700FCC64C /* l4.JPG */,
-				5CE2CF5819DBC59700FCC64C /* l5.JPG */,
-				5CE2CF5919DBC59700FCC64C /* l6.JPG */,
-				5CE2CF5A19DBC59700FCC64C /* l7.JPG */,
-				5CE2CF5B19DBC59700FCC64C /* l8.JPG */,
-				5CE2CF5C19DBC59700FCC64C /* l9.JPG */,
 			);
 			path = 30092014;
 			sourceTree = "<group>";
@@ -1614,14 +1633,14 @@
 			isa = PBXGroup;
 			children = (
 				5C198EC819C1D606001EBF92 /* DetectRegions.cpp */,
-				5C7B78BF1A1218B100886E80 /* OCR.cpp */,
-				5C7B78C01A1218B100886E80 /* OCR.h */,
-				5C7B78C11A1218B100886E80 /* trainOCR.cpp */,
 				5C198EC919C1D606001EBF92 /* DetectRegions.h */,
 				5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */,
 				5C08A6EE19C716C900ACC4B7 /* HarissDetector.h */,
+				5C7B78BF1A1218B100886E80 /* OCR.cpp */,
+				5C7B78C01A1218B100886E80 /* OCR.h */,
 				5C198ECA19C1D606001EBF92 /* Plate.cpp */,
 				5C198ECB19C1D606001EBF92 /* Plate.h */,
+				5C7B78C11A1218B100886E80 /* trainOCR.cpp */,
 			);
 			name = "Plate Detection";
 			sourceTree = "<group>";
@@ -2173,9 +2192,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5CA3028F19B6EA9500A1337A /* Build configuration list for PBXNativeTarget "OpenCVTest" */;
 			buildPhases = (
+				8896933FB0B691818F1162DA /* Check Pods Manifest.lock */,
 				5CA3025919B6EA9400A1337A /* Sources */,
 				5CA3025A19B6EA9400A1337A /* Frameworks */,
 				5CA3025B19B6EA9400A1337A /* Resources */,
+				125B4B6898B60D234BAE239C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2292,6 +2313,7 @@
 				5CF8DFF019D9386D00B6EE33 /* 156.JPG in Resources */,
 				5CF8E0AC19D9386D00B6EE33 /* 325.jpg in Resources */,
 				5CF8E04B19D9386D00B6EE33 /* 238.JPG in Resources */,
+				5C323EB91A3B1D61006D6E9A /* tessdata in Resources */,
 				5CF8E07F19D9386D00B6EE33 /* 285.JPG in Resources */,
 				5CF8E11119D9386D00B6EE33 /* 82.JPG in Resources */,
 				5CF8DEE519D9386D00B6EE33 /* detectsample20.bmp in Resources */,
@@ -2752,6 +2774,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		125B4B6898B60D234BAE239C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8896933FB0B691818F1162DA /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		5CA3025919B6EA9400A1337A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -2885,8 +2940,9 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: MetaDesign AG";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammaad  Rashid (MT979778FK)";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2912,9 +2968,10 @@
 					$SDKROOT/usr/include/libxml2,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-fvisibility=hidden";
-				PROVISIONING_PROFILE = "0ce27b9e-1078-4598-885a-7e30501d9826";
+				PROVISIONING_PROFILE = "9f59bb74-5856-4661-b6de-9b943005dab8";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -2938,9 +2995,10 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: MetaDesign AG";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammaad  Rashid (MT979778FK)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -2960,8 +3018,9 @@
 					$SDKROOT/usr/include/libxml2,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-fvisibility=hidden";
-				PROVISIONING_PROFILE = "0ce27b9e-1078-4598-885a-7e30501d9826";
+				PROVISIONING_PROFILE = "9f59bb74-5856-4661-b6de-9b943005dab8";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s arm64";
@@ -2970,23 +3029,25 @@
 		};
 		5CA3029019B6EA9500A1337A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F8AD7DF46E3A15469D9D585 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
 					/Users/rashid/Downloads,
 					"$(PROJECT_DIR)",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OpenCVTest/OpenCVTest-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = "OpenCVTest/OpenCVTest-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				OTHER_LDFLAGS = "";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2994,23 +3055,25 @@
 		};
 		5CA3029119B6EA9500A1337A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A752A2498A32FF0949F548BD /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
 					/Users/rashid/Downloads,
 					"$(PROJECT_DIR)",
+					"$(inherited)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "OpenCVTest/OpenCVTest-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"$(SDKROOT)/usr/include/libxml2",
+				);
 				INFOPLIST_FILE = "OpenCVTest/OpenCVTest-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				OTHER_LDFLAGS = "";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

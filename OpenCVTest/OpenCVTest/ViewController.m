@@ -11,6 +11,8 @@
 #include "UIImage+operation.h"
 #import "OCRWebServiceSvc.h"
 
+#import <TesseractOCR/TesseractOCR.h>
+
 #import "MBProgressHUD.h"
 #import "iToast.h"
 #import "PDFCreator.h"
@@ -31,7 +33,7 @@ typedef void (^ResponseBlock)(NSString* plateNumber);
 typedef void(^FailureBlock) (NSError *error);
 
 
-@interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate> {
+@interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, TesseractDelegate> {
     
     __weak IBOutlet UIImageView *inputImageView;
     __weak IBOutlet UIImageView *outputImageView;
@@ -279,6 +281,30 @@ typedef void(^FailureBlock) (NSError *error);
    
 }
 
+- (NSString*)tesseratTextFromImahe:(UIImage*)image {
+    
+    // Create your Tesseract object using the initWithLanguage method:
+    Tesseract* tesseract = [[Tesseract alloc] initWithLanguage:@"deu"];
+    
+    tesseract.delegate = self;
+    [tesseract setVariableValue:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ" forKey:@"tessedit_char_whitelist"];
+    
+    
+    UIImage *blacknWhite = [image blackAndWhite];
+    
+    [tesseract setImage:blacknWhite];
+    
+    // Optional: Limit the area of the image Tesseract should recognize on to a rectangle
+    [tesseract setRect:CGRectMake(0.f, 0.f, image.size.width, image.size.height)];
+    
+    // Start the recognition
+    [tesseract recognize];
+    
+    // Retrieve the recognized text
+    return [tesseract recognizedText];
+    
+}
+
 - (void)detectPlateNumberFromImage:(UIImage *)srcImage
                  withResponseBlock:(ResponseBlock)responseBlock
                      andErrorBlock:(FailureBlock)failureBlock
@@ -302,7 +328,7 @@ typedef void(^FailureBlock) (NSError *error);
                 
                     NSError *error = nil;
                     NSString *plateNumber = @"";
-                    NSString *ocrText = [self OCRTextFromImage:plateImg withError:&error];
+                    NSString *ocrText = [self tesseratTextFromImahe:plateImg]; // [self OCRTextFromImage:plateImg withError:&error];
                     if (!error) {
                         plateNumber = [self filterPlateNumberFromOCRString:ocrText];
                     }
@@ -508,7 +534,6 @@ typedef void(^FailureBlock) (NSError *error);
     
     NSString *filteredStr = [NSString stringWithString:ocrText];
 
-    
     filteredStr = [self stringWithoutPunctuations:filteredStr];
     
     NSArray *platesPart = [filteredStr componentsSeparatedByString:@" "];

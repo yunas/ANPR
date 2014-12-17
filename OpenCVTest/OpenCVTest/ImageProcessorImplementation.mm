@@ -117,8 +117,8 @@ using namespace std;
             img_rotated = detectRegions.rotateImageMat(input_img, rotmat);
             watchTestImg = [UIImage imageWithCVMat:img_rotated];
             
-            minRect.size.width +=2.5;
-            minRect.size.height +=10;
+            minRect.size.width +=5;
+            minRect.size.height +=15;
             
             //Crop image
             Mat img_crop;
@@ -143,7 +143,7 @@ using namespace std;
 //            blackNWhiteMat = detectRegions.getGrayScaleMat(blackNWhiteMat);
 //            img_contrast = detectRegions.getThresholdMat(blackNWhiteMat);
             posible_regions.push_back(Plate(img_contrast,minRect.boundingRect()));
-            watchTestImg = [UIImage imageWithCVMat:img_contrast];
+            watchTestImg = [UIImage imageWithCVMat:img_resized];
             
 //            Mat contrast_image = detectRegions.enhanceContrast(img_resized);
 //            posible_regions.push_back(Plate(contrast_image,minRect.boundingRect()));
