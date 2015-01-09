@@ -104,7 +104,9 @@ typedef void(^FailureBlock) (NSError *error);
         
         [self detectPlateNumberFromImage:image withResponseBlock:^(NSString *plateNumber) {
             [self saveResult:plateNumber forIndex:fromIndex];
-            NSLog(@"%@",plateNumber);
+            
+            sleep(3);
+            
             [self automateFromIndex:fromIndex+1 toImageIndex:toIndex];
             
         } andErrorBlock:^(NSError *error) {
@@ -119,10 +121,7 @@ typedef void(^FailureBlock) (NSError *error);
         count = 0;
     }
     count++;
-    NSLog(@"%d,%d",fromIndex, toIndex);
-    
 }
-
 
 #pragma mark - Standard Methods
 -(void) initTest{
@@ -180,7 +179,6 @@ typedef void(^FailureBlock) (NSError *error);
   
     numberPlates = [NSDictionary dictionaryWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"NumberPlates" ofType:@"plist"]];
     reportsArr = [NSMutableArray new];
-//    [reportsArr addObject:@{@"Expected":@"Expected",@"Status":@"Status",@"Observed":@"Observed"}];
     
     [self automateFromIndex:1 toImageIndex:36];
 }
@@ -289,7 +287,6 @@ typedef void(^FailureBlock) (NSError *error);
     tesseract.delegate = self;
     [tesseract setVariableValue:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ" forKey:@"tessedit_char_whitelist"];
     
-    
     UIImage *blacknWhite = [image blackAndWhite];
     
     [tesseract setImage:blacknWhite];
@@ -329,6 +326,8 @@ typedef void(^FailureBlock) (NSError *error);
                     NSError *error = nil;
                     NSString *plateNumber = @"";
                     NSString *ocrText = [self tesseratTextFromImahe:plateImg]; // [self OCRTextFromImage:plateImg withError:&error];
+                    NSLog(@"plate number: %@",ocrText);
+                    
                     if (!error) {
                         plateNumber = [self filterPlateNumberFromOCRString:ocrText];
                     }

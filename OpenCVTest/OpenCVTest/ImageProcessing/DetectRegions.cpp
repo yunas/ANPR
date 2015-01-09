@@ -1,13 +1,11 @@
-/*****************************************************************************
-*   Number Plate Recognition using SVM and Neural Networks
-******************************************************************************
-*   by David Millán Escrivá, 5th Dec 2012
-*   http://blog.damiles.com
-******************************************************************************
-*   Ch5 of the book "Mastering OpenCV with Practical Computer Vision Projects"
-*   Copyright Packt Publishing 2012.
-*   http://www.packtpub.com/cool-projects-with-opencv/book
-*****************************************************************************/
+//
+//  DetectRegions.cpp
+//  OpenCVTest
+//
+//  Created by Muhammad Rashid on 15/09/2014.
+//  Copyright (c) 2014 Muhammad Rashid. All rights reserved.
+//
+
 
 #include "DetectRegions.h"
 
@@ -157,6 +155,22 @@ vector<Plate> DetectRegions::run(Mat input) {
 
 
 #pragma mark - Begin new methods
+
+cv::Mat DetectRegions::filterMedianSmoot(const cv::Mat &source)
+{
+    cv::Mat results;
+    cv::medianBlur(source, results, 3);
+    return results;
+}
+
+Mat DetectRegions::sharpImage(cv::Mat source) {
+    
+    Mat destination = cv::Mat(source.rows,source.cols,source.type());
+    GaussianBlur(source, destination, cv::Size(0,0), 10);
+    addWeighted(source, 1.5, destination, -0.5, 0, destination);
+    
+    return destination;
+}
 
 Mat DetectRegions::getGrayScaleMat(Mat source) {
     

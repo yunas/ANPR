@@ -117,8 +117,8 @@ using namespace std;
             img_rotated = detectRegions.rotateImageMat(input_img, rotmat);
             watchTestImg = [UIImage imageWithCVMat:img_rotated];
             
-            minRect.size.width +=5;
-            minRect.size.height +=15;
+            minRect.size.width +=2.5;
+            minRect.size.height +=10;
             
             //Crop image
             Mat img_crop;
@@ -135,15 +135,19 @@ using namespace std;
             watchTestImg = [UIImage imageWithCVMat:img_grayResult];
             
             Mat img_contrast = detectRegions.enhanceContrast(img_grayResult);
-//            posible_regions.push_back(Plate(img_contrast,minRect.boundingRect()));
+//          posible_regions.push_back(Plate(img_contrast,minRect.boundingRect()));
             watchTestImg = [UIImage imageWithCVMat:img_contrast];
 
+            //12/17/2014 new addition
+            Mat img_sharp = detectRegions.sharpImage(img_grayResult);
+            watchTestImg = [UIImage imageWithCVMat:img_sharp];
+            
             //12/11/2014
 //            cv::Mat blackNWhiteMat = [watchTestImg CVMat];
 //            blackNWhiteMat = detectRegions.getGrayScaleMat(blackNWhiteMat);
 //            img_contrast = detectRegions.getThresholdMat(blackNWhiteMat);
-            posible_regions.push_back(Plate(img_contrast,minRect.boundingRect()));
-            watchTestImg = [UIImage imageWithCVMat:img_resized];
+            posible_regions.push_back(Plate(img_sharp,minRect.boundingRect()));
+            
             
 //            Mat contrast_image = detectRegions.enhanceContrast(img_resized);
 //            posible_regions.push_back(Plate(contrast_image,minRect.boundingRect()));
@@ -176,63 +180,8 @@ using namespace std;
         [data writeToFile:filePath atomically:YES];
     }
     
-    UIImage *newOutImg = outImage;
-    //    UIImage *newOutImg =    [ImageProcessorImplementation contrastImage:outImage contrast:1.8];
-    
-    return newOutImg;
-    
-    //SVM for each plate region to get valid car plates
-    //Read file storage.
-    
-    //    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    //    NSString *docs = [paths objectAtIndex:0];
-    //    NSString *vocabPath = [docs stringByAppendingPathComponent:@"SVM.xml"];
-    
-    NSString *vocabPath = [[NSBundle mainBundle] pathForResource:@"SVM.xml" ofType:nil];
-    FileStorage fs([vocabPath UTF8String], FileStorage::READ);
-    Mat SVM_TrainingData;
-    Mat SVM_Classes;
-    fs["TrainingData"] >> SVM_TrainingData;
-    fs["classes"] >> SVM_Classes;
-    //Set SVM params
-    
-    CvSVMParams SVM_params;
-    SVM_params.svm_type = CvSVM::C_SVC;
-    SVM_params.kernel_type = CvSVM::LINEAR;
-    SVM_params.degree = 0;
-    SVM_params.gamma = 1;
-    SVM_params.coef0 = 0;
-    SVM_params.C = 1;
-    SVM_params.nu = 0;
-    SVM_params.p = 0;
-    SVM_params.term_crit = cvTermCriteria(CV_TERMCRIT_ITER, 1000, 0.01);
-    //Train SVM
-    CvSVM svmClassifier(SVM_TrainingData, SVM_Classes, Mat(), Mat(), SVM_params);
-    
-    //For each possible plate, classify with svm if it's a plate or no
-    vector<Plate> plates;
-    for(int i=0; i< posible_regions.size(); i++) {
-        
-        Mat img=posible_regions[i].plateImg;
-        Mat p= img.reshape(1, 1);
-        p.convertTo(p, CV_32FC1);
-        
-        int response = (int)svmClassifier.predict( p );
-        if(response==1)
-            plates.push_back(posible_regions[i]);
-    }
-    
-    for (int i=0; i<plates.size(); i++) {
-        
-        Plate rect = plates[i];
-        outImage = [UIImage imageWithCVMat:rect.plateImg];
-        
-        data = UIImageJPEGRepresentation(outImage, 1);
-        filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"_SVM_%@_%d",name,i]];
-        [data writeToFile:filePath atomically:YES];
-    }
-    
     return outImage;
+    
 }
 
 + (UIImage*)numberPlateWithCannyFromCarImage:(UIImage*)image imageName:(NSString *)name {
@@ -357,10 +306,7 @@ using namespace std;
         [data writeToFile:filePath atomically:YES];
     }
     
-    UIImage *newOutImg = outImage;
-//    UIImage *newOutImg =    [ImageProcessorImplementation contrastImage:outImage contrast:1.8];
-    
-    return newOutImg;
+    return outImage;
 }
 
 + (UIImage *)numberPlateFromCarImage:(UIImage*)src imageName:(NSString*)name edgeDetectionType:(EdgeDetectionType)type {
@@ -374,45 +320,6 @@ using namespace std;
         outImg = [ImageProcessorImplementation numberPlateWithCannyFromCarImage:src imageName:name];
     }
     return outImg;
-}
-
-+ (UIImage *)harissCornerDetector:(UIImage*)source {
-    
-    cv::Mat input_image = [source CVMat];
-    
-    HarissDetector hariss;
-    cv::Mat outPut = hariss.cornerHarris_demo(input_image);
-    
-    UIImage *outPutImage = [UIImage imageWithCVMat:outPut];
-    
-    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    
-    NSString *filePath = [documentsPath stringByAppendingPathComponent:@"hariss.jpg"];
-    
-    NSData *data = UIImageJPEGRepresentation(outPutImage, 1);
-    [data writeToFile:filePath atomically:YES];
-    
-    return outPutImage;
-}
-
-+ (UIImage *)ShiTomasiCornerDetector:(UIImage*)source {
-    
-    cv::Mat input_image = [source CVMat];
-    HarissDetector hariss;
-    
-    cv::Mat output = hariss.goodFeaturesToTrack_Demo(input_image);
-    
-    UIImage *outPutImage = [UIImage imageWithCVMat:output];
-    
-    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    
-    NSString *filePath = [documentsPath stringByAppendingPathComponent:@"shi.jpg"];
-    
-    NSData *data = UIImageJPEGRepresentation(outPutImage, 1);
-    [data writeToFile:filePath atomically:YES];
-    
-    return outPutImage;
-    
 }
 
 #pragma mark - SVM
@@ -735,56 +642,6 @@ bool verifySizes(cv::RotatedRect mr, float error){
     }else{
         return true;
     }
-}
-
-cv::Mat histeq(cv::Mat in) {
-    
-    cv::Mat out(in.size(), in.type());
-    if(in.channels()==3){
-        cv::Mat hsv;
-        std::vector<cv::Mat> hsvSplit;
-        cvtColor(in, hsv, cv::COLOR_BGR2HSV);
-        split(hsv, hsvSplit);
-        equalizeHist(hsvSplit[2], hsvSplit[2]);
-        merge(hsvSplit, hsv);
-        cvtColor(hsv, out, cv::COLOR_HSV2BGR);
-    }else if(in.channels()==1){
-        equalizeHist(in, out);
-    }
-    
-    return out;
-}
-
-/* @function Dilation */
-- (UIImage*)dilationOfSource:(UIImage *)src {
-    
-    cv::Mat source = [src CVMat];
-    
-    cv::Mat element = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 9));
-    
-    cv::Mat dilation_dst;
-    dilate( source, dilation_dst, element );
-    
-    UIImage *filtered=[UIImage imageWithCVMat:dilation_dst];
-    
-    return filtered;
-}
-
-/* @function Erosion */
-- (UIImage*)erosionOfSource:(UIImage *)src {
-    
-    cv::Mat source = [src CVMat];
-    
-    cv::Mat element = getStructuringElement(cv::MORPH_RECT, cv::Size(3, 9));
-    
-    cv::Mat erosion_dst;
-    
-    /// Apply the erosion operation
-    erode( source, erosion_dst, element );
-        
-    UIImage *filtered=[UIImage imageWithCVMat:erosion_dst];
-    
-    return filtered;
 }
 
 @end

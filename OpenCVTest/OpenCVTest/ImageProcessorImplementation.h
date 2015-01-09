@@ -21,11 +21,6 @@ typedef NS_ENUM(NSInteger, EdgeDetectionType) {
 }
 
 + (UIImage *)numberPlateFromCarImage:(UIImage*)src imageName:(NSString*)name edgeDetectionType:(EdgeDetectionType)type;
-+ (UIImage *)harissCornerDetector:(UIImage*)source;
-+ (UIImage *)ShiTomasiCornerDetector:(UIImage*)source;
-
-- (UIImage*)dilationOfSource:(UIImage *)src;
-- (UIImage*)erosionOfSource:(UIImage *)src;
 
 + (BOOL)trainSVM;
 
