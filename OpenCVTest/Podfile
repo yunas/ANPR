@@ -1,16 +1,8 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, '6.0'
 
-platform :ios, '7.0'
-
 target 'OpenCVTest' do
-
+platform :ios, '7.0'
+pod 'TesseractOCRiOS', '~> 3.4.0'
 end
-
-target 'OpenCVTestTests' do
-
-end
-
-pod 'TesseractOCRiOS', '3.4.0'
-
 
