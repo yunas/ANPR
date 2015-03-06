@@ -8,40 +8,41 @@
 
 #import "CameraView.h"
 #include "UIImage+operation.h"
+#import "Rectangle.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <ImageIO/ImageIO.h>
 
-@interface Rectangle : UIView
-@property (nonatomic) CGFloat lineWidth;
-@end
-
-@implementation Rectangle
-
-- (instancetype)initWithFrame:(CGRect)frame {
-    
-    self = [super initWithFrame:frame];
-    
-    if (self) {
-        self.backgroundColor = [UIColor clearColor];
-        self.lineWidth = 1.5f;
-    }
-    
-    return self;
-}
-
-- (void)drawRect:(CGRect)rect {
-    
-    [super drawRect:rect];
-    
-    CGRect subRect = CGRectInset(rect, _lineWidth, _lineWidth);
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetStrokeColorWithColor(context, [UIColor greenColor].CGColor);
-    CGContextStrokeRectWithWidth(context, subRect, _lineWidth);
-}
-
-@end
+//@interface Rectangle : UIView
+//@property (nonatomic) CGFloat lineWidth;
+//@end
+//
+//@implementation Rectangle
+//
+//- (instancetype)initWithFrame:(CGRect)frame {
+//    
+//    self = [super initWithFrame:frame];
+//    
+//    if (self) {
+//        self.backgroundColor = [UIColor clearColor];
+//        self.lineWidth = 1.5f;
+//    }
+//    
+//    return self;
+//}
+//
+//- (void)drawRect:(CGRect)rect {
+//    
+//    [super drawRect:rect];
+//    
+//    CGRect subRect = CGRectInset(rect, _lineWidth, _lineWidth);
+//    
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+//    CGContextSetStrokeColorWithColor(context, [UIColor greenColor].CGColor);
+//    CGContextStrokeRectWithWidth(context, subRect, _lineWidth);
+//}
+//
+//@end
 
 @interface CameraView () {
     AVCaptureStillImageOutput *stillImageOutput;
@@ -104,7 +105,6 @@
         NSLog(@"%@",NSStringFromCGRect(rectViewFrame));
         
         Rectangle *rectView = [[Rectangle alloc] initWithFrame:rectViewFrame];
-        rectView.userInteractionEnabled = NO;
         [self addSubview:rectView];
         
         [self startSession];

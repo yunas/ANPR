@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "MWPhotoBrowser.h"
 
-@interface ViewController : UIViewController<MWPhotoBrowserDelegate,MFMailComposeViewControllerDelegate>
+@interface ViewController : UIViewController <MWPhotoBrowserDelegate,MFMailComposeViewControllerDelegate>
 
 @end

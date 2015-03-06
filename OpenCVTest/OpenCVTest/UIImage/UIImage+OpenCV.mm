@@ -25,7 +25,6 @@ static void ProviderReleaseDataNOP(void *info, const void *data, size_t size)
 
 -(cv::Mat)CVMat
 {
-    
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(self.CGImage);
     CGFloat cols = self.size.width;
     CGFloat rows = self.size.height;

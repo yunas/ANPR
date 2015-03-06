@@ -54,6 +54,8 @@
 		45FB957919CAF5EB0022B30A /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 45FB954F19CAF5EB0022B30A /* MWPhotoBrowser.bundle */; };
 		5C08A6EF19C716C900ACC4B7 /* HarissDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */; };
 		5C0AD0F619E6D14E00070335 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C0AD0F519E6D14E00070335 /* AVFoundation.framework */; };
+		5C106C101AA71763008BE769 /* ScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C106C0F1AA71763008BE769 /* ScanViewController.m */; };
+		5C106C131AA720F0008BE769 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C106C121AA720F0008BE769 /* Utility.m */; };
 		5C198ECC19C1D606001EBF92 /* DetectRegions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C198EC819C1D606001EBF92 /* DetectRegions.cpp */; };
 		5C198ECD19C1D606001EBF92 /* Plate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C198ECA19C1D606001EBF92 /* Plate.cpp */; };
 		5C1AF25719DC4C2A00718334 /* l27.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5C1AF25519DC4C2A00718334 /* l27.JPG */; };
@@ -65,6 +67,9 @@
 		5C5A9EF219B8A4770080DCEC /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EF119B8A4770080DCEC /* libc++.dylib */; };
 		5C5A9EF319B8A4890080DCEC /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EED19B8A44F0080DCEC /* ImageIO.framework */; };
 		5C5A9EF519B8A4950080DCEC /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C5A9EF419B8A4950080DCEC /* CoreMedia.framework */; };
+		5C72057F1AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant.csv in Resources */ = {isa = PBXBuildFile; fileRef = 5C72057C1AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant.csv */; };
+		5C7205801AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant_KZ.csv in Resources */ = {isa = PBXBuildFile; fileRef = 5C72057D1AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant_KZ.csv */; };
+		5C7205811AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant_orte.csv in Resources */ = {isa = PBXBuildFile; fileRef = 5C72057E1AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant_orte.csv */; };
 		5C7B78BE1A12183800886E80 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C7B78BD1A12183800886E80 /* opencv2.framework */; };
 		5C7B78C21A1218B100886E80 /* OCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C7B78BF1A1218B100886E80 /* OCR.cpp */; };
 		5C7B78C31A1218B100886E80 /* trainOCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C7B78C11A1218B100886E80 /* trainOCR.cpp */; };
@@ -82,6 +87,7 @@
 		5CA3028219B6EA9500A1337A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026419B6EA9500A1337A /* UIKit.framework */; };
 		5CA3028A19B6EA9500A1337A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5CA3028819B6EA9500A1337A /* InfoPlist.strings */; };
 		5CA3028C19B6EA9500A1337A /* OpenCVTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA3028B19B6EA9500A1337A /* OpenCVTestTests.m */; };
+		5CB3C4D51AA8261B0058821E /* Rectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CB3C4D41AA8261B0058821E /* Rectangle.m */; };
 		5CBD8F9E19BD87BD00D5F218 /* ImageProcessorImplementation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */; };
 		5CD3ABCA19ED5C8E00CC44BF /* l31.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5CD3ABBC19ED5C8E00CC44BF /* l31.JPG */; };
 		5CD3ABCB19ED5C8E00CC44BF /* l32.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5CD3ABBD19ED5C8E00CC44BF /* l32.JPG */; };
@@ -688,6 +694,10 @@
 		5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HarissDetector.cpp; sourceTree = "<group>"; };
 		5C08A6EE19C716C900ACC4B7 /* HarissDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HarissDetector.h; sourceTree = "<group>"; };
 		5C0AD0F519E6D14E00070335 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		5C106C0E1AA71763008BE769 /* ScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanViewController.h; sourceTree = "<group>"; };
+		5C106C0F1AA71763008BE769 /* ScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanViewController.m; sourceTree = "<group>"; };
+		5C106C111AA720F0008BE769 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
+		5C106C121AA720F0008BE769 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
 		5C198EC819C1D606001EBF92 /* DetectRegions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DetectRegions.cpp; sourceTree = "<group>"; };
 		5C198EC919C1D606001EBF92 /* DetectRegions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetectRegions.h; sourceTree = "<group>"; };
 		5C198ECA19C1D606001EBF92 /* Plate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Plate.cpp; sourceTree = "<group>"; };
@@ -700,6 +710,9 @@
 		5C5A9EEF19B8A4620080DCEC /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5C5A9EF119B8A4770080DCEC /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		5C5A9EF419B8A4950080DCEC /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		5C72057C1AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = kfzKennzeichen1411_neuzulassungsrelevant.csv; sourceTree = "<group>"; };
+		5C72057D1AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant_KZ.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = kfzKennzeichen1411_neuzulassungsrelevant_KZ.csv; sourceTree = "<group>"; };
+		5C72057E1AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant_orte.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = kfzKennzeichen1411_neuzulassungsrelevant_orte.csv; sourceTree = "<group>"; };
 		5C7B78BD1A12183800886E80 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		5C7B78BF1A1218B100886E80 /* OCR.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OCR.cpp; sourceTree = "<group>"; };
 		5C7B78C01A1218B100886E80 /* OCR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCR.h; sourceTree = "<group>"; };
@@ -723,6 +736,8 @@
 		5CA3028719B6EA9500A1337A /* OpenCVTestTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OpenCVTestTests-Info.plist"; sourceTree = "<group>"; };
 		5CA3028919B6EA9500A1337A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5CA3028B19B6EA9500A1337A /* OpenCVTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OpenCVTestTests.m; sourceTree = "<group>"; };
+		5CB3C4D31AA8261B0058821E /* Rectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rectangle.h; sourceTree = "<group>"; };
+		5CB3C4D41AA8261B0058821E /* Rectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rectangle.m; sourceTree = "<group>"; };
 		5CBD8F9C19BD87BD00D5F218 /* ImageProcessorImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageProcessorImplementation.h; sourceTree = "<group>"; };
 		5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageProcessorImplementation.mm; sourceTree = "<group>"; };
 		5CD3ABBC19ED5C8E00CC44BF /* l31.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l31.JPG; sourceTree = "<group>"; };
@@ -1453,6 +1468,8 @@
 			children = (
 				5CE5321A19E79CDD00EAB7B9 /* CameraView.h */,
 				5CE5321B19E79CDD00EAB7B9 /* CameraView.m */,
+				5CB3C4D31AA8261B0058821E /* Rectangle.h */,
+				5CB3C4D41AA8261B0058821E /* Rectangle.m */,
 			);
 			name = CameraOverlayView;
 			sourceTree = "<group>";
@@ -1464,6 +1481,16 @@
 				5CEC104919C8214100BDFCF4 /* Plate Detection */,
 			);
 			path = ImageProcessing;
+			sourceTree = "<group>";
+		};
+		5C72057B1AA8448900E87FC9 /* Kai */ = {
+			isa = PBXGroup;
+			children = (
+				5C72057C1AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant.csv */,
+				5C72057D1AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant_KZ.csv */,
+				5C72057E1AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant_orte.csv */,
+			);
+			path = Kai;
 			sourceTree = "<group>";
 		};
 		5CA3025419B6EA9400A1337A = {
@@ -1514,8 +1541,8 @@
 			isa = PBXGroup;
 			children = (
 				5CA3026F19B6EA9500A1337A /* AppDelegate.h */,
+				5C72057B1AA8448900E87FC9 /* Kai */,
 				5CA3027019B6EA9500A1337A /* AppDelegate.m */,
-				5C323EB81A3B1D61006D6E9A /* tessdata */,
 				5C0AD0F419E6C30400070335 /* CameraOverlayView */,
 				5C198EC719C1D606001EBF92 /* ImageProcessing */,
 				5CBD8F9C19BD87BD00D5F218 /* ImageProcessorImplementation.h */,
@@ -1523,8 +1550,13 @@
 				5CA3027819B6EA9500A1337A /* Images.xcassets */,
 				5CA3027219B6EA9500A1337A /* Main.storyboard */,
 				455CBEEE19DEEA0B00496725 /* PDFCreator */,
+				5C106C0E1AA71763008BE769 /* ScanViewController.h */,
+				5C106C0F1AA71763008BE769 /* ScanViewController.m */,
 				5CA3026719B6EA9500A1337A /* Supporting Files */,
+				5C323EB81A3B1D61006D6E9A /* tessdata */,
 				5CF8E12419D9446100B6EE33 /* UIImage extension */,
+				5C106C111AA720F0008BE769 /* Utility.h */,
+				5C106C121AA720F0008BE769 /* Utility.m */,
 				5CA3027519B6EA9500A1337A /* ViewController.h */,
 				5CA3027619B6EA9500A1337A /* ViewController.m */,
 				5CF8E2FE19D99EBD00B6EE33 /* WEBSERVICE_OCR */,
@@ -2510,6 +2542,7 @@
 				5CF8E07019D9386D00B6EE33 /* 271.JPG in Resources */,
 				5CA3027919B6EA9500A1337A /* Images.xcassets in Resources */,
 				5CF8E06719D9386D00B6EE33 /* 263.JPG in Resources */,
+				5C7205801AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant_KZ.csv in Resources */,
 				5CE2CFC519DBC59700FCC64C /* l6.JPG in Resources */,
 				5CE2CFC119DBC59700FCC64C /* l20.JPG in Resources */,
 				5CE2CFFE19DBD24100FCC64C /* l24.JPG in Resources */,
@@ -2651,6 +2684,7 @@
 				5CF8DFDA19D9386D00B6EE33 /* 136.JPG in Resources */,
 				5CF8E04919D9386D00B6EE33 /* 236.JPG in Resources */,
 				5CE2CFC619DBC59700FCC64C /* l7.JPG in Resources */,
+				5C72057F1AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant.csv in Resources */,
 				5CF8E01019D9386D00B6EE33 /* 185.JPG in Resources */,
 				5CF8E01319D9386D00B6EE33 /* 188.JPG in Resources */,
 				5CF8DEEE19D9386D00B6EE33 /* detectsample29.bmp in Resources */,
@@ -2677,6 +2711,7 @@
 				5CF8E0D719D9386D00B6EE33 /* 364.jpg in Resources */,
 				5CF8E00A19D9386D00B6EE33 /* 18.JPG in Resources */,
 				5CF8DFEE19D9386D00B6EE33 /* 154.JPG in Resources */,
+				5C7205811AA8448900E87FC9 /* kfzKennzeichen1411_neuzulassungsrelevant_orte.csv in Resources */,
 				5CF8E07D19D9386D00B6EE33 /* 283.JPG in Resources */,
 				5CF8E0DD19D9386D00B6EE33 /* 37.JPG in Resources */,
 				5CF8DEF919D9386D00B6EE33 /* detectsample39.bmp in Resources */,
@@ -2831,6 +2866,7 @@
 				45B8F30519D9A94300741B4B /* MKAnnotationView+WebCache.m in Sources */,
 				45FB955519CAF5EB0022B30A /* MWTapDetectingImageView.m in Sources */,
 				45B8F30A19D9A94300741B4B /* SDWebImageDecoder.m in Sources */,
+				5C106C101AA71763008BE769 /* ScanViewController.m in Sources */,
 				45FB955619CAF5EB0022B30A /* MWTapDetectingView.m in Sources */,
 				45B8F2F419D9A94300741B4B /* MBProgressHUD.m in Sources */,
 				4531213619DA972E00FF7EA7 /* PSTGridLayoutItem.m in Sources */,
@@ -2844,6 +2880,7 @@
 				5CE5321C19E79CDD00EAB7B9 /* CameraView.m in Sources */,
 				5CF8E30C19D99EBD00B6EE33 /* NSDate+ISO8601Unparsing.m in Sources */,
 				45B8F31019D9A94300741B4B /* UIImage+GIF.m in Sources */,
+				5C106C131AA720F0008BE769 /* Utility.m in Sources */,
 				5CBD8F9E19BD87BD00D5F218 /* ImageProcessorImplementation.mm in Sources */,
 				45FB955419CAF5EB0022B30A /* MWPhotoBrowser.m in Sources */,
 				5C7B78C31A1218B100886E80 /* trainOCR.cpp in Sources */,
@@ -2869,6 +2906,7 @@
 				455CBEF319DEEAAF00496725 /* PDFCreator.m in Sources */,
 				5C198ECC19C1D606001EBF92 /* DetectRegions.cpp in Sources */,
 				45B8F30B19D9A94300741B4B /* SDWebImageDownloader.m in Sources */,
+				5CB3C4D51AA8261B0058821E /* Rectangle.m in Sources */,
 				5CA3027119B6EA9500A1337A /* AppDelegate.m in Sources */,
 				5CF8E30D19D99EBD00B6EE33 /* OCRWebServiceSvc.m in Sources */,
 				45B8F30419D9A94300741B4B /* README.md in Sources */,
@@ -2940,7 +2978,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: MetaDesign AG";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammaad  Rashid (MT979778FK)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2971,7 +3009,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-fvisibility=hidden";
-				PROVISIONING_PROFILE = "0ce27b9e-1078-4598-885a-7e30501d9826";
+				PROVISIONING_PROFILE = "be088538-862a-4398-a150-451a1c591872";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -2995,7 +3033,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: MetaDesign AG";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammaad  Rashid (MT979778FK)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -3020,7 +3058,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-fvisibility=hidden";
-				PROVISIONING_PROFILE = "0ce27b9e-1078-4598-885a-7e30501d9826";
+				PROVISIONING_PROFILE = "be088538-862a-4398-a150-451a1c591872";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s arm64";
@@ -3033,6 +3071,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Abid Hussain (APELUZ29ER)";
 				FRAMEWORK_SEARCH_PATHS = (
 					/Users/rashid/Downloads,
 					"$(PROJECT_DIR)",
@@ -3060,6 +3099,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Abid Hussain (APELUZ29ER)";
 				FRAMEWORK_SEARCH_PATHS = (
 					/Users/rashid/Downloads,
 					"$(PROJECT_DIR)",

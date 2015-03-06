@@ -17,5 +17,5 @@ typedef void(^CompletionBlock)(UIImage *img);
 @property (nonatomic, copy) CompletionBlock block;
 
 - (instancetype)initWithFrame:(CGRect)frame completionBlovk:(CompletionBlock)blk;
-
 @end
+

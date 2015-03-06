@@ -185,7 +185,7 @@ static CGRect swapWidthAndHeight(CGRect rect)
 }
 
 - (UIImage *)croppedImage:(CGRect)bounds {
-    
+
     UIImage *image = [self rotate:UIImageOrientationUp];
     CGImageRef imageRef = CGImageCreateWithImageInRect([image CGImage], bounds);
     UIImage *croppedImage = [UIImage imageWithCGImage:imageRef];
@@ -211,7 +211,26 @@ static CGRect swapWidthAndHeight(CGRect rect)
     UIGraphicsEndImageContext();
     
     return img;
-    
+}
+
+- (UIImage*)resizeImageToHeight:(CGFloat)height {
+
+    UIImage *sourceImage = self;
+
+    CGSize imageSize = sourceImage.size;
+
+    CGFloat scaleFactor = height/imageSize.height;
+
+    CGSize newSize = CGSizeMake(imageSize.width*scaleFactor, height);
+
+    CGRect rect = (CGRect){.origin=CGPointZero, .size=newSize};
+
+    UIGraphicsBeginImageContext(rect.size);
+    [sourceImage drawInRect:rect];
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return img;
 }
 
 @end
