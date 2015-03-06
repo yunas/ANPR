@@ -15,11 +15,16 @@
 
 using namespace std;
 
+@interface ImageProcessorImplementation ()
+RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
+@end
+
 @implementation ImageProcessorImplementation
 
 #pragma mark - Class methods
 
 + (UIImage*)contrastImage:(UIImage*)image contrast:(float)contrast {
+
     CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
     
     CIFilter *brightnesContrastFilter = [CIFilter filterWithName:@"CIColorControls"];
@@ -33,7 +38,7 @@ using namespace std;
     return [UIImage imageWithCGImage:[context createCGImage:outputImage fromRect:outputImage.extent]];
 }
 
-+ (UIImage*)numberPlateFromCarImage:(UIImage*)image imageName:(NSString *)name {
++ (UIImage*)numberPlateFromWithSobelCarImage:(UIImage*)image imageName:(NSString *)name {
     
     // Algo
     // 1. pre processing => image to gray scale
@@ -51,9 +56,7 @@ using namespace std;
     detectRegions.setFilename("12");
     detectRegions.saveRegions = YES;
     detectRegions.showSteps = false;
-    
-    // posible_regions = detectRegions.run(input_img);
-    
+
     UIImage *watchTestImg = nil;
     
     // pre processing => image to gray scale
@@ -87,7 +90,7 @@ using namespace std;
     rects = detectRegions.getPossibleRegionsAfterFindContour(img_threshold);
     
     cout<<"number of possible regions:"<<rects.size()<<endl;
-    
+
     // for flood fill
     cv::Mat result;
     input_img.copyTo(result);
@@ -101,7 +104,7 @@ using namespace std;
         watchTestImg = [UIImage imageWithCVMat:mask];
         
         RotatedRect minRect = detectRegions.getDetectedPlateRectFromMask(mask);
-        
+
         if(verifySizes(minRect,0.4)) {
             
             // rotated rectangle drawing
@@ -117,9 +120,9 @@ using namespace std;
             img_rotated = detectRegions.rotateImageMat(input_img, rotmat);
             watchTestImg = [UIImage imageWithCVMat:img_rotated];
             
-            minRect.size.width +=2.5;
-            minRect.size.height +=10;
-            
+//            minRect.size.width +=2.5;
+//            minRect.size.height +=10;
+
             //Crop image
             Mat img_crop;
             img_crop = detectRegions.getCroppedMat(img_rotated, minRect);
@@ -128,7 +131,7 @@ using namespace std;
             Mat img_resized;
             img_resized = detectRegions.getResizedMat(img_crop, cv::Size(300,69));
             watchTestImg = [UIImage imageWithCVMat:img_resized];
-            
+
             //Equalize croped image
             Mat img_grayResult;
             img_grayResult = detectRegions.getNormalisedGrayscaleMat(img_resized);
@@ -147,14 +150,15 @@ using namespace std;
 //            blackNWhiteMat = detectRegions.getGrayScaleMat(blackNWhiteMat);
 //            img_contrast = detectRegions.getThresholdMat(blackNWhiteMat);
             posible_regions.push_back(Plate(img_sharp,minRect.boundingRect()));
-            
-            
+
 //            Mat contrast_image = detectRegions.enhanceContrast(img_resized);
 //            posible_regions.push_back(Plate(contrast_image,minRect.boundingRect()));
         }
     }
     
     cout<<"detected plate regions:"<<posible_regions.size()<<endl;
+
+
     
     // Uncomment following code if you want to draw detected region on original image.
     //    for (int i = 0; i < output.size(); i++) {
@@ -162,9 +166,8 @@ using namespace std;
     //        rectangle(result, rect.position, Scalar(255,0,0), 3);
     //    }
     //    output.push_back(Plate(result, Rect(Point(0,0), result.size())));
-    
-    //    posible_regions = detectRegions.run(input_img);
-    
+
+
     UIImage *outImage = nil;
     NSData *data = nil;
     NSString* filePath = nil;
@@ -181,7 +184,6 @@ using namespace std;
     }
     
     return outImage;
-    
 }
 
 + (UIImage*)numberPlateWithCannyFromCarImage:(UIImage*)image imageName:(NSString *)name {
@@ -192,7 +194,6 @@ using namespace std;
     // 3. Apply Canny filter
     // 4. Apply threshold and morphological operation
     // 5. Apply Contours to fetch Possible Regions
-    // 6.
     
     // input image
     cv::Mat input_img = [image CVMat];
@@ -314,7 +315,7 @@ using namespace std;
     UIImage *outImg = nil;
     
     if (type == EdgeDetectionTypeSobel) {
-        outImg = [ImageProcessorImplementation numberPlateFromCarImage:src imageName:name];
+        outImg = [ImageProcessorImplementation numberPlateFromWithSobelCarImage:src imageName:name];
     }
     else if (type == EdgeDetectionTypeCanny) {
         outImg = [ImageProcessorImplementation numberPlateWithCannyFromCarImage:src imageName:name];
@@ -569,7 +570,6 @@ using namespace std;
 
 #pragma mark - instance methods
 
-
 + (NSString*)filePath:(NSString*)name {
     
     NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -619,7 +619,7 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error) {
 
 bool verifySizes(cv::RotatedRect mr, float error){
     
-    //Spain car plate size: 520x112 aspect 4.6429
+    //German car plate size: 520x112 aspect 4.6429
     float aspect=4.6429;
     //Set a min and max area. All other patchs are discarded
     int min= 15*aspect*15; // minimum area

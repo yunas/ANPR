@@ -15,7 +15,7 @@
 #import "ImageProcessorImplementation.h"
 #include "UIImage+operation.h"
 #import "MBProgressHUD.h"
-#import "iToast.h"
+#import "AJNotificationView.h"
 #import "PDFCreator.h"
 #import "Utility.h"
 #import "Rectangle.h"
@@ -30,22 +30,25 @@ typedef void (^ResponseBlock)(NSString* plateNumber);
 typedef void(^FailureBlock) (NSError *error);
 
 
-@interface ScanViewController () <MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, TesseractDelegate, UIPickerViewDataSource, UIPickerViewDelegate> {
+@interface ScanViewController () <UIAlertViewDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, TesseractDelegate, UIPickerViewDataSource, UIPickerViewDelegate> {
     AVCaptureSession *session;
     AVCaptureStillImageOutput *stillImageOutput;
     AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
     BOOL processing;
+    __weak IBOutlet UIView *sessionView;
 }
-
+@property (nonatomic, setter=showPickerViews:) BOOL pickerVisible;
 @end
 
 @implementation ScanViewController {
+
     NSMutableArray *npArray;
     NSMutableArray *cyArray;
     NSMutableArray *alphaArray;
     NSMutableArray *numberArray;
     NSMutableArray *mixArray;
 
+    UIView *pickerContainerView;
 
     UIPickerView *picker01;
     UIPickerView *picker02;
@@ -65,14 +68,17 @@ typedef void(^FailureBlock) (NSError *error);
     UIView *pickerBG07;
     UIView *pickerBG08;
 
+    NSString *detectedPlateNumber;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
     [self startSession];
+    [self fillDataArrays];
+    [self createPickerViews];
 
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(takePhoto:)];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTappedOnScreen:)];
     [self.view addGestureRecognizer:singleTap];
 
     UITapGestureRecognizer *doubleTouch = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHelpView:)];
@@ -93,6 +99,14 @@ typedef void(^FailureBlock) (NSError *error);
 }
 
 #pragma mark internal methods
+
+- (void)showPickerViews:(BOOL)pickerVisible {
+
+    [AJNotificationView clearQueue];
+    [Rectangle hideCameraFocusRectangle];
+    _pickerVisible = pickerVisible;
+    [pickerContainerView setHidden:!_pickerVisible];
+}
 
 -(AVCaptureDevice *)captureDevice {
 
@@ -163,6 +177,8 @@ typedef void(^FailureBlock) (NSError *error);
 
 - (void)showHelpView:(UITapGestureRecognizer *)gesture {
 
+    [Rectangle hideCameraFocusRectangle];
+
     if (gesture.state == UIGestureRecognizerStateEnded) {
         NSLog(@"number of touches: %lu", (unsigned long)gesture.numberOfTouches);
 
@@ -174,9 +190,13 @@ typedef void(^FailureBlock) (NSError *error);
     }
 }
 
-- (void)takePhoto: (UITapGestureRecognizer *) gesture {
+- (void)didTappedOnScreen:(UITapGestureRecognizer *) gesture {
 
-    if (!processing && gesture.numberOfTouches == 1 && gesture.state == UIGestureRecognizerStateEnded) {
+    if (_pickerVisible) {
+        [[[UIAlertView alloc]initWithTitle:@"" message:[NSString stringWithFormat:@"Printed %@", detectedPlateNumber] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        [self showPickerViews:NO];
+    }
+    else if (!processing && gesture.numberOfTouches == 1 && gesture.state == UIGestureRecognizerStateEnded) {
         [self takePicture];
     }
     else {
@@ -187,6 +207,19 @@ typedef void(^FailureBlock) (NSError *error);
 - (void)takePicture {
 
     processing = YES;
+
+    // -> TODO 2
+    // hand over outputImage to recognition methods
+    void(^completion)(UIImage *) = ^(UIImage *capturedImage) {
+
+        [self processandsave:capturedImage];
+
+        // Save image in user photo library.
+//         UIImageWriteToSavedPhotosAlbum(capturedImage, nil, nil, nil);
+    };
+
+    // -> TODO 1
+    // manipulate outputImage according to fixed numberplate position
 
     AVCaptureConnection *videoConnection = nil;
     for (AVCaptureConnection *connection in stillImageOutput.connections)
@@ -203,12 +236,10 @@ typedef void(^FailureBlock) (NSError *error);
     }
 
     // Update the orientation on the still image output video connection before capturing.
-    [videoConnection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+    [videoConnection setVideoOrientation:AVCaptureVideoOrientationLandscapeRight];
 
-    __block UIImage *outputImage = nil;
+    [stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
 
-    [stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error)
-     {
          CFDictionaryRef exifAttachments = CMGetAttachment( imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
          if (exifAttachments) {
              // Do something with the attachments.
@@ -219,43 +250,17 @@ typedef void(^FailureBlock) (NSError *error);
 
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          UIImage *image = [[UIImage alloc] initWithData:imageData];
-         image = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation:UIImageOrientationUp];
-         // Save image in user photo library.
+//         image = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation:UIImageOrientationUp];
 
-         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+//        UIImageWriteToSavedPhotosAlbum(image , nil, nil, nil);
 
          UIImage *finalPhoto;
          finalPhoto = [self cropImageAndRotate:image];
-         UIImageWriteToSavedPhotosAlbum(finalPhoto, nil, nil, nil);
-
          UIImage *scaledimage = [finalPhoto resizeImageToWidth:432];
-         UIImageWriteToSavedPhotosAlbum(scaledimage, nil, nil, nil);
 
-         [self processandsave:scaledimage];
-         outputImage = scaledimage;
+        completion(scaledimage);
+
      }];
-
-    if (outputImage) {
-        NSLog(@"burrrrrrr");
-    }
-    // -> TODO 1
-    // manipulate outputImage according to fixed numberplate position
-
-    // -> TODO 2
-    // hand over outputImage to recognition methods
-
-    NSString *numberplateString = @"KYF 77777";
-
-    // -> TODO 3
-    // Trigger Dialog in order to verify Recognized numberplate
-    // showing the pickerviews
-
-    // i.e. like a date picker view
-    // Dialog finally triggers print through a webservice (for now only show an alert saying: printed x xx 9999"
-
-    // Show recognized Numbers
-    [self showRecognizedNumbersWithString:numberplateString];
-    [self performSelector:@selector(checkIfUIPickerIsScrolling) withObject:nil afterDelay:1.0];
 }
 
 - (UIImage *)cropImageAndRotate:(UIImage *)image {
@@ -269,6 +274,8 @@ typedef void(^FailureBlock) (NSError *error);
 
     UIImage *photoImage = [rotatedImage copy];
     CGSize imageSize = photoImage.size;
+
+    // crop 20% of original image
     CGRect imageRect = (CGRect){
         .size = imageSize
     };
@@ -276,7 +283,6 @@ typedef void(^FailureBlock) (NSError *error);
     CGFloat widthFactor = imageSize.width * 0.2;
     CGFloat heightFactor = imageSize.height * 0.2;
 
-    // crop 20% of original image
     CGRect refRect = CGRectInset(imageRect, widthFactor, heightFactor);
     CGFloat deviceScale = photoImage.scale;
     CGImageRef imageRef = CGImageCreateWithImageInRect(photoImage.CGImage, refRect);
@@ -293,30 +299,36 @@ typedef void(^FailureBlock) (NSError *error);
      */
 
     [self showHudWithText:@"Detecting Number Plate..."];
+
     [self detectPlateNumberFromImage:img
                    withResponseBlock:^(NSString *plateNumber) {
 
                        processing = NO;
 
-                       NSString* message = [NSString stringWithFormat:@"Detected plate number is \n \"%@\"",plateNumber];
+                       if (plateNumber.length>0) {
 
-                       UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@""
-                                                                      message:message
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"ok"
-                                                            otherButtonTitles:nil];
-                       [alert show];
+                           detectedPlateNumber = plateNumber;
+
+                            NSString *numberplateString =  plateNumber;
+
+                            // i.e. like a date picker view
+                            // Dialog finally triggers print through a webservice (for now only show an alert saying: printed x xx 9999"
+
+                            // Show recognized Numbers
+                            [self showRecognizedNumbersWithString:numberplateString];
+                            [self performSelector:@selector(checkIfUIPickerIsScrolling) withObject:nil afterDelay:1.0];
+                       }
 
                    } andErrorBlock:^(NSError *error) {
 
-                       UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error"
-                                                                      message:error.localizedDescription
-                                                                     delegate:nil
-                                                            cancelButtonTitle:@"ok"
-                                                            otherButtonTitles:nil];
-                       [alert show];
+                       [[[UIAlertView alloc]initWithTitle:@"Error"
+                                                        message:error.localizedDescription
+                                                        delegate:nil
+                                                        cancelButtonTitle:@"ok"
+                                                        otherButtonTitles:nil] show];
                        processing = NO;
                    }];
+
 }
 
 - (void)detectPlateNumberFromImage:(UIImage *)srcImage
@@ -341,10 +353,17 @@ typedef void(^FailureBlock) (NSError *error);
 
                     NSString *plateNumber = @"";
                     NSString *ocrText = [self tesseratTextFromImage:plateImg];
-                    NSLog(@"plate number: %@",ocrText);
+                    NSLog(@"ocrText: %@",ocrText);
 
                     if (ocrText.length) {
+
                         plateNumber = [[Utility sharedInstance] filterPlateNumberFromOCRString:ocrText];
+
+                        dispatch_async(dispatch_get_main_queue(), ^{
+
+                            [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                            responseBlock(plateNumber);
+                        });
                     }
                     else {
                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -356,11 +375,6 @@ typedef void(^FailureBlock) (NSError *error);
                         });
                     }
 
-                    dispatch_async(dispatch_get_main_queue(), ^{
-
-                        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-                        responseBlock(plateNumber);
-                    });
                 });
 //                [self saveImage:plateImg];
             }
@@ -525,7 +539,6 @@ typedef void(^FailureBlock) (NSError *error);
                 indexForCityChars=count;
                 break;
             }
-
         }
     }
 
@@ -634,34 +647,43 @@ typedef void(^FailureBlock) (NSError *error);
             digitCounter++;
         }
 
-        // show always all - Will be checked in the loop later on (hiding pickers etc.)
-        [pickerBG01 setHidden:NO];
-        [pickerBG02 setHidden:NO];
-        [pickerBG03 setHidden:NO];
-        [pickerBG04 setHidden:NO];
-        [pickerBG05 setHidden:NO];
-        [pickerBG06 setHidden:NO];
-        [pickerBG07 setHidden:NO];
-        [pickerBG08 setHidden:NO];
-
+        [self showPickerViews:YES];
     }
-
 }
 
 -(void)problemWithScannedNumberMessageWithCode:(int)code {
 
     if (code==1) {
+
+        [AJNotificationView showNoticeInView:[[[UIApplication sharedApplication] delegate] window]
+                                        type:AJNotificationTypeGreen
+                                       title:@"There seems to be a Problem with the scanned Numberplate! (Citychars do not exist)"
+                             linedBackground:AJLinedBackgroundTypeAnimated
+                                   hideAfter:1.5f];
+
         NSLog(@"There seems to be a Problem with the scanned Numberplate! (Citychars do not exist)");
+
     } else if (code==2) {
+
+        [AJNotificationView showNoticeInView:[[[UIApplication sharedApplication] delegate] window]
+                                        type:AJNotificationTypeGreen
+                                       title:@"There seems to be a Problem with the scanned Numberplate! (Missing Space between City- and ID-Chars)"
+                             linedBackground:AJLinedBackgroundTypeAnimated
+                                   hideAfter:1.5f];
+        
         NSLog(@"There seems to be a Problem with the scanned Numberplate! (Missing Space between City- and ID-Chars)");
     }
-    
 }
 
 -(void)createPickerViews {
 
     //Creating UIPickerviews
-    UIView *mainView = self.view;
+    pickerContainerView = [[UIView alloc] initWithFrame:self.view.bounds];
+    [pickerContainerView setBackgroundColor:[UIColor clearColor]];
+    pickerContainerView.userInteractionEnabled = NO;
+    [self.view addSubview:pickerContainerView];
+    [self showPickerViews:NO];
+
     float spacingFactor = self.view.frame.size.width/10;
     float widthFactor = self.view.frame.size.width/10;
     NSLog(@"widthFactor:%f", widthFactor);
@@ -673,7 +695,7 @@ typedef void(^FailureBlock) (NSError *error);
     [picker01 setDelegate:self];
     [picker01 setDataSource:self];
     [pickerBG01 addSubview:picker01];
-    [mainView addSubview:pickerBG01];
+    [pickerContainerView addSubview:pickerBG01];
 
     pickerBG02 = [[UIView alloc] initWithFrame:CGRectMake(spacingFactor*2, (self.view.frame.size.height/2)-81.0, widthFactor, 162.0)];
     [pickerBG02 setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
@@ -682,7 +704,7 @@ typedef void(^FailureBlock) (NSError *error);
     [picker02 setDelegate:self];
     [picker02 setDataSource:self];
     [pickerBG02 addSubview:picker02];
-    [mainView addSubview:pickerBG02];
+    [pickerContainerView addSubview:pickerBG02];
 
     pickerBG03 = [[UIView alloc] initWithFrame:CGRectMake(spacingFactor*3, (self.view.frame.size.height/2)-81.0, widthFactor, 162.0)];
     [pickerBG03 setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
@@ -691,7 +713,7 @@ typedef void(^FailureBlock) (NSError *error);
     [picker03 setDelegate:self];
     [picker03 setDataSource:self];
     [pickerBG03 addSubview:picker03];
-    [mainView addSubview:pickerBG03];
+    [pickerContainerView addSubview:pickerBG03];
 
     pickerBG04 = [[UIView alloc] initWithFrame:CGRectMake(spacingFactor*4, (self.view.frame.size.height/2)-81.0, widthFactor, 162.0)];
     [pickerBG04 setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
@@ -700,7 +722,7 @@ typedef void(^FailureBlock) (NSError *error);
     [picker04 setDelegate:self];
     [picker04 setDataSource:self];
     [pickerBG04 addSubview:picker04];
-    [mainView addSubview:pickerBG04];
+    [pickerContainerView addSubview:pickerBG04];
 
     pickerBG05 = [[UIView alloc] initWithFrame:CGRectMake(spacingFactor*5, (self.view.frame.size.height/2)-81.0, widthFactor, 162.0)];
     [pickerBG05 setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
@@ -709,7 +731,7 @@ typedef void(^FailureBlock) (NSError *error);
     [picker05 setDelegate:self];
     [picker05 setDataSource:self];
     [pickerBG05 addSubview:picker05];
-    [mainView addSubview:pickerBG05];
+    [pickerContainerView addSubview:pickerBG05];
 
     pickerBG06 = [[UIView alloc] initWithFrame:CGRectMake(spacingFactor*6, (self.view.frame.size.height/2)-81.0, widthFactor, 162.0)];
     [pickerBG06 setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
@@ -718,7 +740,7 @@ typedef void(^FailureBlock) (NSError *error);
     [picker06 setDelegate:self];
     [picker06 setDataSource:self];
     [pickerBG06 addSubview:picker06];
-    [mainView addSubview:pickerBG06];
+    [pickerContainerView addSubview:pickerBG06];
 
     pickerBG07 = [[UIView alloc] initWithFrame:CGRectMake(spacingFactor*7, (self.view.frame.size.height/2)-81.0, widthFactor, 162.0)];
     [pickerBG07 setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
@@ -727,7 +749,7 @@ typedef void(^FailureBlock) (NSError *error);
     [picker07 setDelegate:self];
     [picker07 setDataSource:self];
     [pickerBG07 addSubview:picker07];
-    [mainView addSubview:pickerBG07];
+    [pickerContainerView addSubview:pickerBG07];
 
     pickerBG08 = [[UIView alloc] initWithFrame:CGRectMake(spacingFactor*8, (self.view.frame.size.height/2)-81.0, widthFactor, 162.0)];
     [pickerBG08 setBackgroundColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
@@ -736,19 +758,8 @@ typedef void(^FailureBlock) (NSError *error);
     [picker08 setDelegate:self];
     [picker08 setDataSource:self];
     [pickerBG08 addSubview:picker08];
-    [mainView addSubview:pickerBG08];
-
-    //hide the views
-    [pickerBG01 setHidden:YES];
-    [pickerBG02 setHidden:YES];
-    [pickerBG03 setHidden:YES];
-    [pickerBG04 setHidden:YES];
-    [pickerBG05 setHidden:YES];
-    [pickerBG06 setHidden:YES];
-    [pickerBG07 setHidden:YES];
-    [pickerBG08 setHidden:YES];
-    
-}
+    [pickerContainerView addSubview:pickerBG08];
+ }
 
 -(void)checkIfUIPickerIsScrolling {
 
@@ -970,6 +981,20 @@ numberOfRowsInComponent:(NSInteger)component {
     }
     
     return @" ";
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+
+    NSString *numberplateString =  detectedPlateNumber;
+
+    // i.e. like a date picker view
+    // Dialog finally triggers print through a webservice (for now only show an alert saying: printed x xx 9999"
+
+    // Show recognized Numbers
+    [self showRecognizedNumbersWithString:numberplateString];
+    [self performSelector:@selector(checkIfUIPickerIsScrolling) withObject:nil afterDelay:1.0];
 }
 
 @end

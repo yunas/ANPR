@@ -40,7 +40,7 @@ static Rectangle *obj;
     CGRect rectViewFrame = rect;
 
     if (CGRectGetWidth(rect)== CGRectGetWidth([UIScreen mainScreen].bounds)) {
-        rectViewFrame = CGRectInset(rect, rect.size.width*0.3, rect.size.height*0.43);
+        rectViewFrame = CGRectInset(rect, rect.size.width*0.32, rect.size.height*0.43);
     }
 
     CGRect subRect = CGRectInset(rectViewFrame, _lineWidth, _lineWidth);

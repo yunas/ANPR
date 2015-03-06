@@ -89,6 +89,8 @@
 		5CA3028C19B6EA9500A1337A /* OpenCVTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CA3028B19B6EA9500A1337A /* OpenCVTestTests.m */; };
 		5CB3C4D51AA8261B0058821E /* Rectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CB3C4D41AA8261B0058821E /* Rectangle.m */; };
 		5CBD8F9E19BD87BD00D5F218 /* ImageProcessorImplementation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */; };
+		5CC4B4121AA9D29B00086685 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5CC4B4111AA9D29B00086685 /* Launch Screen.xib */; };
+		5CC4B4161AA9E48300086685 /* AJNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC4B4151AA9E48300086685 /* AJNotificationView.m */; };
 		5CD3ABCA19ED5C8E00CC44BF /* l31.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5CD3ABBC19ED5C8E00CC44BF /* l31.JPG */; };
 		5CD3ABCB19ED5C8E00CC44BF /* l32.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5CD3ABBD19ED5C8E00CC44BF /* l32.JPG */; };
 		5CD3ABCC19ED5C8E00CC44BF /* l33.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 5CD3ABBE19ED5C8E00CC44BF /* l33.JPG */; };
@@ -740,6 +742,9 @@
 		5CB3C4D41AA8261B0058821E /* Rectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rectangle.m; sourceTree = "<group>"; };
 		5CBD8F9C19BD87BD00D5F218 /* ImageProcessorImplementation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageProcessorImplementation.h; sourceTree = "<group>"; };
 		5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageProcessorImplementation.mm; sourceTree = "<group>"; };
+		5CC4B4111AA9D29B00086685 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		5CC4B4141AA9E48300086685 /* AJNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AJNotificationView.h; sourceTree = "<group>"; };
+		5CC4B4151AA9E48300086685 /* AJNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AJNotificationView.m; sourceTree = "<group>"; };
 		5CD3ABBC19ED5C8E00CC44BF /* l31.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l31.JPG; sourceTree = "<group>"; };
 		5CD3ABBD19ED5C8E00CC44BF /* l32.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l32.JPG; sourceTree = "<group>"; };
 		5CD3ABBE19ED5C8E00CC44BF /* l33.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = l33.JPG; sourceTree = "<group>"; };
@@ -1421,6 +1426,7 @@
 		45FB94F119CAF5EA0022B30A /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				5CC4B4131AA9E48300086685 /* AJNotificationView */,
 				5CF8E2FA19D99DC100B6EE33 /* iToast */,
 				45FB94F219CAF5EA0022B30A /* libMWPhotoBrowser */,
 			);
@@ -1547,6 +1553,7 @@
 				5C198EC719C1D606001EBF92 /* ImageProcessing */,
 				5CBD8F9C19BD87BD00D5F218 /* ImageProcessorImplementation.h */,
 				5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */,
+				5CC4B4111AA9D29B00086685 /* Launch Screen.xib */,
 				5CA3027819B6EA9500A1337A /* Images.xcassets */,
 				5CA3027219B6EA9500A1337A /* Main.storyboard */,
 				455CBEEE19DEEA0B00496725 /* PDFCreator */,
@@ -1592,6 +1599,15 @@
 				5CA3028819B6EA9500A1337A /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5CC4B4131AA9E48300086685 /* AJNotificationView */ = {
+			isa = PBXGroup;
+			children = (
+				5CC4B4141AA9E48300086685 /* AJNotificationView.h */,
+				5CC4B4151AA9E48300086685 /* AJNotificationView.m */,
+			);
+			path = AJNotificationView;
 			sourceTree = "<group>";
 		};
 		5CD3ABB819ED5C8E00CC44BF /* 13102014 */ = {
@@ -2334,6 +2350,7 @@
 				5CF8E0C819D9386D00B6EE33 /* 350.jpg in Resources */,
 				5CF8E0CD19D9386D00B6EE33 /* 355.jpg in Resources */,
 				5CF8E01C19D9386D00B6EE33 /* 196.JPG in Resources */,
+				5CC4B4121AA9D29B00086685 /* Launch Screen.xib in Resources */,
 				5CF8E04F19D9386D00B6EE33 /* 241.JPG in Resources */,
 				5CF8E08919D9386D00B6EE33 /* 294.JPG in Resources */,
 				5CF8DFF819D9386D00B6EE33 /* 163.JPG in Resources */,
@@ -2880,6 +2897,7 @@
 				5CE5321C19E79CDD00EAB7B9 /* CameraView.m in Sources */,
 				5CF8E30C19D99EBD00B6EE33 /* NSDate+ISO8601Unparsing.m in Sources */,
 				45B8F31019D9A94300741B4B /* UIImage+GIF.m in Sources */,
+				5CC4B4161AA9E48300086685 /* AJNotificationView.m in Sources */,
 				5C106C131AA720F0008BE769 /* Utility.m in Sources */,
 				5CBD8F9E19BD87BD00D5F218 /* ImageProcessorImplementation.mm in Sources */,
 				45FB955419CAF5EB0022B30A /* MWPhotoBrowser.m in Sources */,
@@ -2978,7 +2996,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammaad  Rashid (MT979778FK)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: MetaDesign AG";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -3009,7 +3027,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-fvisibility=hidden";
-				PROVISIONING_PROFILE = "be088538-862a-4398-a150-451a1c591872";
+				PROVISIONING_PROFILE = "0ce27b9e-1078-4598-885a-7e30501d9826";
 				SDKROOT = iphoneos;
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
@@ -3033,7 +3051,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammaad  Rashid (MT979778FK)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: MetaDesign AG";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -3058,7 +3076,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-fvisibility=hidden";
-				PROVISIONING_PROFILE = "be088538-862a-4398-a150-451a1c591872";
+				PROVISIONING_PROFILE = "0ce27b9e-1078-4598-885a-7e30501d9826";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s arm64";
@@ -3071,7 +3089,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Abid Hussain (APELUZ29ER)";
 				FRAMEWORK_SEARCH_PATHS = (
 					/Users/rashid/Downloads,
 					"$(PROJECT_DIR)",
@@ -3099,7 +3116,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Abid Hussain (APELUZ29ER)";
 				FRAMEWORK_SEARCH_PATHS = (
 					/Users/rashid/Downloads,
 					"$(PROJECT_DIR)",

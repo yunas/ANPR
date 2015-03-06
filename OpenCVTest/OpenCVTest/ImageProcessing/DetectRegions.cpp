@@ -24,7 +24,7 @@ DetectRegions::DetectRegions(){
 
 bool DetectRegions::verifySizes(RotatedRect mr) {
 
-    //Spain car plate size: 520x112 aspect 4.6429
+    //German car plate size: 520x112 aspect 4.6429
     float aspect=aspectRatio;
     //Set a min and max area. All other patchs are discarded
     int min= minArea*aspect*minArea; // minimum area
