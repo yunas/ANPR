@@ -26,11 +26,13 @@
 
 #import "PDFCreator.h"
 
+#define  SAVEDPRINTER @"savedPrinter"
+
 typedef void (^ResponseBlock)(NSString* plateNumber);
 typedef void(^FailureBlock) (NSError *error);
 
 
-@interface ScanViewController () <UIAlertViewDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, TesseractDelegate, UIPickerViewDataSource, UIPickerViewDelegate> {
+@interface ScanViewController () <UIAlertViewDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, TesseractDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPrinterPickerControllerDelegate> {
     AVCaptureSession *session;
     AVCaptureStillImageOutput *stillImageOutput;
     AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
@@ -38,6 +40,7 @@ typedef void(^FailureBlock) (NSError *error);
     __weak IBOutlet UIView *sessionView;
 }
 @property (nonatomic, setter=showPickerViews:) BOOL pickerVisible;
+@property (nonatomic, strong) UIPrinter *savedPrinter;
 @end
 
 @implementation ScanViewController {
@@ -69,9 +72,12 @@ typedef void(^FailureBlock) (NSError *error);
     UIView *pickerBG08;
 
     NSString *detectedPlateNumber;
+
+    NSInteger arrIndex;
 }
 
 - (void)viewDidLoad {
+
     [super viewDidLoad];
 
     [self startSession];
@@ -86,16 +92,37 @@ typedef void(^FailureBlock) (NSError *error);
     [self.view addGestureRecognizer:doubleTouch];
 
     [singleTap requireGestureRecognizerToFail:doubleTouch];
+
+    arrIndex = 0;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
+    NSURL *printerURL = [[NSUserDefaults standardUserDefaults] URLForKey:SAVEDPRINTER];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    if (printerURL) {
+        self.savedPrinter = [UIPrinter printerWithURL:printerURL];
+    }
+    else {
+        [self savePrinter];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [session startRunning];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+
     [super viewWillDisappear:animated];
     [session stopRunning];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    [session stopRunning];
 }
 
 #pragma mark internal methods
@@ -193,15 +220,107 @@ typedef void(^FailureBlock) (NSError *error);
 - (void)didTappedOnScreen:(UITapGestureRecognizer *) gesture {
 
     if (_pickerVisible) {
-        [[[UIAlertView alloc]initWithTitle:@"" message:[NSString stringWithFormat:@"Printed %@", detectedPlateNumber] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+
         [self showPickerViews:NO];
+
+        [self printText:[self detectedPlateNumber]];
     }
     else if (!processing && gesture.numberOfTouches == 1 && gesture.state == UIGestureRecognizerStateEnded) {
         [self takePicture];
+
+//        NSArray *numbers = @[@"MB CL 600",
+//                             @"E 55",
+//                             @"RT KK 53",
+//                             @"M ÜN 4513",
+//                             @"S NU 1685",
+//                             @"B PN 273",
+//                             @"B EK 1407",
+//                             @"B WA 9493",
+//                             @"B JG 273",
+//                             @"B SB 6033",
+//                             @"B I 1224",
+//                             @"B EH 675",
+//                             @"WI P 8811",
+//                             @"V U 99",
+//                             @"BIT E 6879"
+//                             ];
+//
+//        [self showRecognizedNumbersWithString:numbers[arrIndex]];
+//        arrIndex = (++arrIndex > numbers.count)?0:arrIndex;
     }
     else {
         NSLog(@"Alrady processing on a image");
     }
+}
+
+- (NSString *)detectedPlateNumber {
+
+    NSMutableString *number = [NSMutableString stringWithString:@""];
+
+    NSInteger index = [picker01 selectedRowInComponent:0];
+
+    if (index>=0) {
+        [number appendString:npArray[index]];
+    }
+
+    index = [picker02 selectedRowInComponent:0];
+
+    if (index>=0) {
+        [number appendString:alphaArray[index]];
+    }
+
+    index = [picker03 selectedRowInComponent:0];
+
+    if (index>=0) {
+        [number appendString:mixArray[index]];
+    }
+
+    index = [picker04 selectedRowInComponent:0];
+
+    if (index>=0) {
+        [number appendString:numberArray[index]];
+    }
+
+    index = [picker05 selectedRowInComponent:0];
+
+    if (index>=0) {
+        [number appendString:numberArray[index]];
+    }
+
+    index = [picker06 selectedRowInComponent:0];
+
+    if (index>=0) {
+        [number appendString:numberArray[index]];
+    }
+
+    index = [picker07 selectedRowInComponent:0];
+
+    if (index>=0) {
+        [number appendString:numberArray[index]];
+    }
+
+    index = [picker08 selectedRowInComponent:0];
+
+    if (index>=0) {
+        [number appendString:numberArray[index]];
+    }
+
+    NSLog(@"%@", number);
+
+    [self resetPikcerViews];
+
+    return number;
+}
+
+- (void)resetPikcerViews {
+    [picker01 selectRow:0 inComponent:0 animated:NO];
+    [picker02 selectRow:0 inComponent:0 animated:NO];
+    [picker03 selectRow:0 inComponent:0 animated:NO];
+    [picker04 selectRow:0 inComponent:0 animated:NO];
+    [picker05 selectRow:0 inComponent:0 animated:NO];
+    [picker06 selectRow:0 inComponent:0 animated:NO];
+    [picker07 selectRow:0 inComponent:0 animated:NO];
+    [picker08 selectRow:0 inComponent:0 animated:NO];
 }
 
 - (void)takePicture {
@@ -213,9 +332,6 @@ typedef void(^FailureBlock) (NSError *error);
     void(^completion)(UIImage *) = ^(UIImage *capturedImage) {
 
         [self processandsave:capturedImage];
-
-        // Save image in user photo library.
-//         UIImageWriteToSavedPhotosAlbum(capturedImage, nil, nil, nil);
     };
 
     // -> TODO 1
@@ -240,13 +356,13 @@ typedef void(^FailureBlock) (NSError *error);
 
     [stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
 
-         CFDictionaryRef exifAttachments = CMGetAttachment( imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
-         if (exifAttachments) {
-             // Do something with the attachments.
-             NSLog(@"attachements: %@", exifAttachments);
-         }
-         else
-             NSLog(@"no attachments");
+//         CFDictionaryRef exifAttachments = CMGetAttachment( imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+//         if (exifAttachments) {
+//             // Do something with the attachments.
+//             NSLog(@"attachements: %@", exifAttachments);
+//         }
+//         else
+//             NSLog(@"no attachments");
 
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          UIImage *image = [[UIImage alloc] initWithData:imageData];
@@ -308,14 +424,8 @@ typedef void(^FailureBlock) (NSError *error);
                        if (plateNumber.length>0) {
 
                            detectedPlateNumber = plateNumber;
-
-                            NSString *numberplateString =  plateNumber;
-
-                            // i.e. like a date picker view
-                            // Dialog finally triggers print through a webservice (for now only show an alert saying: printed x xx 9999"
-
                             // Show recognized Numbers
-                            [self showRecognizedNumbersWithString:numberplateString];
+                            [self showRecognizedNumbersWithString:plateNumber];
                             [self performSelector:@selector(checkIfUIPickerIsScrolling) withObject:nil afterDelay:1.0];
                        }
 
@@ -328,7 +438,6 @@ typedef void(^FailureBlock) (NSError *error);
                                                         otherButtonTitles:nil] show];
                        processing = NO;
                    }];
-
 }
 
 - (void)detectPlateNumberFromImage:(UIImage *)srcImage
@@ -447,8 +556,6 @@ typedef void(^FailureBlock) (NSError *error);
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
 
-
-
 #pragma mark - Kai's Code
 
 #pragma mark - data Methods
@@ -502,7 +609,6 @@ typedef void(^FailureBlock) (NSError *error);
 
 -(void)showRecognizedNumbersWithString:(NSString*)numberPlateString {
 
-
     //Split String to Single Chars
     NSMutableArray *characters = [[NSMutableArray alloc] initWithCapacity:[numberPlateString length]];
     for (int i=0; i < [numberPlateString length]; i++) {
@@ -519,6 +625,7 @@ typedef void(^FailureBlock) (NSError *error);
     if ([[characters objectAtIndex:1] isEqualToString:@" "]) seperatorSpaceDetected = YES, numberOfFirstCityCharGroup=1;
     if ([[characters objectAtIndex:2] isEqualToString:@" "]) seperatorSpaceDetected = YES, numberOfFirstCityCharGroup=2;
     if ([[characters objectAtIndex:3] isEqualToString:@" "]) seperatorSpaceDetected = YES, numberOfFirstCityCharGroup=3;
+
     if (!seperatorSpaceDetected) {
         [self problemWithScannedNumberMessageWithCode:2];
     } else {
@@ -680,7 +787,7 @@ typedef void(^FailureBlock) (NSError *error);
     //Creating UIPickerviews
     pickerContainerView = [[UIView alloc] initWithFrame:self.view.bounds];
     [pickerContainerView setBackgroundColor:[UIColor clearColor]];
-    pickerContainerView.userInteractionEnabled = NO;
+//    pickerContainerView.userInteractionEnabled = NO;
     [self.view addSubview:pickerContainerView];
     [self showPickerViews:NO];
 
@@ -941,7 +1048,6 @@ numberOfRowsInComponent:(NSInteger)component {
     }
 
     return 1;
-
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView
@@ -983,18 +1089,72 @@ numberOfRowsInComponent:(NSInteger)component {
     return @" ";
 }
 
-#pragma mark - UIAlertViewDelegate
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+}
 
-    NSString *numberplateString =  detectedPlateNumber;
+#pragma mark - Print
 
-    // i.e. like a date picker view
-    // Dialog finally triggers print through a webservice (for now only show an alert saying: printed x xx 9999"
+- (void)savePrinter {
 
-    // Show recognized Numbers
-    [self showRecognizedNumbersWithString:numberplateString];
-    [self performSelector:@selector(checkIfUIPickerIsScrolling) withObject:nil afterDelay:1.0];
+    UIPrinterPickerController *pickerController =[UIPrinterPickerController printerPickerControllerWithInitiallySelectedPrinter:_savedPrinter];
+
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) // Large device printing
+    {
+        [pickerController presentFromRect:self.view.frame inView:self.view animated:YES completionHandler:^(UIPrinterPickerController *printerPickerController, BOOL userDidSelect, NSError *err){
+            if (userDidSelect) {
+                self.savedPrinter=printerPickerController.selectedPrinter;
+                [[NSUserDefaults standardUserDefaults] setURL:self.savedPrinter.URL forKey:SAVEDPRINTER];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }];
+    }
+    else {
+        [pickerController presentAnimated:YES completionHandler:^(UIPrinterPickerController *printerPickerController, BOOL userDidSelect, NSError *error) {
+            if (userDidSelect) {
+                self.savedPrinter = printerPickerController.selectedPrinter;
+
+//                [[NSUserDefaults standardUserDefaults] setURL:self.savedPrinter.URL forKey:SAVEDPRINTER];
+//                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+        }];
+    }
+}
+
+- (UIViewController *)printerPickerControllerParentViewController:(UIPrinterPickerController *)printerPickerController {
+    return self; // set self as parent of print picker.
+}
+
+
+- (void)printText:(NSString *)text {
+
+    if ([UIPrintInteractionController isPrintingAvailable]) {
+
+        UIPrintInteractionController *printController = [UIPrintInteractionController sharedPrintController];
+
+        if (printController) {
+
+            UIPrintInfo *printInfo = [UIPrintInfo printInfo];
+            printInfo.duplex = UIPrintInfoDuplexLongEdge;
+            printInfo.orientation = UIPrintInfoOrientationLandscape;
+            printInfo.outputType = UIPrintInfoOutputGeneral;
+            printInfo.jobName = @"Plate number";
+            printController.printInfo = printInfo;
+
+            UISimpleTextPrintFormatter *formatter = [[UISimpleTextPrintFormatter alloc] initWithText:[@"PLATE NUMBER\n\n" stringByAppendingString:text]];
+            formatter.contentInsets = UIEdgeInsetsMake(72, 72, 72, 72);
+            formatter.textAlignment = NSTextAlignmentCenter;
+            formatter.font = [UIFont systemFontOfSize:56.0];
+            printController.printFormatter = formatter;
+
+            [printController printToPrinter:_savedPrinter completionHandler:^(UIPrintInteractionController *printInteractionController, BOOL completed, NSError *error) {
+
+                if (!completed && error) {
+                    NSLog(@"FAILED! due to error in domain %@ with error code %ld", error.domain, (long)error.code);
+                }
+            }];
+        }
+    }
 }
 
 @end
