@@ -3107,7 +3107,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e527ef0f-5801-4699-93d3-f022a771befc";
+				PROVISIONING_PROFILE = "354dea52-0361-42f1-a1bc-9671cbc0e2bd";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3136,7 +3136,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "e527ef0f-5801-4699-93d3-f022a771befc";
+				PROVISIONING_PROFILE = "354dea52-0361-42f1-a1bc-9671cbc0e2bd";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

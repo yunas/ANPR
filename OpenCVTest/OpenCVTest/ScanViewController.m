@@ -36,10 +36,10 @@ typedef void(^FailureBlock) (NSError *error);
     AVCaptureSession *session;
     AVCaptureStillImageOutput *stillImageOutput;
     AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
-    BOOL processing;
     __weak IBOutlet UIView *sessionView;
 }
 @property (nonatomic, setter=showPickerViews:) BOOL pickerVisible;
+@property (nonatomic, setter=startLNPRProcessing:, getter=isLNPRPrcessingInProgress, assign) BOOL processing;
 @property (nonatomic, strong) UIPrinter *savedPrinter;
 @end
 
@@ -75,6 +75,8 @@ typedef void(^FailureBlock) (NSError *error);
 
     NSInteger arrIndex;
 }
+
+@synthesize processing = _processing;
 
 - (void)viewDidLoad {
 
@@ -126,6 +128,14 @@ typedef void(^FailureBlock) (NSError *error);
 }
 
 #pragma mark internal methods
+
+- (void)startLNPRProcessing:(BOOL)processing {
+    _processing = processing;
+}
+
+- (BOOL)isLNPRPrcessingInProgress {
+    return _processing;
+}
 
 - (void)showPickerViews:(BOOL)pickerVisible {
 
@@ -219,38 +229,19 @@ typedef void(^FailureBlock) (NSError *error);
 
 - (void)didTappedOnScreen:(UITapGestureRecognizer *) gesture {
 
-    if (_pickerVisible) {
-
-        [self showPickerViews:NO];
-
-        [self printText:[self detectedPlateNumber]];
-    }
-    else if (!processing && gesture.numberOfTouches == 1 && gesture.state == UIGestureRecognizerStateEnded) {
-        [self takePicture];
-
-//        NSArray *numbers = @[@"MB CL 600",
-//                             @"E 55",
-//                             @"RT KK 53",
-//                             @"M ÜN 4513",
-//                             @"S NU 1685",
-//                             @"B PN 273",
-//                             @"B EK 1407",
-//                             @"B WA 9493",
-//                             @"B JG 273",
-//                             @"B SB 6033",
-//                             @"B I 1224",
-//                             @"B EH 675",
-//                             @"WI P 8811",
-//                             @"V U 99",
-//                             @"BIT E 6879"
-//                             ];
-//
-//        [self showRecognizedNumbersWithString:numbers[arrIndex]];
-//        arrIndex = (++arrIndex > numbers.count)?0:arrIndex;
-    }
-    else {
-        NSLog(@"Alrady processing on a image");
-    }
+        if (_pickerVisible) {
+            NSLog(@"Printer functionality started");
+            [self showPickerViews:NO];
+            [self printText:[self detectedPlateNumber]];
+        }
+        else if (![self isLNPRPrcessingInProgress] && gesture.numberOfTouches == 1 && gesture.state == UIGestureRecognizerStateEnded) {
+            NSLog(@"LNPR process started.");
+            [self startLNPRProcessing:YES];
+            [self takePicture];
+        }
+        else {
+            NSLog(@"Alrady processing on a image");
+        }
 }
 
 - (NSString *)detectedPlateNumber {
@@ -325,8 +316,6 @@ typedef void(^FailureBlock) (NSError *error);
 
 - (void)takePicture {
 
-    processing = YES;
-
     // -> TODO 2
     // hand over outputImage to recognition methods
     void(^completion)(UIImage *) = ^(UIImage *capturedImage) {
@@ -367,7 +356,6 @@ typedef void(^FailureBlock) (NSError *error);
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          UIImage *image = [[UIImage alloc] initWithData:imageData];
 //         image = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation:UIImageOrientationUp];
-
 //        UIImageWriteToSavedPhotosAlbum(image , nil, nil, nil);
 
          UIImage *finalPhoto;
@@ -419,8 +407,6 @@ typedef void(^FailureBlock) (NSError *error);
     [self detectPlateNumberFromImage:img
                    withResponseBlock:^(NSString *plateNumber) {
 
-                       processing = NO;
-
                        if (plateNumber.length>0) {
 
                            detectedPlateNumber = plateNumber;
@@ -436,7 +422,7 @@ typedef void(^FailureBlock) (NSError *error);
                                                         delegate:nil
                                                         cancelButtonTitle:@"ok"
                                                         otherButtonTitles:nil] show];
-                       processing = NO;
+                       [self startLNPRProcessing:NO];
                    }];
 }
 
@@ -489,13 +475,11 @@ typedef void(^FailureBlock) (NSError *error);
             }
             else {
 
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"No plate detected."};
+                NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"No plate detected."};
 
-                    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-                    NSError *error = [[NSError alloc]initWithDomain:@"420" code:420 userInfo:userInfo];
-                    failureBlock(error);
-                });
+                [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+                NSError *error = [[NSError alloc]initWithDomain:@"420" code:420 userInfo:userInfo];
+                failureBlock(error);
             }
         });
     });
@@ -760,6 +744,8 @@ typedef void(^FailureBlock) (NSError *error);
 
 -(void)problemWithScannedNumberMessageWithCode:(int)code {
 
+    [AJNotificationView clearQueue];
+
     if (code==1) {
 
         [AJNotificationView showNoticeInView:[[[UIApplication sharedApplication] delegate] window]
@@ -773,13 +759,15 @@ typedef void(^FailureBlock) (NSError *error);
     } else if (code==2) {
 
         [AJNotificationView showNoticeInView:[[[UIApplication sharedApplication] delegate] window]
-                                        type:AJNotificationTypeGreen
+                                        type:AJNotificationTypeOrange
                                        title:@"There seems to be a Problem with the scanned Numberplate! (Missing Space between City- and ID-Chars)"
                              linedBackground:AJLinedBackgroundTypeAnimated
                                    hideAfter:1.5f];
         
         NSLog(@"There seems to be a Problem with the scanned Numberplate! (Missing Space between City- and ID-Chars)");
     }
+
+    [self startLNPRProcessing:NO];
 }
 
 -(void)createPickerViews {
@@ -1127,6 +1115,8 @@ numberOfRowsInComponent:(NSInteger)component {
 
 
 - (void)printText:(NSString *)text {
+
+    [self startLNPRProcessing:NO];
 
     if ([UIPrintInteractionController isPrintingAvailable]) {
 
