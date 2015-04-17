@@ -4,35 +4,25 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>LNPR.xcscheme</key>
+		<key>Pods-OpenCVTest-TesseractOCRiOS.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>3</integer>
 		</dict>
-		<key>LNPR_DEV.xcscheme</key>
+		<key>Pods-OpenCVTest.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>4</integer>
-		</dict>
-		<key>OpenCVTest.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>45C494EE1ADD1E9A00031269</key>
+		<key>4FF6265E695D37D4BB6934BD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5CA3025C19B6EA9400A1337A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5CA3027D19B6EA9500A1337A</key>
+		<key>5881148961063126DDA99746</key>
 		<dict>
 			<key>primary</key>
 			<true/>

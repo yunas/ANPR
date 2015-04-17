@@ -407,10 +407,11 @@ typedef void(^FailureBlock) (NSError *error);
     [self detectPlateNumberFromImage:img
                    withResponseBlock:^(NSString *plateNumber) {
 
-                       if (plateNumber.length>0) {
+                       if (plateNumber.length > 5) {
 
                            detectedPlateNumber = plateNumber;
                             // Show recognized Numbers
+                           
                             [self showRecognizedNumbersWithString:plateNumber];
                             [self performSelector:@selector(checkIfUIPickerIsScrolling) withObject:nil afterDelay:1.0];
                        }

@@ -34,6 +34,52 @@
 
 }
 
+- (NSUInteger)numberOfOccurencesOfSubstring:(NSString *)substring inString:(NSString*)string
+{
+    NSArray *components = [string componentsSeparatedByString:substring];
+    return components.count - 1; // Two substring will create 3 separated strings in the array.
+}
+
+-(NSString *) stringBySplitingInTwoComponents:(NSString*)str{
+    NSString *splittedStr = [NSString stringWithString:str];
+    
+    
+    if([self numberOfOccurencesOfSubstring:@" " inString:splittedStr] <= 0){
+        if(str.length >= 3){
+            
+            int center = ceil(str.length/2.0);
+            
+            NSString *firstStr = [str substringToIndex:center];
+            NSString *secondStr = [str substringWithRange:NSMakeRange(center, str.length - center)];
+            
+            splittedStr = [NSString stringWithFormat:@"%@ %@",firstStr,secondStr];
+            
+        }
+    }
+    
+    return splittedStr;
+}
+
+-(NSString *) stringWithoutStickerText:(NSString*)str{
+    NSString *filteredStr = [NSString stringWithString:str];
+    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"3" withString:@" "];
+    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"8" withString:@" "];
+    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"S" withString:@" "];
+    
+    NSArray *partaArr = [filteredStr componentsSeparatedByString:@" "];
+    NSString *parta = @"";
+    if (partaArr.count > 0) {
+        parta = [self stringWithAlphabetsOnly:partaArr[0]];
+    }
+    
+    for (int i=1 ; i < partaArr.count; i++) {
+        NSString *pStr = partaArr[i];
+        parta = [NSString stringWithFormat:@"%@ %@",parta,[self stringWithAlphabetsOnly:pStr]];
+    }
+
+    return parta;
+}
+
 -(NSString *) stringWithAlphabetsOnly:(NSString *)str{
     NSString *alphaStr = [NSString stringWithString:str];
     alphaStr = [alphaStr stringByReplacingOccurrencesOfString:@"[^A-Z]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, [alphaStr length])];
@@ -65,7 +111,8 @@
         filteredStr = [NSString stringWithFormat:@"%@ %@ %@",parta,partb,partc];
     }
     else if (platesPart.count == 2) {
-        NSString *parta = [self stringWithAlphabetsOnly:platesPart[0]];
+        NSString *parta = [self stringWithoutStickerText:platesPart[0]];
+        parta = [self stringBySplitingInTwoComponents:parta];
         NSString *partb = platesPart[1];//[self stringWithNumbersOnly:platesPart[1]];
         filteredStr = [NSString stringWithFormat:@"%@ %@",parta,partb];
     }

@@ -127,7 +127,7 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
             Mat img_crop;
             img_crop = detectRegions.getCroppedMat(img_rotated, minRect);
             watchTestImg = [UIImage imageWithCVMat:img_crop];
-            
+                
             Mat img_resized;
             img_resized = detectRegions.getResizedMat(img_crop, cv::Size(300,69));
             watchTestImg = [UIImage imageWithCVMat:img_resized];

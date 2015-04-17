@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "Utility.h"
+
 
 @implementation AppDelegate
 
@@ -14,6 +16,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     // Override point for customization after application launch.
+    
+    NSLog(@"%@", [[Utility sharedInstance] stringBySplitingInTwoComponents:@"RMK"]);
+    
     return YES;
 }
 							

@@ -11,4 +11,6 @@
 @interface Utility : NSObject
 + (instancetype) sharedInstance;
 - (NSString *) filterPlateNumberFromOCRString:(NSString *)ocrText;
+- (NSString *) stringBySplitingInTwoComponents:(NSString*)str;
+
 @end

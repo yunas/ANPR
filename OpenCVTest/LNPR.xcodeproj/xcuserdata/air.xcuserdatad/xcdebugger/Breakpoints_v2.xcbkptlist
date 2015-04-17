@@ -20,7 +20,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
@@ -29,23 +29,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "630"
             endingLineNumber = "630"
-            landmarkName = "+numberPlateWithSobelFromCarImage:imageName:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "987"
-            endingLineNumber = "987"
-            landmarkName = "getOnePossiblePlateRegion(vector&lt;RotatedRect&gt; rects, float error)"
+            landmarkName = "verifySizes(cv::RotatedRect mr, float error)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -59,16 +43,30 @@
             timestampString = "434165884.571555"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "641"
-            endingLineNumber = "641"
-            landmarkName = "+numberPlateWithSobelFromCarImage:imageName:"
-            landmarkType = "5">
+            startingLineNumber = "987"
+            endingLineNumber = "987">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "OpenCVTest/ImageProcessorImplementation.mm"
+            timestampString = "434165884.571555"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "641"
+            endingLineNumber = "641"
+            landmarkName = "verifySizes(cv::RotatedRect mr, float error)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
@@ -77,8 +75,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "637"
             endingLineNumber = "637"
-            landmarkName = "+numberPlateWithSobelFromCarImage:imageName:"
-            landmarkType = "5">
+            landmarkName = "verifySizes(cv::RotatedRect mr, float error)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -93,7 +91,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "565"
             endingLineNumber = "565"
-            landmarkName = "+extractPlateImageFrom:region:"
+            landmarkName = "+histogramEqualizedImage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -109,7 +107,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "490"
             endingLineNumber = "490"
-            landmarkName = "+numberPlateFromCarImageOldImplementation:imageName:"
+            landmarkName = "+getMorpholgyImage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -125,7 +123,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "483"
             endingLineNumber = "483"
-            landmarkName = "+numberPlateFromCarImageOldImplementation:imageName:"
+            landmarkName = "+getThresholdImage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -141,7 +139,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "481"
             endingLineNumber = "481"
-            landmarkName = "+numberPlateFromCarImageOldImplementation:imageName:"
+            landmarkName = "+getThresholdImage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -157,7 +155,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "470"
             endingLineNumber = "470"
-            landmarkName = "+numberPlateFromCarImageOldImplementation:imageName:"
+            landmarkName = "+getBlurImage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -173,7 +171,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "520"
             endingLineNumber = "520"
-            landmarkName = "+extractPlateImageFrom:region:"
+            landmarkName = "+getRotatedImage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -188,9 +186,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "1010"
-            endingLineNumber = "1010"
-            landmarkName = "verifySizes(cv::RotatedRect mr, float error)"
-            landmarkType = "7">
+            endingLineNumber = "1010">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -205,7 +201,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "495"
             endingLineNumber = "495"
-            landmarkName = "+numberPlateFromCarImageOldImplementation:imageName:"
+            landmarkName = "+getMorpholgyImage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -237,7 +233,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "470"
             endingLineNumber = "470"
-            landmarkName = "+numberPlateFromCarImageOldImplementation:imageName:"
+            landmarkName = "+getBlurImage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -253,7 +249,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "331"
             endingLineNumber = "331"
-            landmarkName = "+numberPlateFromCarImage:imageName:"
+            landmarkName = "+SVMDetectedPLate:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -269,7 +265,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "284"
             endingLineNumber = "284"
-            landmarkName = "+numberPlateFromCarImage:imageName:"
+            landmarkName = "+numberPlateWithCannyFromCarImage:imageName:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
