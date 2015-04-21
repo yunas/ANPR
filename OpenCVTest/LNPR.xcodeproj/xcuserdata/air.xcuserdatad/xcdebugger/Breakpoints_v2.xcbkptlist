@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1123"
-            endingLineNumber = "1123">
+            startingLineNumber = "1176"
+            endingLineNumber = "1176">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -24,13 +24,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "630"
-            endingLineNumber = "630"
-            landmarkName = "verifySizes(cv::RotatedRect mr, float error)"
-            landmarkType = "7">
+            startingLineNumber = "683"
+            endingLineNumber = "683"
+            landmarkName = "+getNormalisedGrayscaleImage:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -40,11 +40,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "987"
-            endingLineNumber = "987">
+            startingLineNumber = "1040"
+            endingLineNumber = "1040">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -54,43 +54,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "641"
-            endingLineNumber = "641"
-            landmarkName = "verifySizes(cv::RotatedRect mr, float error)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "637"
-            endingLineNumber = "637"
-            landmarkName = "verifySizes(cv::RotatedRect mr, float error)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "565"
-            endingLineNumber = "565"
+            startingLineNumber = "694"
+            endingLineNumber = "694"
             landmarkName = "+histogramEqualizedImage:"
             landmarkType = "5">
          </BreakpointContent>
@@ -98,15 +66,31 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "OpenCVTest/ImageProcessorImplementation.mm"
+            timestampString = "451310375.041159"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "690"
+            endingLineNumber = "690"
+            landmarkName = "+getNormalisedGrayscaleImage:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "490"
-            endingLineNumber = "490"
+            startingLineNumber = "618"
+            endingLineNumber = "618"
             landmarkName = "+getMorpholgyImage:"
             landmarkType = "5">
          </BreakpointContent>
@@ -118,12 +102,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "483"
-            endingLineNumber = "483"
-            landmarkName = "+getThresholdImage:"
+            startingLineNumber = "543"
+            endingLineNumber = "543"
+            landmarkName = "+trainSVM"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "OpenCVTest/ImageProcessorImplementation.mm"
+            timestampString = "451310375.041159"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "536"
+            endingLineNumber = "536"
+            landmarkName = "+trainSVM"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -134,12 +134,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "481"
-            endingLineNumber = "481"
-            landmarkName = "+getThresholdImage:"
+            startingLineNumber = "534"
+            endingLineNumber = "534"
+            landmarkName = "+trainSVM"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -150,12 +150,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "470"
-            endingLineNumber = "470"
-            landmarkName = "+getBlurImage:"
+            startingLineNumber = "523"
+            endingLineNumber = "523"
+            landmarkName = "+trainSVM"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -166,12 +166,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "520"
-            endingLineNumber = "520"
-            landmarkName = "+getRotatedImage:"
+            startingLineNumber = "573"
+            endingLineNumber = "573"
+            landmarkName = "+trainingPlate:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -182,11 +182,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1010"
-            endingLineNumber = "1010">
+            startingLineNumber = "1063"
+            endingLineNumber = "1063">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -196,12 +196,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "495"
-            endingLineNumber = "495"
-            landmarkName = "+getMorpholgyImage:"
+            startingLineNumber = "548"
+            endingLineNumber = "548"
+            landmarkName = "+trainSVM"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -228,12 +228,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165884.571555"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "470"
-            endingLineNumber = "470"
-            landmarkName = "+getBlurImage:"
+            startingLineNumber = "523"
+            endingLineNumber = "523"
+            landmarkName = "+trainSVM"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -244,12 +244,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434165879.732818"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "331"
-            endingLineNumber = "331"
-            landmarkName = "+SVMDetectedPLate:"
+            startingLineNumber = "384"
+            endingLineNumber = "384"
+            landmarkName = "+numberPlateWithCannyFromCarImage:imageName:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -260,11 +260,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ImageProcessorImplementation.mm"
-            timestampString = "434171889.541808"
+            timestampString = "451310375.041159"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "284"
-            endingLineNumber = "284"
+            startingLineNumber = "337"
+            endingLineNumber = "337"
             landmarkName = "+numberPlateWithCannyFromCarImage:imageName:"
             landmarkType = "5">
          </BreakpointContent>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>51C4CFA7-6147-4FA6-BDC2-F55FAAEDAF1C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>LNPR</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>279EB1BFFB8744689E064EA21554C249A71C8DF6</key>
+		<string>https://github.com/yunas/ANPR.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>OpenCVTest/LNPR.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>279EB1BFFB8744689E064EA21554C249A71C8DF6</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/yunas/ANPR.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>279EB1BFFB8744689E064EA21554C249A71C8DF6</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>279EB1BFFB8744689E064EA21554C249A71C8DF6</string>
+			<key>IDESourceControlWCCName</key>
+			<string>COEUS_ANPR</string>
+		</dict>
+	</array>
+</dict>
+</plist>

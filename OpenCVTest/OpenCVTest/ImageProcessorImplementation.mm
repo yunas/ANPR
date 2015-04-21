@@ -127,21 +127,19 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
             img_crop = detectRegions.getCroppedMat(img_rotated, minRect);
             watchTestImg = [UIImage imageWithCVMat:img_crop];
 
-            watchTestImg = [ImageProcessorImplementation cropCircleFromImge:img_crop];
-
+            
             Mat img_resized;
             img_resized = detectRegions.getResizedMat(img_crop, cv::Size(300,69));
 //            img_resized = detectRegions.getResizedMat(img_crop, cv::Size(2*input_img.rows,input_img.rows));
             watchTestImg = [UIImage imageWithCVMat:img_resized];
 
-            watchTestImg = [ImageProcessorImplementation cropCircleFromImge:img_resized];
+            img_resized = [ImageProcessorImplementation removeStickerFromPlate:watchTestImg];
+            watchTestImg = [UIImage imageWithCVMat:img_resized];
 
             //Equalize croped image
             Mat img_grayResult;
             img_grayResult = detectRegions.getNormalisedGrayscaleMat(img_resized);
             watchTestImg = [UIImage imageWithCVMat:img_grayResult];
-
-            watchTestImg = [ImageProcessorImplementation cropCircleFromImge:img_grayResult];
 
             Mat img_contrast = detectRegions.enhanceContrast(img_grayResult);
 //          posible_regions.push_back(Plate(img_contrast,minRect.boundingRect()));
@@ -178,13 +176,67 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
         filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"detected_%@_%d",name,i]];
         [data writeToFile:filePath atomically:YES];
     }
+    
 
     return outImage;
 }
 
+
++(cv::Mat) removeStickerFromPlate:(UIImage*)plateImg{
+    cv::Mat input_img = [plateImg CVMat];
+    return [ImageProcessorImplementation changeBackgroundColor:input_img];
+//    return [ImageProcessorImplementation cropCircleFromImge:input_img];
+}
+
+
+
++ (cv::Mat)changeBackgroundColorYunas:(cv::Mat)src {
+
+    DetectRegions detectRegions;
+    detectRegions.setFilename("12");
+    detectRegions.saveRegions = YES;
+    detectRegions.showSteps = false;
+    
+    cv::Mat img= src.clone();
+
+    UIImage *watchTestImg = nil;
+    
+    // pre processing => image to gray scale
+    cv::Mat img_gray = detectRegions.getGrayScaleMat(src);
+    
+    watchTestImg = [UIImage imageWithCVMat:img_gray];
+    cv::Mat binaryMat;
+    cv::Mat dest;
+    cv::Mat temp= cvCreateImage(img.size(), 8, 1);
+    
+    inRange(img_gray, Scalar(0), Scalar(50), binaryMat);
+    
+    binaryMat = 255 - binaryMat;
+    UIImage *image =[UIImage imageWithCVMat:binaryMat];
+
+    
+    
+    temp.setTo(Scalar(255),dest);
+//    cv::split(temp, channels);
+//    cv::merge(channels, dest);
+    cv::cvtColor(binaryMat, dest, CV_GRAY2BGR);
+    
+    image =[UIImage imageWithCVMat:dest];
+
+    
+
+    
+    return dest;
+    
+}
+
+
 + (cv::Mat)changeBackgroundColor:(cv::Mat)src {
 
-
+    return [ImageProcessorImplementation changeBackgroundColorYunas:src];
+    
+    
+    
     cv::Mat hsv;
     cv::cvtColor(src, hsv, CV_BGR2HSV);
 //    hsv[:,:,0] += 100;
@@ -198,11 +250,12 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
     std::vector<cv::Mat>channels;
 
     cv::split(hsvImage, channels);
-    cv::Mat hue = channels[0];
+    cv::Mat hue = channels[2];
     cv::Mat dest;
-    cv::Mat temp= cvCreateImage(img.size(), 8, 3);
+    cv::Mat temp= cvCreateImage(img.size(), 8, 1);
 
-    inRange(hsvImage, Scalar(240,240,240), Scalar(255,255,255), dest);
+    
+    inRange(hsvImage, Scalar(40,40,40), Scalar(255,255,255), dest);
     merge(channels, temp);
     temp.setTo(Scalar(255,255,255),dest);
     cv::split(temp, channels);
