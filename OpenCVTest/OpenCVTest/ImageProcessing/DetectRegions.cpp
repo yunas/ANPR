@@ -217,9 +217,6 @@ Mat DetectRegions::getMorpholgyMat(Mat img_sobel) {
 }
 Mat DetectRegions::getFloodFillMask(Mat input, Mat output, RotatedRect rect) {
     
-    // Draw blue circles around each rect. just for fun.
-//    circle(output, rect.center, 3, Scalar(0,255,0), -1);
-    
     //For better rect cropping for each posible box
     //Make floodfill algorithm because the plate has white background
     //And then we can retrieve more clearly the contour box

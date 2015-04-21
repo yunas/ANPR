@@ -650,6 +650,7 @@
 		5C7B78BE1A12183800886E80 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C7B78BD1A12183800886E80 /* opencv2.framework */; };
 		5C7B78C21A1218B100886E80 /* OCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C7B78BF1A1218B100886E80 /* OCR.cpp */; };
 		5C7B78C31A1218B100886E80 /* trainOCR.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C7B78C11A1218B100886E80 /* trainOCR.cpp */; };
+		5C96FF4E1AE1387200DCC578 /* detect_circles_soda.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5C96FF4D1AE1387200DCC578 /* detect_circles_soda.jpg */; };
 		5CA3026119B6EA9400A1337A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026019B6EA9400A1337A /* Foundation.framework */; };
 		5CA3026319B6EA9400A1337A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026219B6EA9400A1337A /* CoreGraphics.framework */; };
 		5CA3026519B6EA9500A1337A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CA3026419B6EA9500A1337A /* UIKit.framework */; };
@@ -1298,6 +1299,7 @@
 		5C7B78BF1A1218B100886E80 /* OCR.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OCR.cpp; sourceTree = "<group>"; };
 		5C7B78C01A1218B100886E80 /* OCR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCR.h; sourceTree = "<group>"; };
 		5C7B78C11A1218B100886E80 /* trainOCR.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = trainOCR.cpp; sourceTree = "<group>"; };
+		5C96FF4D1AE1387200DCC578 /* detect_circles_soda.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = detect_circles_soda.jpg; path = ../../../../../../../Desktop/detect_circles_soda.jpg; sourceTree = "<group>"; };
 		5CA3025D19B6EA9400A1337A /* OpenCVTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenCVTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CA3026019B6EA9400A1337A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		5CA3026219B6EA9400A1337A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -2101,6 +2103,7 @@
 		5CA3025419B6EA9400A1337A = {
 			isa = PBXGroup;
 			children = (
+				5C96FF4D1AE1387200DCC578 /* detect_circles_soda.jpg */,
 				5CF8DC8719D9386900B6EE33 /* Images */,
 				45FB94F119CAF5EA0022B30A /* ThirdParty */,
 				5CE4D98419D4378300D19267 /* SVM.xml */,
@@ -2902,6 +2905,9 @@
 				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = "Muhammad Rashid";
 				TargetAttributes = {
+					45C494EE1ADD1E9A00031269 = {
+						DevelopmentTeam = Q5SFELAH9E;
+					};
 					5CA3025C19B6EA9400A1337A = {
 						DevelopmentTeam = Q5SFELAH9E;
 					};
@@ -2980,6 +2986,7 @@
 				45C4956B1ADD1E9A00031269 /* 69.JPG in Resources */,
 				45C4956C1ADD1E9A00031269 /* detectsample47.bmp in Resources */,
 				45C4956D1ADD1E9A00031269 /* l5.JPG in Resources */,
+				5C96FF4E1AE1387200DCC578 /* detect_circles_soda.jpg in Resources */,
 				45C4956E1ADD1E9A00031269 /* 156.JPG in Resources */,
 				45C4956F1ADD1E9A00031269 /* 325.jpg in Resources */,
 				45C495701ADD1E9A00031269 /* 238.JPG in Resources */,
@@ -4213,7 +4220,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: yunas qazi (6VMDJ6GATE)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					/Users/rashid/Downloads,
 					"$(PROJECT_DIR)",
@@ -4242,7 +4249,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: yunas qazi (6VMDJ6GATE)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					/Users/rashid/Downloads,
 					"$(PROJECT_DIR)",
