@@ -240,7 +240,7 @@ typedef void(^FailureBlock) (NSError *error);
             [self takePicture];
         }
         else {
-            NSLog(@"Alrady processing on a image");
+            NSLog(@"Already processing on a image");
         }
 }
 
@@ -415,6 +415,9 @@ typedef void(^FailureBlock) (NSError *error);
                             [self showRecognizedNumbersWithString:plateNumber];
                             [self performSelector:@selector(checkIfUIPickerIsScrolling) withObject:nil afterDelay:1.0];
                        }
+                       else {
+                           [self startLNPRProcessing:NO];
+                       }
 
                    } andErrorBlock:^(NSError *error) {
 
@@ -424,6 +427,7 @@ typedef void(^FailureBlock) (NSError *error);
                                                         cancelButtonTitle:@"ok"
                                                         otherButtonTitles:nil] show];
                        [self startLNPRProcessing:NO];
+                       NSLog(@"StopLNPRProcessing => %s",__PRETTY_FUNCTION__);
                    }];
 }
 
@@ -431,6 +435,9 @@ typedef void(^FailureBlock) (NSError *error);
                  withResponseBlock:(ResponseBlock)responseBlock
                      andErrorBlock:(FailureBlock)failureBlock
 {
+    
+//    srcImage = [UIImage imageNamed:@"sampleImage2.png"];
+    
 
     dispatch_async(dispatch_queue_create("pre processing", 0), ^{
 
@@ -769,6 +776,7 @@ typedef void(^FailureBlock) (NSError *error);
     }
 
     [self startLNPRProcessing:NO];
+    NSLog(@"StopLNPRProcessing => %s",__PRETTY_FUNCTION__);
 }
 
 -(void)createPickerViews {
@@ -1117,6 +1125,7 @@ numberOfRowsInComponent:(NSInteger)component {
 
 - (void)printText:(NSString *)text {
 
+    NSLog(@"StopLNPRProcessing => %s",__PRETTY_FUNCTION__);
     [self startLNPRProcessing:NO];
 
     if ([UIPrintInteractionController isPrintingAvailable]) {

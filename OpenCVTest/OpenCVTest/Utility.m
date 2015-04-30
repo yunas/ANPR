@@ -64,7 +64,7 @@
     NSString *filteredStr = [NSString stringWithString:str];
     filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"3" withString:@" "];
     filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"8" withString:@" "];
-    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"S" withString:@" "];
+//    filteredStr = [filteredStr stringByReplacingOccurrencesOfString:@"S" withString:@" "];
     
     NSArray *partaArr = [filteredStr componentsSeparatedByString:@" "];
     NSString *parta = @"";

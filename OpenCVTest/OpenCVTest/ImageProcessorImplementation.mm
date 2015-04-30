@@ -21,22 +21,9 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
 
 @implementation ImageProcessorImplementation
 
-#pragma mark - Class methods
 
-+ (UIImage*)contrastImage:(UIImage*)image contrast:(float)contrast {
 
-    CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
-    
-    CIFilter *brightnesContrastFilter = [CIFilter filterWithName:@"CIColorControls"];
-    [brightnesContrastFilter setDefaults];
-    [brightnesContrastFilter setValue:inputImage forKey:kCIInputImageKey];
-    [brightnesContrastFilter setValue:[NSNumber numberWithFloat:contrast]
-                               forKey:@"inputContrast"];
-    // Get the output image recipe
-    CIImage *outputImage = [brightnesContrastFilter outputImage];
-    CIContext *context = [CIContext contextWithOptions:nil];
-    return [UIImage imageWithCGImage:[context createCGImage:outputImage fromRect:outputImage.extent]];
-}
+#pragma mark - EDGE DETECTION
 
 + (UIImage*)numberPlateFromWithSobelCarImage:(UIImage*)image imageName:(NSString *)name {
     
@@ -137,23 +124,26 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
             watchTestImg = [UIImage imageWithCVMat:img_resized];
 
             //Equalize croped image
-            Mat img_grayResult;
-            img_grayResult = detectRegions.getNormalisedGrayscaleMat(img_resized);
-            watchTestImg = [UIImage imageWithCVMat:img_grayResult];
+            Mat img_grayResult = img_resized.clone();
+//            img_grayResult = detectRegions.getNormalisedGrayscaleMat(img_resized);
+//            watchTestImg = [UIImage imageWithCVMat:img_grayResult];
 
-            Mat img_contrast = detectRegions.enhanceContrast(img_grayResult);
-//          posible_regions.push_back(Plate(img_contrast,minRect.boundingRect()));
-            watchTestImg = [UIImage imageWithCVMat:img_contrast];
+            posible_regions.push_back(Plate(img_grayResult,minRect.boundingRect()));
 
-            //12/17/2014 new addition
-            Mat img_sharp = detectRegions.sharpImage(img_grayResult);
-            watchTestImg = [UIImage imageWithCVMat:img_sharp];
+            
+//            Mat img_contrast = detectRegions.enhanceContrast(img_grayResult);
+////          posible_regions.push_back(Plate(img_contrast,minRect.boundingRect()));
+//            watchTestImg = [UIImage imageWithCVMat:img_contrast];
+//
+//            //12/17/2014 new addition
+//            Mat img_sharp = detectRegions.sharpImage(img_grayResult);
+//            watchTestImg = [UIImage imageWithCVMat:img_sharp];
 
             //12/11/2014
 //            cv::Mat blackNWhiteMat = [watchTestImg CVMat];
 //            blackNWhiteMat = detectRegions.getGrayScaleMat(blackNWhiteMat);
 //            img_contrast = detectRegions.getThresholdMat(blackNWhiteMat);
-            posible_regions.push_back(Plate(img_sharp,minRect.boundingRect()));
+//            posible_regions.push_back(Plate(img_sharp,minRect.boundingRect()));
 
 //            Mat contrast_image = detectRegions.enhanceContrast(img_resized);
 //            posible_regions.push_back(Plate(contrast_image,minRect.boundingRect()));
@@ -178,141 +168,6 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
     }
     
 
-    return outImage;
-}
-
-
-+(cv::Mat) removeStickerFromPlate:(UIImage*)plateImg{
-    cv::Mat input_img = [plateImg CVMat];
-    return [ImageProcessorImplementation changeBackgroundColor:input_img];
-//    return [ImageProcessorImplementation cropCircleFromImge:input_img];
-}
-
-
-
-+ (cv::Mat)changeBackgroundColorYunas:(cv::Mat)src {
-
-    DetectRegions detectRegions;
-    detectRegions.setFilename("12");
-    detectRegions.saveRegions = YES;
-    detectRegions.showSteps = false;
-    
-    cv::Mat img= src.clone();
-
-    UIImage *watchTestImg = nil;
-    
-    // pre processing => image to gray scale
-    cv::Mat img_gray = detectRegions.getGrayScaleMat(src);
-    
-    watchTestImg = [UIImage imageWithCVMat:img_gray];
-    cv::Mat binaryMat;
-    cv::Mat dest;
-    cv::Mat temp= cvCreateImage(img.size(), 8, 1);
-    
-    inRange(img_gray, Scalar(0), Scalar(50), binaryMat);
-    
-    binaryMat = 255 - binaryMat;
-    UIImage *image =[UIImage imageWithCVMat:binaryMat];
-
-    
-    
-    temp.setTo(Scalar(255),dest);
-//    cv::split(temp, channels);
-//    cv::merge(channels, dest);
-    cv::cvtColor(binaryMat, dest, CV_GRAY2BGR);
-    
-    image =[UIImage imageWithCVMat:dest];
-
-    
-
-    
-    return dest;
-    
-}
-
-
-+ (cv::Mat)changeBackgroundColor:(cv::Mat)src {
-
-    return [ImageProcessorImplementation changeBackgroundColorYunas:src];
-    
-    
-    
-    cv::Mat hsv;
-    cv::cvtColor(src, hsv, CV_BGR2HSV);
-//    hsv[:,:,0] += 100;
-    cv::Mat bgr;
-    cv::cvtColor(hsv, bgr, CV_HSV2BGR);
-
-    cv::Mat img= src.clone();
-    cv::Mat hsvImage;
-    cv::cvtColor(img, hsvImage, CV_BGR2HSV);
-
-    std::vector<cv::Mat>channels;
-
-    cv::split(hsvImage, channels);
-    cv::Mat hue = channels[2];
-    cv::Mat dest;
-    cv::Mat temp= cvCreateImage(img.size(), 8, 1);
-
-    
-    inRange(hsvImage, Scalar(40,40,40), Scalar(255,255,255), dest);
-    merge(channels, temp);
-    temp.setTo(Scalar(255,255,255),dest);
-    cv::split(temp, channels);
-    cv::merge(channels, dest);
-    cv::cvtColor(dest, hsvImage, CV_HSV2BGR);
-
-    UIImage *image =[UIImage imageWithCVMat:hsvImage];
-
-    return hsvImage;
-}
-
-+ (UIImage *)cropCircleFromImge:(cv::Mat)src {
-
-
-    UIImage *test = [UIImage imageWithCVMat:src];
-    src = [ImageProcessorImplementation changeBackgroundColor:src];
-
-    test = [UIImage imageWithCVMat:src];
-
-    // initial and max values of the parameters of interests.
-    const int cannyThresholdInitialValue = 200;
-    const int accumulatorThresholdInitialValue = 50;
-    const int maxAccumulatorThreshold = 200;
-    const int maxCannyThreshold = 255;
-
-    Mat src_gray;
-    // Convert it to gray
-
-    if (src.channels() == 3)
-        cv::cvtColor(src, src_gray, cv::COLOR_BGR2GRAY);
-    else if (src.channels() == 4)
-        cv::cvtColor(src, src_gray, cv::COLOR_BGRA2GRAY);
-    else if(src.channels() == 1)
-        src_gray = src;
-
-    // Reduce the noise so we avoid false circle detection
-    GaussianBlur( src_gray, src_gray, cv::Size(9, 9), 2, 2 );
-
-    // will hold the results of the detection
-    std::vector<Vec3f> circles;
-    // Apply the Hough Transform to find the circles
-    HoughCircles( src_gray, circles, CV_HOUGH_GRADIENT, 1, src_gray.rows/8, cannyThresholdInitialValue, accumulatorThresholdInitialValue, 0, 0 );
-
-    // Draw the circles detected
-    Mat display = src.clone();
-    for( size_t i = 0; i < circles.size(); i++ )
-    {
-        cv::Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
-        int radius = cvRound(circles[i][2]);
-        // circle center
-        circle( display, center, 3, Scalar(255,255,0), -1, 8, 0 );
-        // circle outline
-        circle( display, center, radius, Scalar(255,0,255), 3, 8, 0 );
-    }
-
-    UIImage *outImage = nil;
-    outImage = [UIImage imageWithCVMat:display];
     return outImage;
 }
 
@@ -453,6 +308,186 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
     return outImg;
 }
 
+#pragma mark - REMOVE STICKER
+
++(cv::Mat) removeStickerFromPlate:(UIImage*)plateImg{
+    cv::Mat input_img = [plateImg CVMat];
+    DetectRegions detectRegions;
+    detectRegions.setFilename("12");
+    detectRegions.saveRegions = YES;
+    detectRegions.showSteps = false;
+    
+    // pre processing => image to gray scale
+    cv::Mat img_gray = detectRegions.getGrayScaleMat(input_img);
+    
+    cv::Mat img_removedCircles = [ImageProcessorImplementation removeStickerCirclesFromImage:img_gray];
+    return [ImageProcessorImplementation removeStickerColoredRegionFromImage:img_removedCircles];
+
+
+    
+   //RASHID's Code
+//    return [ImageProcessorImplementation changeBackgroundColor:input_img];
+}
+
++(cv::Mat) removeStickerCirclesFromImage:(cv::Mat) src{
+    
+    //Expecting a grayScale Image
+    //Refrence: http://txt.arboreus.com/2014/10/21/remove-circles-from-an-image-in-python.html
+
+    cv::Mat dest;
+    std::vector<cv::Vec3f> circles;
+    std::vector<cv::Vec3f> detectedCircles;
+
+    cv::Mat img_gray = src.clone();
+    
+    //Detect Cicles from Image and store them in destination variable
+    HoughCircles(img_gray, detectedCircles, CV_HOUGH_GRADIENT, 2.5, 5, 100,75,8, 20);
+    
+    //Filter the detected circles
+    for (int i = 0; i< detectedCircles.size(); i++){
+        
+        if (!(detectedCircles[i][0] > img_gray.cols*0.35)) {
+            circles.push_back(detectedCircles[i]);
+        }
+    }
+
+//Draw the detected circles
+
+/*    for (int i = 0; i< circles.size(); i++){
+        cv::circle(img_gray,cv::Point(circles[i][0],circles[i][1]),circles[i][2],cv::Scalar(50),2);
+      }
+*/
+
+    UIImage *watchTestImg = [UIImage imageWithCVMat:img_gray];
+
+    Mat black = Mat::zeros(img_gray.size(),   img_gray.type());
+
+    for (int i = 0; i< circles.size(); i++){
+        cv::circle(black,cv::Point(circles[i][0],circles[i][1]),circles[i][2],cv::Scalar(255),-1);
+    }
+    
+    watchTestImg = [UIImage imageWithCVMat:black];
+    
+    inpaint(img_gray, black, dest, 17 , cv::INPAINT_TELEA);
+
+    watchTestImg = [UIImage imageWithCVMat:dest];
+    
+    return dest;
+
+}
+
++ (cv::Mat)removeStickerColoredRegionFromImage:(cv::Mat)src {
+
+    //Expecting a Gray Scale Image Mat
+    cv::Mat img_gray= src.clone();
+
+    UIImage *watchTestImg = nil;
+    
+    watchTestImg = [UIImage imageWithCVMat:img_gray];
+    cv::Mat binaryMat;
+    cv::Mat dest;
+    cv::Mat destErode;
+    cv::Mat destDilate;
+    
+    cv::Mat temp= cvCreateImage(img_gray.size(), 8, 1);
+    
+    inRange(img_gray, Scalar(0), Scalar(80), binaryMat);
+    
+    binaryMat = 255 - binaryMat;
+    
+    UIImage *image =[UIImage imageWithCVMat:binaryMat];
+
+    
+    temp.setTo(Scalar(255),dest);
+    cv::cvtColor(binaryMat, dest, CV_GRAY2BGR);
+    image =[UIImage imageWithCVMat:dest];
+    
+    return dest;
+}
+
+
++ (cv::Mat)changeBackgroundColor:(cv::Mat)src {
+
+    cv::Mat hsv;
+    cv::cvtColor(src, hsv, CV_BGR2HSV);
+//    hsv[:,:,0] += 100;
+    cv::Mat bgr;
+    cv::cvtColor(hsv, bgr, CV_HSV2BGR);
+
+    cv::Mat img= src.clone();
+    cv::Mat hsvImage;
+    cv::cvtColor(img, hsvImage, CV_BGR2HSV);
+
+    std::vector<cv::Mat>channels;
+
+    cv::split(hsvImage, channels);
+    cv::Mat hue = channels[2];
+    cv::Mat dest;
+    cv::Mat temp= cvCreateImage(img.size(), 8, 1);
+
+    
+    inRange(hsvImage, Scalar(40,40,40), Scalar(255,255,255), dest);
+    merge(channels, temp);
+    temp.setTo(Scalar(255,255,255),dest);
+    cv::split(temp, channels);
+    cv::merge(channels, dest);
+    cv::cvtColor(dest, hsvImage, CV_HSV2BGR);
+
+    UIImage *image =[UIImage imageWithCVMat:hsvImage];
+
+    return hsvImage;
+}
+
++ (UIImage *)cropCircleFromImge:(cv::Mat)src {
+
+
+    UIImage *test = [UIImage imageWithCVMat:src];
+    src = [ImageProcessorImplementation changeBackgroundColor:src];
+
+    test = [UIImage imageWithCVMat:src];
+
+    // initial and max values of the parameters of interests.
+    const int cannyThresholdInitialValue = 200;
+    const int accumulatorThresholdInitialValue = 50;
+    const int maxAccumulatorThreshold = 200;
+    const int maxCannyThreshold = 255;
+
+    Mat src_gray;
+    // Convert it to gray
+
+    if (src.channels() == 3)
+        cv::cvtColor(src, src_gray, cv::COLOR_BGR2GRAY);
+    else if (src.channels() == 4)
+        cv::cvtColor(src, src_gray, cv::COLOR_BGRA2GRAY);
+    else if(src.channels() == 1)
+        src_gray = src;
+
+    // Reduce the noise so we avoid false circle detection
+    GaussianBlur( src_gray, src_gray, cv::Size(9, 9), 2, 2 );
+
+    // will hold the results of the detection
+    std::vector<Vec3f> circles;
+    // Apply the Hough Transform to find the circles
+    HoughCircles( src_gray, circles, CV_HOUGH_GRADIENT, 1, src_gray.rows/8, cannyThresholdInitialValue, accumulatorThresholdInitialValue, 0, 0 );
+
+    // Draw the circles detected
+    Mat display = src.clone();
+    for( size_t i = 0; i < circles.size(); i++ )
+    {
+        cv::Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
+        int radius = cvRound(circles[i][2]);
+        // circle center
+        circle( display, center, 3, Scalar(255,255,0), -1, 8, 0 );
+        // circle outline
+        circle( display, center, radius, Scalar(255,0,255), 3, 8, 0 );
+    }
+
+    UIImage *outImage = nil;
+    outImage = [UIImage imageWithCVMat:display];
+    return outImage;
+}
+
+
 #pragma mark - SVM
 
 + (UIImage*)SVMDetectedPLate:(vector<Plate>)posible_regions {
@@ -577,6 +612,21 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
 
 #pragma  mark getter methods (Debug)
 
++ (UIImage*)contrastImage:(UIImage*)image contrast:(float)contrast {
+    
+    CIImage *inputImage = [CIImage imageWithCGImage:image.CGImage];
+    
+    CIFilter *brightnesContrastFilter = [CIFilter filterWithName:@"CIColorControls"];
+    [brightnesContrastFilter setDefaults];
+    [brightnesContrastFilter setValue:inputImage forKey:kCIInputImageKey];
+    [brightnesContrastFilter setValue:[NSNumber numberWithFloat:contrast]
+                               forKey:@"inputContrast"];
+    // Get the output image recipe
+    CIImage *outputImage = [brightnesContrastFilter outputImage];
+    CIContext *context = [CIContext contextWithOptions:nil];
+    return [UIImage imageWithCGImage:[context createCGImage:outputImage fromRect:outputImage.extent]];
+}
+
 + (UIImage*)getGrayScaleImage:(UIImage*)source {
     Mat input_image = [source CVMat];
     
@@ -586,6 +636,7 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
     UIImage *outImage = [UIImage imageWithCVMat:output_image];
     return outImage;
 }
+
 + (UIImage*)getSobelFilteredImage:(UIImage*)source {
     cv::Mat input_image = [source CVMat];
     
@@ -595,6 +646,7 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
     UIImage *outImage = [UIImage imageWithCVMat:output_image];
     return outImage;
 }
+
 + (UIImage*)getBlurImage:(UIImage*)source {
     cv::Mat input_image = [source CVMat];
     
@@ -605,6 +657,7 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
     return outImage;
     
 }
+
 + (UIImage*)getThresholdImage:(UIImage*)source {
     cv::Mat input_image = [source CVMat];
     
@@ -615,6 +668,7 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
     return outImage;
     
 }
+
 + (UIImage*)getMorpholgyImage:(UIImage*)source {
     cv::Mat input_image = [source CVMat];
     
@@ -625,6 +679,7 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
     return outImage;
     
 }
+
 + (NSArray*)getPossibleRegionsAfterFindContour:(UIImage*)source {
     cv::Mat input_image = [source CVMat];
     
