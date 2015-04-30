@@ -332,8 +332,11 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
 +(cv::Mat) removeStickerCirclesFromImage:(cv::Mat) src{
     
     //Expecting a grayScale Image
-    //Refrence: http://txt.arboreus.com/2014/10/21/remove-circles-from-an-image-in-python.html
-
+    //Refrence(s):
+    //http://txt.arboreus.com/2014/10/21/remove-circles-from-an-image-in-python.html
+    //http://stackoverflow.com/questions/11276390/houghcircles-parameters-to-recognise-balls
+    //http://stackoverflow.com/questions/22930605/remove-circles-using-opencv
+    
     cv::Mat dest;
     std::vector<cv::Vec3f> circles;
     std::vector<cv::Vec3f> detectedCircles;
