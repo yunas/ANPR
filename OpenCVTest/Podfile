@@ -3,6 +3,6 @@
 
 target 'OpenCVTest' do
 platform :ios, '7.0'
-pod 'TesseractOCRiOS', '~> 3.4.0'
+pod 'TesseractOCRiOS', '4.0.0'
 end
 

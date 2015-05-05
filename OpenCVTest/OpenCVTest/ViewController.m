@@ -34,7 +34,7 @@ typedef void (^ResponseBlock)(NSString* plateNumber);
 typedef void(^FailureBlock) (NSError *error);
 
 
-@interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, TesseractDelegate> {
+@interface ViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, G8TesseractDelegate> {
     
     __weak IBOutlet UIImageView *inputImageView;
     __weak IBOutlet UIImageView *outputImageView;
@@ -282,13 +282,18 @@ typedef void(^FailureBlock) (NSError *error);
 - (NSString*)tesseratTextFromImahe:(UIImage*)image {
     
     // Create your Tesseract object using the initWithLanguage method:
-    Tesseract* tesseract = [[Tesseract alloc] initWithLanguage:@"deu"];
+    G8Tesseract* tesseract = [[G8Tesseract alloc] initWithLanguage:@"deu" engineMode:G8OCREngineModeTesseractCubeCombined];
     
     tesseract.delegate = self;
-    [tesseract setVariableValue:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ" forKey:@"tessedit_char_whitelist"];
-    
-    UIImage *blacknWhite = [image blackAndWhite];
-    
+
+    // Optional: Limit the character set Tesseract should try to recognize from
+    tesseract.charWhitelist = @"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ";
+    //    [tesseract setVariableValue:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ" forKey:@"tessedit_char_whitelist"];
+
+    tesseract.pageSegmentationMode = G8PageSegmentationModeSingleLine;
+
+    UIImage *blacknWhite = [image g8_blackAndWhite];
+
     [tesseract setImage:blacknWhite];
     
     // Optional: Limit the area of the image Tesseract should recognize on to a rectangle

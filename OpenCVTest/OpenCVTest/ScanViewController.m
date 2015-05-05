@@ -32,7 +32,7 @@ typedef void (^ResponseBlock)(NSString* plateNumber);
 typedef void(^FailureBlock) (NSError *error);
 
 
-@interface ScanViewController () <UIAlertViewDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, TesseractDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPrinterPickerControllerDelegate> {
+@interface ScanViewController () <UIAlertViewDelegate, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, G8TesseractDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIPrinterPickerControllerDelegate> {
     AVCaptureSession *session;
     AVCaptureStillImageOutput *stillImageOutput;
     AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
@@ -498,12 +498,17 @@ typedef void(^FailureBlock) (NSError *error);
 - (NSString*)tesseratTextFromImage:(UIImage*)image {
 
     // Create your Tesseract object using the initWithLanguage method:
-    Tesseract* tesseract = [[Tesseract alloc] initWithLanguage:@"deu"];
+    G8Tesseract* tesseract = [[G8Tesseract alloc] initWithLanguage:@"deu" engineMode:G8OCREngineModeCubeOnly];
 
     tesseract.delegate = self;
-    [tesseract setVariableValue:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ" forKey:@"tessedit_char_whitelist"];
 
-    UIImage *blacknWhite = [image blackAndWhite];
+    // Optional: Limit the character set Tesseract should try to recognize from
+    tesseract.charWhitelist = @"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ";
+//    [tesseract setVariableValue:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ" forKey:@"tessedit_char_whitelist"];
+
+    tesseract.pageSegmentationMode = G8PageSegmentationModeSingleLine|G8PageSegmentationModeSingleBlock;
+
+    UIImage *blacknWhite = [image g8_blackAndWhite];
 
     [tesseract setImage:blacknWhite];
 
@@ -514,7 +519,15 @@ typedef void(^FailureBlock) (NSError *error);
     [tesseract recognize];
 
     // Retrieve the recognized text
-    return [tesseract recognizedText];
+    NSString *recognizedText = [tesseract recognizedText];
+
+    // You could retrieve more information about recognized text with that methods:
+//    NSArray *characterBoxes = [tesseract recognizedBlocksByIteratorLevel:G8PageIteratorLevelSymbol];
+//    NSArray *paragraphs = [tesseract recognizedBlocksByIteratorLevel:G8PageIteratorLevelParagraph];
+//    NSArray *characterChoices = tesseract.characterChoices;
+//    UIImage *imageWithBlocks = [tesseract imageWithBlocks:characterBoxes drawText:YES thresholded:NO];
+
+    return recognizedText;
     
 }
 
