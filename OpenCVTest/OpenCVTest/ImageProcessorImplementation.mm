@@ -8,10 +8,8 @@
 
 #import "ImageProcessorImplementation.h"
 #import "UIImage+OpenCV.h"
-#import <opencv2/imgproc/imgproc.hpp>
-
 #include "DetectRegions.h"
-#include "HarissDetector.h"
+#import "StickerDetector.h"
 
 using namespace std;
 
@@ -113,14 +111,13 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
             Mat img_crop;
             img_crop = detectRegions.getCroppedMat(img_rotated, minRect);
             watchTestImg = [UIImage imageWithCVMat:img_crop];
-
             
             Mat img_resized;
             img_resized = detectRegions.getResizedMat(img_crop, cv::Size(300,69));
 //            img_resized = detectRegions.getResizedMat(img_crop, cv::Size(2*input_img.rows,input_img.rows));
             watchTestImg = [UIImage imageWithCVMat:img_resized];
 
-            img_resized = [ImageProcessorImplementation removeStickerFromPlate:watchTestImg];
+            img_resized = [StickerDetector removeStickerFromPlate:watchTestImg];
             watchTestImg = [UIImage imageWithCVMat:img_resized];
 
             //Equalize croped image
@@ -130,9 +127,8 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
 
             posible_regions.push_back(Plate(img_grayResult,minRect.boundingRect()));
 
-            
 //            Mat img_contrast = detectRegions.enhanceContrast(img_grayResult);
-////          posible_regions.push_back(Plate(img_contrast,minRect.boundingRect()));
+//          posible_regions.push_back(Plate(img_contrast,minRect.boundingRect()));
 //            watchTestImg = [UIImage imageWithCVMat:img_contrast];
 //
 //            //12/17/2014 new addition
@@ -166,7 +162,6 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
         filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"detected_%@_%d",name,i]];
         [data writeToFile:filePath atomically:YES];
     }
-    
 
     return outImage;
 }
@@ -308,189 +303,6 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
     return outImg;
 }
 
-#pragma mark - REMOVE STICKER
-
-+(cv::Mat) removeStickerFromPlate:(UIImage*)plateImg{
-    cv::Mat input_img = [plateImg CVMat];
-    DetectRegions detectRegions;
-    detectRegions.setFilename("12");
-    detectRegions.saveRegions = YES;
-    detectRegions.showSteps = false;
-    
-    // pre processing => image to gray scale
-    cv::Mat img_gray = detectRegions.getGrayScaleMat(input_img);
-    
-    cv::Mat img_removedCircles = [ImageProcessorImplementation removeStickerCirclesFromImage:img_gray];
-    return [ImageProcessorImplementation removeStickerColoredRegionFromImage:img_removedCircles];
-
-
-    
-   //RASHID's Code
-//    return [ImageProcessorImplementation changeBackgroundColor:input_img];
-}
-
-+(cv::Mat) removeStickerCirclesFromImage:(cv::Mat) src{
-    
-    //Expecting a grayScale Image
-    //Refrence(s):
-    //http://txt.arboreus.com/2014/10/21/remove-circles-from-an-image-in-python.html
-    //http://stackoverflow.com/questions/11276390/houghcircles-parameters-to-recognise-balls
-    //http://stackoverflow.com/questions/22930605/remove-circles-using-opencv
-    
-    cv::Mat dest;
-    std::vector<cv::Vec3f> circles;
-    std::vector<cv::Vec3f> detectedCircles;
-
-    cv::Mat img_gray = src.clone();
-    
-    //Detect Cicles from Image and store them in destination variable
-    HoughCircles(img_gray, detectedCircles, CV_HOUGH_GRADIENT, 2.5, 5, 100,75,8, 20);
-    
-    //Filter the detected circles
-    for (int i = 0; i< detectedCircles.size(); i++){
-        
-        if (!(detectedCircles[i][0] > img_gray.cols*0.35)) {
-            circles.push_back(detectedCircles[i]);
-        }
-    }
-
-//Draw the detected circles
-
-/*    for (int i = 0; i< circles.size(); i++){
-        cv::circle(img_gray,cv::Point(circles[i][0],circles[i][1]),circles[i][2],cv::Scalar(50),2);
-      }
-*/
-
-    UIImage *watchTestImg = [UIImage imageWithCVMat:img_gray];
-
-    Mat black = Mat::zeros(img_gray.size(),   img_gray.type());
-
-    for (int i = 0; i< circles.size(); i++){
-        cv::circle(black,cv::Point(circles[i][0],circles[i][1]),circles[i][2],cv::Scalar(255),-1);
-    }
-    
-    watchTestImg = [UIImage imageWithCVMat:black];
-    
-    inpaint(img_gray, black, dest, 17 , cv::INPAINT_TELEA);
-
-    watchTestImg = [UIImage imageWithCVMat:dest];
-    
-    return dest;
-
-}
-
-+ (cv::Mat)removeStickerColoredRegionFromImage:(cv::Mat)src {
-
-    //Expecting a Gray Scale Image Mat
-    cv::Mat img_gray= src.clone();
-
-    UIImage *watchTestImg = nil;
-    
-    watchTestImg = [UIImage imageWithCVMat:img_gray];
-    cv::Mat binaryMat;
-    cv::Mat dest;
-    cv::Mat destErode;
-    cv::Mat destDilate;
-    
-    cv::Mat temp= cvCreateImage(img_gray.size(), 8, 1);
-    
-    inRange(img_gray, Scalar(0), Scalar(80), binaryMat);
-    
-    binaryMat = 255 - binaryMat;
-    
-    UIImage *image =[UIImage imageWithCVMat:binaryMat];
-
-    
-    temp.setTo(Scalar(255),dest);
-    cv::cvtColor(binaryMat, dest, CV_GRAY2BGR);
-    image =[UIImage imageWithCVMat:dest];
-    
-    return dest;
-}
-
-
-+ (cv::Mat)changeBackgroundColor:(cv::Mat)src {
-
-    cv::Mat hsv;
-    cv::cvtColor(src, hsv, CV_BGR2HSV);
-//    hsv[:,:,0] += 100;
-    cv::Mat bgr;
-    cv::cvtColor(hsv, bgr, CV_HSV2BGR);
-
-    cv::Mat img= src.clone();
-    cv::Mat hsvImage;
-    cv::cvtColor(img, hsvImage, CV_BGR2HSV);
-
-    std::vector<cv::Mat>channels;
-
-    cv::split(hsvImage, channels);
-    cv::Mat hue = channels[2];
-    cv::Mat dest;
-    cv::Mat temp= cvCreateImage(img.size(), 8, 1);
-
-    
-    inRange(hsvImage, Scalar(40,40,40), Scalar(255,255,255), dest);
-    merge(channels, temp);
-    temp.setTo(Scalar(255,255,255),dest);
-    cv::split(temp, channels);
-    cv::merge(channels, dest);
-    cv::cvtColor(dest, hsvImage, CV_HSV2BGR);
-
-    UIImage *image =[UIImage imageWithCVMat:hsvImage];
-
-    return hsvImage;
-}
-
-+ (UIImage *)cropCircleFromImge:(cv::Mat)src {
-
-
-    UIImage *test = [UIImage imageWithCVMat:src];
-    src = [ImageProcessorImplementation changeBackgroundColor:src];
-
-    test = [UIImage imageWithCVMat:src];
-
-    // initial and max values of the parameters of interests.
-    const int cannyThresholdInitialValue = 200;
-    const int accumulatorThresholdInitialValue = 50;
-    const int maxAccumulatorThreshold = 200;
-    const int maxCannyThreshold = 255;
-
-    Mat src_gray;
-    // Convert it to gray
-
-    if (src.channels() == 3)
-        cv::cvtColor(src, src_gray, cv::COLOR_BGR2GRAY);
-    else if (src.channels() == 4)
-        cv::cvtColor(src, src_gray, cv::COLOR_BGRA2GRAY);
-    else if(src.channels() == 1)
-        src_gray = src;
-
-    // Reduce the noise so we avoid false circle detection
-    GaussianBlur( src_gray, src_gray, cv::Size(9, 9), 2, 2 );
-
-    // will hold the results of the detection
-    std::vector<Vec3f> circles;
-    // Apply the Hough Transform to find the circles
-    HoughCircles( src_gray, circles, CV_HOUGH_GRADIENT, 1, src_gray.rows/8, cannyThresholdInitialValue, accumulatorThresholdInitialValue, 0, 0 );
-
-    // Draw the circles detected
-    Mat display = src.clone();
-    for( size_t i = 0; i < circles.size(); i++ )
-    {
-        cv::Point center(cvRound(circles[i][0]), cvRound(circles[i][1]));
-        int radius = cvRound(circles[i][2]);
-        // circle center
-        circle( display, center, 3, Scalar(255,255,0), -1, 8, 0 );
-        // circle outline
-        circle( display, center, radius, Scalar(255,0,255), 3, 8, 0 );
-    }
-
-    UIImage *outImage = nil;
-    outImage = [UIImage imageWithCVMat:display];
-    return outImage;
-}
-
-
 #pragma mark - SVM
 
 + (UIImage*)SVMDetectedPLate:(vector<Plate>)posible_regions {
@@ -631,6 +443,7 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
 }
 
 + (UIImage*)getGrayScaleImage:(UIImage*)source {
+    
     Mat input_image = [source CVMat];
     
     DetectRegions detectRegions;

@@ -88,8 +88,8 @@ static NSMutableArray *notificationQueue = nil;       // Global notification que
 }
 
 - (CGFloat)heightForLabelWithTitle:(NSString *)title {
-    CGFloat height = fmaxf([title sizeWithFont:[self titleFont]
-                     constrainedToSize:CGSizeMake([self widthForLabel], self.parentView.bounds.size.height)].height, 50.f);
+
+    CGFloat height = fmaxf([title boundingRectWithSize:CGSizeMake([self widthForLabel], self.parentView.bounds.size.height) options:NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [self titleFont]} context:nil].size.height, 50.f);
     return height;
 }
 

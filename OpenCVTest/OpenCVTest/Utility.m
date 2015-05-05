@@ -98,7 +98,7 @@
 
 - (NSString *) filterPlateNumberFromOCRString:(NSString *)ocrText {
 
-    NSString *filteredStr = [NSString stringWithString:ocrText];
+    NSString *filteredStr = [NSString stringWithString:[self filterExtraSpaces:ocrText]];
 
     filteredStr = [self stringWithoutPunctuations:filteredStr];
 
@@ -118,6 +118,16 @@
     }
 
     return filteredStr;
+}
+
+- (NSString *)filterExtraSpaces:(NSString *)text {
+
+    NSString *trimmed = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"  +" options:NSRegularExpressionCaseInsensitive error:&error];
+    NSString *trimmedString = [regex stringByReplacingMatchesInString:trimmed options:0 range:NSMakeRange(0, [trimmed length]) withTemplate:@" "];
+    return trimmedString;
 }
 
 

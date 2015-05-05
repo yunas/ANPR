@@ -71,7 +71,6 @@
 		45C495061ADD1E9A00031269 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B8F2B119D9A94300741B4B /* MBProgressHUD.m */; };
 		45C495071ADD1E9A00031269 /* PSTGridLayoutItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531212719DA972E00FF7EA7 /* PSTGridLayoutItem.m */; };
 		45C495081ADD1E9A00031269 /* README.mdown in Sources */ = {isa = PBXBuildFile; fileRef = 45B8F2B219D9A94300741B4B /* README.mdown */; };
-		45C495091ADD1E9A00031269 /* HarissDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */; };
 		45C4950A1ADD1E9A00031269 /* UIImage+MultiFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 45B8F2EE19D9A94300741B4B /* UIImage+MultiFormat.m */; };
 		45C4950B1ADD1E9A00031269 /* MWGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FB94F819CAF5EA0022B30A /* MWGridCell.m */; };
 		45C4950C1ADD1E9A00031269 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4531211119DA972E00FF7EA7 /* NSIndexPath+PSTCollectionViewAdditions.m */; };
@@ -633,7 +632,8 @@
 		45FB955619CAF5EB0022B30A /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FB950419CAF5EA0022B30A /* MWTapDetectingView.m */; };
 		45FB955719CAF5EB0022B30A /* MWZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FB950619CAF5EA0022B30A /* MWZoomingScrollView.m */; };
 		45FB957919CAF5EB0022B30A /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 45FB954F19CAF5EB0022B30A /* MWPhotoBrowser.bundle */; };
-		5C08A6EF19C716C900ACC4B7 /* HarissDetector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */; };
+		5C0438121AF7872F005FC864 /* StickerDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C0438111AF7872F005FC864 /* StickerDetector.mm */; };
+		5C0438131AF7872F005FC864 /* StickerDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5C0438111AF7872F005FC864 /* StickerDetector.mm */; };
 		5C0AD0F619E6D14E00070335 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C0AD0F519E6D14E00070335 /* AVFoundation.framework */; };
 		5C106C101AA71763008BE769 /* ScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C106C0F1AA71763008BE769 /* ScanViewController.m */; };
 		5C106C131AA720F0008BE769 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5C106C121AA720F0008BE769 /* Utility.m */; };
@@ -1256,7 +1256,7 @@
 		45B8F2F119D9A94300741B4B /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		45B8F2F219D9A94300741B4B /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		45B9232B1AF0FE160038E331 /* sampleImage1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sampleImage1.png; sourceTree = "<group>"; };
-		45C497381ADD1E9A00031269 /* OpenCVTest copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OpenCVTest copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		45C497381ADD1E9A00031269 /* OpenCVTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenCVTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45C497391ADD1E9B00031269 /* OpenCVTest copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "OpenCVTest copy-Info.plist"; path = "/Users/air/yunas-air/iPhoneProjects/RoughWork/COEUS_ANPR/OpenCVTest/OpenCVTest copy-Info.plist"; sourceTree = "<absolute>"; };
 		45FB94F419CAF5EA0022B30A /* MWCaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCaptionView.h; sourceTree = "<group>"; };
 		45FB94F519CAF5EA0022B30A /* MWCaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWCaptionView.m; sourceTree = "<group>"; };
@@ -1278,8 +1278,8 @@
 		45FB950519CAF5EA0022B30A /* MWZoomingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZoomingScrollView.h; sourceTree = "<group>"; };
 		45FB950619CAF5EA0022B30A /* MWZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZoomingScrollView.m; sourceTree = "<group>"; };
 		45FB954F19CAF5EB0022B30A /* MWPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MWPhotoBrowser.bundle; sourceTree = "<group>"; };
-		5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HarissDetector.cpp; sourceTree = "<group>"; };
-		5C08A6EE19C716C900ACC4B7 /* HarissDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HarissDetector.h; sourceTree = "<group>"; };
+		5C0438101AF7872F005FC864 /* StickerDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickerDetector.h; sourceTree = "<group>"; };
+		5C0438111AF7872F005FC864 /* StickerDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StickerDetector.mm; sourceTree = "<group>"; };
 		5C0AD0F519E6D14E00070335 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5C106C0E1AA71763008BE769 /* ScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScanViewController.h; sourceTree = "<group>"; };
 		5C106C0F1AA71763008BE769 /* ScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScanViewController.m; sourceTree = "<group>"; };
@@ -2124,7 +2124,7 @@
 			children = (
 				5CA3025D19B6EA9400A1337A /* OpenCVTest.app */,
 				5CA3027E19B6EA9500A1337A /* OpenCVTestTests.xctest */,
-				45C497381ADD1E9A00031269 /* OpenCVTest copy.app */,
+				45C497381ADD1E9A00031269 /* OpenCVTest.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2154,18 +2154,20 @@
 			isa = PBXGroup;
 			children = (
 				5CA3026F19B6EA9500A1337A /* AppDelegate.h */,
-				5C72057B1AA8448900E87FC9 /* Kai */,
 				5CA3027019B6EA9500A1337A /* AppDelegate.m */,
 				5C0AD0F419E6C30400070335 /* CameraOverlayView */,
 				5C198EC719C1D606001EBF92 /* ImageProcessing */,
 				5CBD8F9C19BD87BD00D5F218 /* ImageProcessorImplementation.h */,
 				5CBD8F9D19BD87BD00D5F218 /* ImageProcessorImplementation.mm */,
-				5CC4B4111AA9D29B00086685 /* Launch Screen.xib */,
 				5CA3027819B6EA9500A1337A /* Images.xcassets */,
+				5C72057B1AA8448900E87FC9 /* Kai */,
+				5CC4B4111AA9D29B00086685 /* Launch Screen.xib */,
 				5CA3027219B6EA9500A1337A /* Main.storyboard */,
 				455CBEEE19DEEA0B00496725 /* PDFCreator */,
 				5C106C0E1AA71763008BE769 /* ScanViewController.h */,
 				5C106C0F1AA71763008BE769 /* ScanViewController.m */,
+				5C0438101AF7872F005FC864 /* StickerDetector.h */,
+				5C0438111AF7872F005FC864 /* StickerDetector.mm */,
 				5CA3026719B6EA9500A1337A /* Supporting Files */,
 				5C323EB81A3B1D61006D6E9A /* tessdata */,
 				5CF8E12419D9446100B6EE33 /* UIImage extension */,
@@ -2289,8 +2291,6 @@
 			children = (
 				5C198EC819C1D606001EBF92 /* DetectRegions.cpp */,
 				5C198EC919C1D606001EBF92 /* DetectRegions.h */,
-				5C08A6ED19C716C900ACC4B7 /* HarissDetector.cpp */,
-				5C08A6EE19C716C900ACC4B7 /* HarissDetector.h */,
 				5C7B78BF1A1218B100886E80 /* OCR.cpp */,
 				5C7B78C01A1218B100886E80 /* OCR.h */,
 				5C198ECA19C1D606001EBF92 /* Plate.cpp */,
@@ -2861,7 +2861,7 @@
 			);
 			name = LNPR_DEV;
 			productName = OpenCVTest;
-			productReference = 45C497381ADD1E9A00031269 /* OpenCVTest copy.app */;
+			productReference = 45C497381ADD1E9A00031269 /* OpenCVTest.app */;
 			productType = "com.apple.product-type.application";
 		};
 		5CA3025C19B6EA9400A1337A /* OpenCVTest */ = {
@@ -4060,7 +4060,6 @@
 				45C495061ADD1E9A00031269 /* MBProgressHUD.m in Sources */,
 				45C495071ADD1E9A00031269 /* PSTGridLayoutItem.m in Sources */,
 				45C495081ADD1E9A00031269 /* README.mdown in Sources */,
-				45C495091ADD1E9A00031269 /* HarissDetector.cpp in Sources */,
 				45C4950A1ADD1E9A00031269 /* UIImage+MultiFormat.m in Sources */,
 				45C4950B1ADD1E9A00031269 /* MWGridCell.m in Sources */,
 				45C4950C1ADD1E9A00031269 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
@@ -4083,6 +4082,7 @@
 				45C4951D1ADD1E9A00031269 /* USGlobals.m in Sources */,
 				45C4951E1ADD1E9A00031269 /* MWGridViewController.m in Sources */,
 				45C4951F1ADD1E9A00031269 /* xsd.m in Sources */,
+				5C0438131AF7872F005FC864 /* StickerDetector.mm in Sources */,
 				45C495201ADD1E9A00031269 /* MWZoomingScrollView.m in Sources */,
 				45C495211ADD1E9A00031269 /* PSTGridLayoutSection.m in Sources */,
 				45C495221ADD1E9A00031269 /* MWCaptionView.m in Sources */,
@@ -4132,7 +4132,6 @@
 				45B8F2F419D9A94300741B4B /* MBProgressHUD.m in Sources */,
 				4531213619DA972E00FF7EA7 /* PSTGridLayoutItem.m in Sources */,
 				45B8F2F519D9A94300741B4B /* README.mdown in Sources */,
-				5C08A6EF19C716C900ACC4B7 /* HarissDetector.cpp in Sources */,
 				45B8F31119D9A94300741B4B /* UIImage+MultiFormat.m in Sources */,
 				45FB955119CAF5EB0022B30A /* MWGridCell.m in Sources */,
 				4531212C19DA972E00FF7EA7 /* NSIndexPath+PSTCollectionViewAdditions.m in Sources */,
@@ -4155,6 +4154,7 @@
 				5CF8E30F19D99EBD00B6EE33 /* USGlobals.m in Sources */,
 				45FB955219CAF5EB0022B30A /* MWGridViewController.m in Sources */,
 				5CF8E31019D99EBD00B6EE33 /* xsd.m in Sources */,
+				5C0438121AF7872F005FC864 /* StickerDetector.mm in Sources */,
 				45FB955719CAF5EB0022B30A /* MWZoomingScrollView.m in Sources */,
 				4531213819DA972E00FF7EA7 /* PSTGridLayoutSection.m in Sources */,
 				45FB955019CAF5EB0022B30A /* MWCaptionView.m in Sources */,
@@ -4228,7 +4228,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					/Users/rashid/Downloads,
 					"$(PROJECT_DIR)",
@@ -4245,7 +4245,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_NAME = "OpenCVTest copy";
+				PRODUCT_NAME = OpenCVTest;
 				PROVISIONING_PROFILE = "2fc1cd34-a134-4e50-ab70-ebfbf219eae1";
 				WRAPPER_EXTENSION = app;
 			};
@@ -4257,7 +4257,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					/Users/rashid/Downloads,
 					"$(PROJECT_DIR)",
@@ -4274,7 +4274,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
-				PRODUCT_NAME = "OpenCVTest copy";
+				PRODUCT_NAME = OpenCVTest;
 				PROVISIONING_PROFILE = "2fc1cd34-a134-4e50-ab70-ebfbf219eae1";
 				WRAPPER_EXTENSION = app;
 			};
