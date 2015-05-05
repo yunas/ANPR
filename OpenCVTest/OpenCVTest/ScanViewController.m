@@ -157,7 +157,9 @@ typedef void(^FailureBlock) (NSError *error);
         if ([captureDevice hasTorch] && [captureDevice isTorchAvailable]) {
             [captureDevice setTorchMode:AVCaptureTorchModeAuto];
         }
-        [captureDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+        if ([captureDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
+            [captureDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+        }
     }
     else {
         NSLog(@"%@",[error localizedDescription]);
