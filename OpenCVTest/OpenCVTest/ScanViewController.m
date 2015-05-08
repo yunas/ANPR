@@ -158,7 +158,14 @@ typedef void(^FailureBlock) (NSError *error);
             [captureDevice setTorchMode:AVCaptureTorchModeAuto];
         }
         if ([captureDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
+            CGPoint autofocusPoint = CGPointMake(0.5f, 0.5f);
+            [captureDevice setFocusPointOfInterest:autofocusPoint];
             [captureDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
+        }
+        if ([captureDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]) {
+            CGPoint exposurePoint = CGPointMake(0.5f, 0.5f);
+            [captureDevice setExposurePointOfInterest:exposurePoint];
+            [captureDevice setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
         }
     }
     else {
@@ -173,7 +180,7 @@ typedef void(^FailureBlock) (NSError *error);
 - (void)startSession {
 
     session = [[AVCaptureSession alloc] init];
-    session.sessionPreset = AVCaptureSessionPreset640x480;
+    session.sessionPreset = AVCaptureSessionPreset640x480; //AVCaptureSessionPreset640x480; //AVCaptureSessionPreset352x288; AVCaptureSessionPreset320x240; AVCaptureSessionPresetLow;
 
     AVCaptureDevice *device = [self captureDevice];
     NSError *error = nil;
@@ -210,7 +217,7 @@ typedef void(^FailureBlock) (NSError *error);
     if ([session canAddOutput:stillImageOutput]) {
         [session addOutput:stillImageOutput];
     }
-    
+
     [session startRunning];
 }
 
@@ -298,7 +305,7 @@ typedef void(^FailureBlock) (NSError *error);
         [number appendString:numberArray[index]];
     }
 
-    NSLog(@"%@", number);
+    NSLog(@"plate number: %@", number);
 
     [self resetPikcerViews];
 
@@ -347,16 +354,19 @@ typedef void(^FailureBlock) (NSError *error);
 
     [stillImageOutput captureStillImageAsynchronouslyFromConnection:videoConnection completionHandler: ^(CMSampleBufferRef imageSampleBuffer, NSError *error) {
 
-//         CFDictionaryRef exifAttachments = CMGetAttachment( imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
-//         if (exifAttachments) {
-//             // Do something with the attachments.
-//             NSLog(@"attachements: %@", exifAttachments);
-//         }
-//         else
-//             NSLog(@"no attachments");
+         CFDictionaryRef exifAttachments = CMGetAttachment( imageSampleBuffer, kCGImagePropertyExifDictionary, NULL);
+         if (exifAttachments) {
+             // Do something with the attachments.
+             NSLog(@"attachements: %@", exifAttachments);
+         }
+         else
+             NSLog(@"no attachments");
 
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          UIImage *image = [[UIImage alloc] initWithData:imageData];
+//        UIImageWriteToSavedPhotosAlbum(image , nil, nil, nil);
+        CGSize size = CGSizeMake(0.5*image.size.width, 0.5*image.size.height);
+        image = [image scaleImageKeepingAspectRatiotoSize:size];
 //         image = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation:UIImageOrientationUp];
 //        UIImageWriteToSavedPhotosAlbum(image , nil, nil, nil);
 
@@ -364,8 +374,7 @@ typedef void(^FailureBlock) (NSError *error);
          finalPhoto = [self cropImageAndRotate:image];
          UIImage *scaledimage = [finalPhoto resizeImageToWidth:432];
 
-        completion(scaledimage);
-
+        completion(image);
      }];
 }
 
@@ -438,8 +447,8 @@ typedef void(^FailureBlock) (NSError *error);
                      andErrorBlock:(FailureBlock)failureBlock
 {
     
-//    srcImage = [UIImage imageNamed:@"sampleImage2.png"];
-    
+//    srcImage = [UIImage imageNamed:@"srcImage3.png"];
+
 
     dispatch_async(dispatch_queue_create("pre processing", 0), ^{
 
@@ -448,6 +457,8 @@ typedef void(^FailureBlock) (NSError *error);
                                                                 edgeDetectionType:EdgeDetectionTypeSobel];
 
         dispatch_async(dispatch_get_main_queue(), ^{
+
+//            UIImageWriteToSavedPhotosAlbum(plateImg , nil, nil, nil);
 
             [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
             [self showHudWithText:@"Recognizing Numbers in plate."];
@@ -498,7 +509,7 @@ typedef void(^FailureBlock) (NSError *error);
 - (NSString*)tesseratTextFromImage:(UIImage*)image {
 
     // Create your Tesseract object using the initWithLanguage method:
-    G8Tesseract* tesseract = [[G8Tesseract alloc] initWithLanguage:@"deu" engineMode:G8OCREngineModeCubeOnly];
+    G8Tesseract* tesseract = [[G8Tesseract alloc] initWithLanguage:@"deu" engineMode:G8OCREngineModeTesseractOnly];
 
     tesseract.delegate = self;
 
@@ -1156,7 +1167,7 @@ numberOfRowsInComponent:(NSInteger)component {
             printInfo.jobName = @"Plate number";
             printController.printInfo = printInfo;
 
-            UISimpleTextPrintFormatter *formatter = [[UISimpleTextPrintFormatter alloc] initWithText:[@"PLATE NUMBER\n\n" stringByAppendingString:text]];
+            UISimpleTextPrintFormatter *formatter = [[UISimpleTextPrintFormatter alloc] initWithText:[@"PLATE NUMBER\n\n" stringByAppendingString:[text stringByReplacingOccurrencesOfString:@"_" withString:@" "]]];
             formatter.contentInsets = UIEdgeInsetsMake(72, 72, 72, 72);
             formatter.textAlignment = NSTextAlignmentCenter;
             formatter.font = [UIFont systemFontOfSize:56.0];

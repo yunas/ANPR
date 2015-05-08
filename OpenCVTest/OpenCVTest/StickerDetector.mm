@@ -27,7 +27,36 @@
     cv::Mat img_gray = detectRegions.getGrayScaleMat(input_img);
 
     cv::Mat img_removedCircles = [StickerDetector removeStickerCirclesFromImage:img_gray];
-    return [StickerDetector removeStickerColoredRegionFromImage:img_removedCircles];
+    img_removedCircles =[StickerDetector removeStickerColoredRegionFromImage:img_removedCircles];
+    UIImage *watchTestImg = nil;
+
+//    img_removedCircles =[StickerDetector removeStickerColoredRegionFromImage:img_gray];
+    OffsetImage(img_removedCircles, Scalar(255, 255, 255), 20, 20);
+    watchTestImg = [UIImage imageWithCVMat:img_removedCircles];
+
+    return img_removedCircles;
+}
+
+bool detectsmallerCirlce(Vec3f circle) {
+
+    double y = circle[1];
+    double r = circle[2];
+
+    if ((y>10 && y<20) && (r>=11 && r<=13)) {
+        return true;
+    }
+    return false;
+}
+
+bool detectlargererCirlce(Vec3f circle) {
+
+    double y = circle[1];
+    double r = circle[2];
+
+    if ((y>43 && y<54) && (r>=13 && r<=15)) {
+        return true;
+    }
+    return false;
 }
 
 +(cv::Mat) removeStickerCirclesFromImage:(cv::Mat) src{
@@ -45,12 +74,13 @@
     cv::Mat img_gray = src.clone();
 
     //Detect Cicles from Image and store them in destination variable
-    HoughCircles(img_gray, detectedCircles, CV_HOUGH_GRADIENT, 2.5, 5, 100,85,8, 20);
+    HoughCircles(img_gray, detectedCircles, CV_HOUGH_GRADIENT, 2.5, 5, 100,65,8, 17);
 
     //Filter the detected circles
     for (int i = 0; i< detectedCircles.size(); i++){
+        Vec3f circle = detectedCircles[i];
 
-        if (!(detectedCircles[i][0] > img_gray.cols*0.35)) {
+        if ((circle[0] <= img_gray.cols*0.35) && (detectsmallerCirlce(circle) || detectlargererCirlce(circle))) {
             circles.push_back(detectedCircles[i]);
         }
     }
@@ -67,13 +97,63 @@
         cv::circle(black,center,radius,cv::Scalar(255),-1);
     }
 
-    watchTestImg = [UIImage imageWithCVMat:black];
-
-    inpaint(img_gray, black, dest, 17 , cv::INPAINT_TELEA);
+    inpaint(img_gray, black, dest, 5 , cv::INPAINT_TELEA);
 
     watchTestImg = [UIImage imageWithCVMat:dest];
 
     return dest;
+}
+
++ (void)blobDetection:(Mat)src {
+
+    UIImage *watchTestImg = nil;
+    watchTestImg = [UIImage imageWithCVMat:src];
+
+    // Setup SimpleBlobDetector parameters.
+    SimpleBlobDetector::Params params;
+
+    // Change thresholds
+    params.minThreshold = 10;
+    params.maxThreshold = 200;
+
+    // Filter by Area.
+    params.filterByArea = true;
+    params.minArea = 1500;
+
+    // Filter by Circularity
+    params.filterByCircularity = true;
+    params.minCircularity = 0.1;
+
+    // Filter by Convexity
+    params.filterByConvexity = true;
+    params.minConvexity = 0.87;
+
+    // Filter by Inertia
+    params.filterByInertia = true;
+    params.minInertiaRatio = 0.01;
+
+    // Storage for blobs
+    vector<KeyPoint> keypoints;
+
+#if CV_MAJOR_VERSION < 3   // If you are using OpenCV 2
+
+    // Set up detector with params
+    SimpleBlobDetector detector(params);
+
+    // Detect blobs
+    detector.detect( src, keypoints);
+#else
+
+    // Set up detector with params
+    Ptr<SimpleBlobDetector> detector = SimpleBlobDetector::create(params);
+
+    // Detect blobs
+    detector->detect( src, keypoints);
+#endif
+
+    Mat im_with_keypoints;
+    drawKeypoints( src, keypoints, im_with_keypoints, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
+    watchTestImg = [UIImage imageWithCVMat:src];
 }
 
 + (cv::Mat)removeStickerColoredRegionFromImage:(cv::Mat)src {
@@ -82,7 +162,6 @@
     cv::Mat img_gray= src.clone();
 
     UIImage *watchTestImg = nil;
-
     watchTestImg = [UIImage imageWithCVMat:img_gray];
 
     cv::Mat binaryMat;
@@ -90,7 +169,7 @@
     
     cv::Mat temp = cvCreateImage(img_gray.size(), 8, 1);
 
-    inRange(img_gray, Scalar(0), Scalar(60), binaryMat);
+    inRange(img_gray, Scalar(0), Scalar(80), binaryMat);
 
     binaryMat = 255 - binaryMat;
 
@@ -107,4 +186,11 @@
     return dest;
 }
 
+void OffsetImage(Mat &image, cv::Scalar bordercolour, int xoffset, int yoffset)
+{
+    Mat temp(image.rows+2*yoffset,image.cols+2*xoffset,image.type(),bordercolour);
+    Mat roi(temp(cvRect(xoffset,yoffset,image.cols,image.rows)));
+    image.copyTo(roi);
+    image=temp.clone();
+}
 @end

@@ -137,14 +137,14 @@ static CGRect swapWidthAndHeight(CGRect rect)
     rect.size.height = height;
     
     //indent in case of width or height difference
-    float offset = (width - height) / 2;
-    if (offset > 0) {
-        rect.origin.y = offset;
-    }
-    else {
-        rect.origin.x = -offset;
-    }
-    
+//    float offset = (width - height) / 2;
+//    if (offset > 0) {
+//        rect.origin.y = offset;
+//    }
+//    else {
+//        rect.origin.x = -offset;
+//    }
+
     [self drawInRect: rect];
     
     UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
