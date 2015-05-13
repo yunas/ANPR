@@ -22,8 +22,6 @@ typedef NS_ENUM(NSInteger, EdgeDetectionType) {
 
 + (UIImage *)numberPlateFromCarImage:(UIImage*)src imageName:(NSString*)name edgeDetectionType:(EdgeDetectionType)type;
 
-+ (BOOL)trainSVM;
-
 + (UIImage*)getGrayScaleImage:(UIImage*)source;
 + (UIImage*)getSobelFilteredImage:(UIImage*)source;
 + (UIImage*)getBlurImage:(UIImage*)source;

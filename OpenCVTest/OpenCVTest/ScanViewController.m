@@ -1148,7 +1148,6 @@ numberOfRowsInComponent:(NSInteger)component {
     return self; // set self as parent of print picker.
 }
 
-
 - (void)printText:(NSString *)text {
 
     NSLog(@"StopLNPRProcessing => %s",__PRETTY_FUNCTION__);
@@ -1158,7 +1157,7 @@ numberOfRowsInComponent:(NSInteger)component {
 
         UIPrintInteractionController *printController = [UIPrintInteractionController sharedPrintController];
 
-        if (printController) {
+        if (printController && _savedPrinter) {
 
             UIPrintInfo *printInfo = [UIPrintInfo printInfo];
             printInfo.duplex = UIPrintInfoDuplexLongEdge;

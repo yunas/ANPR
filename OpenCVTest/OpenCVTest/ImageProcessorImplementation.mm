@@ -113,7 +113,7 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
             watchTestImg = [UIImage imageWithCVMat:img_crop];
             
             Mat img_resized;
-            img_resized = detectRegions.getResizedMat(img_crop, cv::Size(300,69));
+            img_resized = detectRegions.getResizedMat(img_crop, cv::Size(300,70));
 //            img_resized = detectRegions.getResizedMat(img_crop, cv::Size(2*input_img.rows,input_img.rows));
             watchTestImg = [UIImage imageWithCVMat:img_resized];
 
@@ -303,127 +303,6 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
     return outImg;
 }
 
-#pragma mark - SVM
-
-+ (UIImage*)SVMDetectedPLate:(vector<Plate>)posible_regions {
-    
-    //SVM for each plate region to get valid car plates
-    //Read file storage.
-    
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//    NSString *docs = [paths objectAtIndex:0];
-//    NSString *vocabPath = [docs stringByAppendingPathComponent:@"SVM.xml"];
-    
-    NSString *vocabPath = [[NSBundle mainBundle] pathForResource:@"SVM.xml" ofType:nil];
-    FileStorage fs([vocabPath UTF8String], FileStorage::READ);
-    Mat SVM_TrainingData;
-    Mat SVM_Classes;
-    fs["TrainingData"] >> SVM_TrainingData;
-    fs["classes"] >> SVM_Classes;
-    //Set SVM params
-    
-    CvSVMParams SVM_params;
-    SVM_params.svm_type = CvSVM::C_SVC;
-    SVM_params.kernel_type = CvSVM::LINEAR;
-    SVM_params.degree = 0;
-    SVM_params.gamma = 1;
-    SVM_params.coef0 = 0;
-    SVM_params.C = 1;
-    SVM_params.nu = 0;
-    SVM_params.p = 0;
-    SVM_params.term_crit = cvTermCriteria(CV_TERMCRIT_ITER, 1000, 0.01);
-    //Train SVM
-    CvSVM svmClassifier(SVM_TrainingData, SVM_Classes, Mat(), Mat(), SVM_params);
-    
-    //For each possible plate, classify with svm if it's a plate or no
-    vector<Plate> plates;
-    for(int i=0; i< posible_regions.size(); i++) {
-        
-        Mat img=posible_regions[i].plateImg;
-        Mat p= img.reshape(1, 1);
-        p.convertTo(p, CV_32FC1);
-        
-        int response = (int)svmClassifier.predict( p );
-        if(response==1)
-            plates.push_back(posible_regions[i]);
-    }
-    
-    UIImage *outImage = nil;
-    NSData *data = nil;
-    NSString* filePath = nil;
-    
-    for (int i=0; i<plates.size(); i++) {
-        
-        Plate rect = plates[i];
-        outImage = [UIImage imageWithCVMat:rect.plateImg];
-        
-        data = UIImageJPEGRepresentation(outImage, 1);
-        filePath = [ImageProcessorImplementation filePath:[NSString stringWithFormat:@"_SVM_%d",i]];
-        [data writeToFile:filePath atomically:YES];
-    }
-    
-    return outImage;
-}
-
-+ (BOOL)trainSVM {
-    
-    int numPlates = 371;
-    int numNoPlates = 29;
-    
-    cv::Mat classes; // = Mat(numPlates+numNoPlates, 1, CV_32FC1);
-    cv::Mat trainingData; // = Mat(numPlates+numNoPlates, 144*33, CV_32FC1 );
-    
-    cv::Mat trainingImages;
-    std::vector<int> trainingLabels;
-    
-    for (int i=1; i<= numPlates; i++) {
-        
-        NSString *plateNumber = [NSString stringWithFormat:@"%d.JPG",i];
-
-        cv::Mat img_gray = [ImageProcessorImplementation trainingPlate:plateNumber];
-        
-        img_gray= img_gray.reshape(1, 1);
-        trainingImages.push_back(img_gray);
-        trainingLabels.push_back(1);
-        
-        img_gray.release();
-    }
-    
-    for (int i=1; i<=numNoPlates; i++) {
-        
-        NSString *plateNumber = [NSString stringWithFormat:@"n%d.jpg",i];
-        
-        cv::Mat img_gray = [[self class] trainingPlate:plateNumber];
-        
-        img_gray= img_gray.reshape(1, 1);
-        trainingImages.push_back(img_gray);
-        trainingLabels.push_back(0);
-    }
-    
-    Mat(trainingImages).copyTo(trainingData);
-    //trainingData = trainingData.reshape(1,trainingData.rows);
-    trainingData.convertTo(trainingData, CV_32FC1);
-    Mat(trainingLabels).copyTo(classes);
-    
-    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-    NSString *filePath = [path stringByAppendingPathComponent:@"SVM.xml"];
-    FileStorage fs([filePath UTF8String], FileStorage::WRITE);
-    fs << "TrainingData" << trainingData;
-    fs << "classes" << classes;
-    fs.release();
-    
-    return YES;
-}
-
-+ (Mat)trainingPlate:(NSString*)platenumber {
-    
-    UIImage *image = [UIImage imageNamed:platenumber];
-    
-    cv::Mat src = [image CVMat];
-    cv::Mat img_gray = [ImageProcessorImplementation grayImage:src];
-
-    return img_gray;
-}
 
 #pragma  mark getter methods (Debug)
 
