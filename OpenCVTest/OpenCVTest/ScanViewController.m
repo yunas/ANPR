@@ -406,6 +406,26 @@ typedef void(^FailureBlock) (NSError *error);
     return finalPhoto;
 }
 
+
+- (NSString*)filePath:(NSString*)name {
+
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+
+    NSString *filePath = [documentsPath stringByAppendingFormat:@"/%@.jpg",name];
+
+    return filePath;
+}
+
+-(void) saveImage:(UIImage *)img {
+
+    NSData *data = UIImageJPEGRepresentation(img, 1);
+    NSError *error = nil;
+    [data writeToFile:[self filePath:@"plate"] options:NSDataWritingAtomic error:&error];
+
+    //    UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil);
+    
+}
+
 #pragma mark - Process LNPR
 
 - (void)processandsave:(UIImage *)img {
@@ -506,18 +526,18 @@ typedef void(^FailureBlock) (NSError *error);
     });
 }
 
-- (NSString*)tesseratTextFromImage:(UIImage*)image {
+#pragma mark - Tesseract
 
+- (NSString *)tesseractForCharacter:(UIImage *)image {
     // Create your Tesseract object using the initWithLanguage method:
     G8Tesseract* tesseract = [[G8Tesseract alloc] initWithLanguage:@"deu" engineMode:G8OCREngineModeTesseractOnly];
 
     tesseract.delegate = self;
 
     // Optional: Limit the character set Tesseract should try to recognize from
-    tesseract.charWhitelist = @"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ";
-//    [tesseract setVariableValue:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ" forKey:@"tessedit_char_whitelist"];
-
-    tesseract.pageSegmentationMode = G8PageSegmentationModeSingleLine|G8PageSegmentationModeSingleBlock;
+    tesseract.charWhitelist = @"ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ";
+    tesseract.charBlacklist = @"\"\".!~#$%^&*():;'<>?/Ω≈ç√∫˜µ≤≥÷æ…¬˚∆˙©ƒƒ∂å∑œ´®†¥¨π“‘«|+-_=";
+    tesseract.pageSegmentationMode = G8PageSegmentationModeSingleLine;
 
     UIImage *blacknWhite = [image g8_blackAndWhite];
 
@@ -532,34 +552,97 @@ typedef void(^FailureBlock) (NSError *error);
     // Retrieve the recognized text
     NSString *recognizedText = [tesseract recognizedText];
 
+    NSRange range = [recognizedText rangeOfString:@" " options:NSBackwardsSearch];
+    recognizedText = [recognizedText substringToIndex:recognizedText.length-range.location-range.length];
+
+    NSCharacterSet *blackListCharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ"] invertedSet];
+    recognizedText = [recognizedText stringByTrimmingCharactersInSet:blackListCharacterSet];
+
+    return recognizedText;
+}
+
+- (NSString *)tesseractForDigits:(UIImage *)image {
+
+    // Create your Tesseract object using the initWithLanguage method:
+    G8Tesseract* tesseract = [[G8Tesseract alloc] initWithLanguage:@"deu" engineMode:G8OCREngineModeTesseractOnly];
+    tesseract.delegate = self;
+
+    // Optional: Limit the character set Tesseract should try to recognize from
+    tesseract.charWhitelist = @"1234567890";
+    tesseract.charBlacklist = @"\"\".!~#$%^&*():;'<>?/Ω≈ç√∫˜µ≤≥÷æ…¬˚∆˙©ƒƒ∂å∑œ´®†¥¨π“‘«|+-_=";
+    tesseract.pageSegmentationMode = G8PageSegmentationModeSingleLine;
+
+    UIImage *blacknWhite = [image g8_blackAndWhite];
+
+    [tesseract setImage:blacknWhite];
+
+    // Optional: Limit the area of the image Tesseract should recognize on to a rectangle
+    [tesseract setRect:CGRectMake(0.f, 0.f, image.size.width, image.size.height)];
+
+    // Start the recognition
+    [tesseract recognize];
+
+    // Retrieve the recognized text
+    NSString *recognizedText = [tesseract recognizedText];
+
+    NSRange range = [recognizedText rangeOfString:@" " options:NSBackwardsSearch];
+    recognizedText = [recognizedText substringFromIndex:recognizedText.length-range.location-range.length];
+
+    NSCharacterSet *nonDecimalCharacterSet = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    recognizedText = [recognizedText stringByTrimmingCharactersInSet:nonDecimalCharacterSet];
+
+    return recognizedText;
+}
+
+- (NSString*)tesseratTextFromImage:(UIImage*)image {
+
+    // Create your Tesseract object using the initWithLanguage method:
+    G8Tesseract* tesseract = [[G8Tesseract alloc] initWithLanguage:@"deu" engineMode:G8OCREngineModeTesseractOnly];
+
+    tesseract.delegate = self;
+
+    // Optional: Limit the character set Tesseract should try to recognize from
+    tesseract.charWhitelist = @"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ";
+    tesseract.charBlacklist = @"\"\".!~#$%^&*():;'<>?/Ω≈ç√∫˜µ≤≥÷æ…¬˚∆˙©ƒƒ∂å∑œ´®†¥¨π“‘«|+-_=";
+    tesseract.pageSegmentationMode = G8PageSegmentationModeSingleLine|G8PageSegmentationModeSingleBlock;
+
+    image = [UIImage imageNamed:@"image2.png"];
+
+    UIImage *blacknWhite = [image g8_blackAndWhite];
+
+    [tesseract setImage:blacknWhite];
+
+    // Optional: Limit the area of the image Tesseract should recognize on to a rectangle
+    [tesseract setRect:CGRectMake(0.f, 0.f, image.size.width, image.size.height)];
+
+    // Start the recognition
+    [tesseract recognize];
+
+    // Retrieve the recognized text
+    NSString *recognizedText = [tesseract recognizedText];
+
+    NSLog(@"recognizedText: %@",recognizedText);
+
     // You could retrieve more information about recognized text with that methods:
 //    NSArray *characterBoxes = [tesseract recognizedBlocksByIteratorLevel:G8PageIteratorLevelSymbol];
 //    NSArray *paragraphs = [tesseract recognizedBlocksByIteratorLevel:G8PageIteratorLevelParagraph];
-//    NSArray *characterChoices = tesseract.characterChoices;
+    NSArray *characterChoices = tesseract.characterChoices;
 //    UIImage *imageWithBlocks = [tesseract imageWithBlocks:characterBoxes drawText:YES thresholded:NO];
+
+    NSLog(@"characterChoices: %@", characterChoices);
 
     return recognizedText;
     
 }
 
-- (NSString*)filePath:(NSString*)name {
 
-    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-
-    NSString *filePath = [documentsPath stringByAppendingFormat:@"/%@.jpg",name];
-
-    return filePath;
+- (void)progressImageRecognitionForTesseract:(G8Tesseract *)tesseract {
 }
 
--(void) saveImage:(UIImage *)img {
-
-    NSData *data = UIImageJPEGRepresentation(img, 1);
-    NSError *error = nil;
-    [data writeToFile:[self filePath:@"plate"] options:NSDataWritingAtomic error:&error];
-
-    //    UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil);
-    
+- (BOOL)shouldCancelImageRecognitionForTesseract:(G8Tesseract *)tesseract {
+    return NO;
 }
+
 
 #pragma mark - HUD
 
@@ -1150,7 +1233,6 @@ numberOfRowsInComponent:(NSInteger)component {
 
 - (void)printText:(NSString *)text {
 
-    NSLog(@"StopLNPRProcessing => %s",__PRETTY_FUNCTION__);
     [self startLNPRProcessing:NO];
 
     if ([UIPrintInteractionController isPrintingAvailable]) {
@@ -1176,9 +1258,17 @@ numberOfRowsInComponent:(NSInteger)component {
 
                 if (!completed && error) {
                     NSLog(@"FAILED! due to error in domain %@ with error code %ld", error.domain, (long)error.code);
+
+                    [[[UIAlertView alloc] initWithTitle:@"Print failed" message:[error description] delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
                 }
             }];
         }
+        else {
+            [[[UIAlertView alloc] initWithTitle:nil message:@"Printer not available." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+        }
+    }
+    else {
+        [[[UIAlertView alloc] initWithTitle:nil message:@"Printer not available." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     }
 }
 

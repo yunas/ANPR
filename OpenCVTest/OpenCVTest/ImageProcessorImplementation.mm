@@ -111,13 +111,13 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
             Mat img_crop;
             img_crop = detectRegions.getCroppedMat(img_rotated, minRect);
             watchTestImg = [UIImage imageWithCVMat:img_crop];
-            
-            Mat img_resized;
-            img_resized = detectRegions.getResizedMat(img_crop, cv::Size(300,70));
-//            img_resized = detectRegions.getResizedMat(img_crop, cv::Size(2*input_img.rows,input_img.rows));
-            watchTestImg = [UIImage imageWithCVMat:img_resized];
 
-            img_resized = [StickerDetector removeStickerFromPlate:watchTestImg];
+            Mat img_stickerRemoved;
+            img_stickerRemoved = [StickerDetector removeStickerFromPlate:watchTestImg];
+            watchTestImg = [UIImage imageWithCVMat:img_stickerRemoved];
+
+            Mat img_resized;
+            img_resized = detectRegions.getResizedMat(img_stickerRemoved, cv::Size(300,70));
             watchTestImg = [UIImage imageWithCVMat:img_resized];
 
             //Equalize croped image
