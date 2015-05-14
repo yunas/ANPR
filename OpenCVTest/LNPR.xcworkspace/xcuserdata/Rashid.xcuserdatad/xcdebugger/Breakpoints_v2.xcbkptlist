@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OpenCVTest/ScanViewController.m"
-            timestampString = "453223262.514582"
+            timestampString = "453284964.671813"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "632"
-            endingLineNumber = "632"
+            startingLineNumber = "636"
+            endingLineNumber = "636"
             landmarkName = "-tesseratTextFromImage:"
             landmarkType = "5">
          </BreakpointContent>

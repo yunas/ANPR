@@ -238,19 +238,19 @@ typedef void(^FailureBlock) (NSError *error);
 
 - (void)didTappedOnScreen:(UITapGestureRecognizer *) gesture {
 
-        if (_pickerVisible) {
-            NSLog(@"Printer functionality started");
-            [self showPickerViews:NO];
-            [self printText:[self detectedPlateNumber]];
-        }
-        else if (![self isLNPRPrcessingInProgress] && gesture.numberOfTouches == 1 && gesture.state == UIGestureRecognizerStateEnded) {
-            NSLog(@"LNPR process started.");
-            [self startLNPRProcessing:YES];
-            [self takePicture];
-        }
-        else {
-            NSLog(@"Already processing on a image");
-        }
+    if (_pickerVisible) {
+        NSLog(@"Printer functionality started");
+        [self showPickerViews:NO];
+        [self printText:[self detectedPlateNumber]];
+    }
+    else if (![self isLNPRPrcessingInProgress] && gesture.numberOfTouches == 1 && gesture.state == UIGestureRecognizerStateEnded) {
+        NSLog(@"LNPR process started.");
+        [self startLNPRProcessing:YES];
+        [self takePicture];
+    }
+    else {
+        NSLog(@"Already processing on a image");
+    }
 }
 
 - (NSString *)detectedPlateNumber {
@@ -1203,6 +1203,14 @@ numberOfRowsInComponent:(NSInteger)component {
 
 - (void)savePrinter {
 
+    NSString *printerID = @"HP LaserJet Professional P 1102w._ipp._tcp.local";  // if you want to user printerID
+    NSString *urlHostName = @"ipp://NPIA2924D.local.:631/printers/Laserjet";    // if you want use host name of printer
+    NSString *urlIP = @"ipp://192.168.2.8:631/printers/Laserjet";               // if you want to use IP address of printer.
+
+    _savedPrinter = [UIPrinter printerWithURL:[NSURL URLWithString:urlIP]];
+
+    return;
+
     UIPrinterPickerController *pickerController =[UIPrinterPickerController printerPickerControllerWithInitiallySelectedPrinter:_savedPrinter];
 
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) // Large device printing
@@ -1219,6 +1227,8 @@ numberOfRowsInComponent:(NSInteger)component {
         [pickerController presentAnimated:YES completionHandler:^(UIPrinterPickerController *printerPickerController, BOOL userDidSelect, NSError *error) {
             if (userDidSelect) {
                 self.savedPrinter = printerPickerController.selectedPrinter;
+
+                NSLog(@"url: %@", _savedPrinter.displayName);
 
 //                [[NSUserDefaults standardUserDefaults] setURL:self.savedPrinter.URL forKey:SAVEDPRINTER];
 //                [[NSUserDefaults standardUserDefaults] synchronize];
@@ -1240,9 +1250,8 @@ numberOfRowsInComponent:(NSInteger)component {
         UIPrintInteractionController *printController = [UIPrintInteractionController sharedPrintController];
 
         if (printController && _savedPrinter) {
-
             UIPrintInfo *printInfo = [UIPrintInfo printInfo];
-            printInfo.duplex = UIPrintInfoDuplexLongEdge;
+            printInfo.duplex = UIPrintInfoDuplexNone;
             printInfo.orientation = UIPrintInfoOrientationLandscape;
             printInfo.outputType = UIPrintInfoOutputGeneral;
             printInfo.jobName = @"Plate number";
