@@ -466,8 +466,6 @@ typedef void(^FailureBlock) (NSError *error);
                  withResponseBlock:(ResponseBlock)responseBlock
                      andErrorBlock:(FailureBlock)failureBlock
 {
-    
-//    srcImage = [UIImage imageNamed:@"srcImage3.png"];
 
 
     dispatch_async(dispatch_queue_create("pre processing", 0), ^{
@@ -528,72 +526,6 @@ typedef void(^FailureBlock) (NSError *error);
 
 #pragma mark - Tesseract
 
-- (NSString *)tesseractForCharacter:(UIImage *)image {
-    // Create your Tesseract object using the initWithLanguage method:
-    G8Tesseract* tesseract = [[G8Tesseract alloc] initWithLanguage:@"deu" engineMode:G8OCREngineModeTesseractOnly];
-
-    tesseract.delegate = self;
-
-    // Optional: Limit the character set Tesseract should try to recognize from
-    tesseract.charWhitelist = @"ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ";
-    tesseract.charBlacklist = @"\"\".!~#$%^&*():;'<>?/Ω≈ç√∫˜µ≤≥÷æ…¬˚∆˙©ƒƒ∂å∑œ´®†¥¨π“‘«|+-_=";
-    tesseract.pageSegmentationMode = G8PageSegmentationModeSingleLine;
-
-    UIImage *blacknWhite = [image g8_blackAndWhite];
-
-    [tesseract setImage:blacknWhite];
-
-    // Optional: Limit the area of the image Tesseract should recognize on to a rectangle
-    [tesseract setRect:CGRectMake(0.f, 0.f, image.size.width, image.size.height)];
-
-    // Start the recognition
-    [tesseract recognize];
-
-    // Retrieve the recognized text
-    NSString *recognizedText = [tesseract recognizedText];
-
-    NSRange range = [recognizedText rangeOfString:@" " options:NSBackwardsSearch];
-    recognizedText = [recognizedText substringToIndex:recognizedText.length-range.location-range.length];
-
-    NSCharacterSet *blackListCharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ"] invertedSet];
-    recognizedText = [recognizedText stringByTrimmingCharactersInSet:blackListCharacterSet];
-
-    return recognizedText;
-}
-
-- (NSString *)tesseractForDigits:(UIImage *)image {
-
-    // Create your Tesseract object using the initWithLanguage method:
-    G8Tesseract* tesseract = [[G8Tesseract alloc] initWithLanguage:@"deu" engineMode:G8OCREngineModeTesseractOnly];
-    tesseract.delegate = self;
-
-    // Optional: Limit the character set Tesseract should try to recognize from
-    tesseract.charWhitelist = @"1234567890";
-    tesseract.charBlacklist = @"\"\".!~#$%^&*():;'<>?/Ω≈ç√∫˜µ≤≥÷æ…¬˚∆˙©ƒƒ∂å∑œ´®†¥¨π“‘«|+-_=";
-    tesseract.pageSegmentationMode = G8PageSegmentationModeSingleLine;
-
-    UIImage *blacknWhite = [image g8_blackAndWhite];
-
-    [tesseract setImage:blacknWhite];
-
-    // Optional: Limit the area of the image Tesseract should recognize on to a rectangle
-    [tesseract setRect:CGRectMake(0.f, 0.f, image.size.width, image.size.height)];
-
-    // Start the recognition
-    [tesseract recognize];
-
-    // Retrieve the recognized text
-    NSString *recognizedText = [tesseract recognizedText];
-
-    NSRange range = [recognizedText rangeOfString:@" " options:NSBackwardsSearch];
-    recognizedText = [recognizedText substringFromIndex:recognizedText.length-range.location-range.length];
-
-    NSCharacterSet *nonDecimalCharacterSet = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
-    recognizedText = [recognizedText stringByTrimmingCharactersInSet:nonDecimalCharacterSet];
-
-    return recognizedText;
-}
-
 - (NSString*)tesseratTextFromImage:(UIImage*)image {
 
     // Create your Tesseract object using the initWithLanguage method:
@@ -603,10 +535,10 @@ typedef void(^FailureBlock) (NSError *error);
 
     // Optional: Limit the character set Tesseract should try to recognize from
     tesseract.charWhitelist = @"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ";
-    tesseract.charBlacklist = @"\"\".!~#$%^&*():;'<>?/Ω≈ç√∫˜µ≤≥÷æ…¬˚∆˙©ƒƒ∂å∑œ´®†¥¨π“‘«|+-_=";
+//    tesseract.charBlacklist = @"\"\".!~#$%^&*():;'<>?/Ω≈ç√∫˜µ≤≥÷æ…¬˚∆˙©ƒƒ∂å∑œ´®†¥¨π“‘«|+-_=";
     tesseract.pageSegmentationMode = G8PageSegmentationModeSingleLine|G8PageSegmentationModeSingleBlock;
 
-    image = [UIImage imageNamed:@"image2.png"];
+    image = [UIImage imageNamed:@"img_resized.png"];
 
     UIImage *blacknWhite = [image g8_blackAndWhite];
 
@@ -620,8 +552,6 @@ typedef void(^FailureBlock) (NSError *error);
 
     // Retrieve the recognized text
     NSString *recognizedText = [tesseract recognizedText];
-
-    NSLog(@"recognizedText: %@",recognizedText);
 
     // You could retrieve more information about recognized text with that methods:
 //    NSArray *characterBoxes = [tesseract recognizedBlocksByIteratorLevel:G8PageIteratorLevelSymbol];
@@ -632,7 +562,6 @@ typedef void(^FailureBlock) (NSError *error);
     NSLog(@"characterChoices: %@", characterChoices);
 
     return recognizedText;
-    
 }
 
 

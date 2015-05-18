@@ -59,11 +59,11 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
     Mat img_blur = detectRegions.getBlurMat(img_gray);
     watchTestImg = [UIImage imageWithCVMat:img_blur];
     
-    //Finde vertical lines. Car plates have high density of vertical lines
+    //Find vertical lines. Car plates have high density of vertical lines
     Mat img_sobel;
     img_sobel = detectRegions.getSobelFilteredMat(img_blur);
     watchTestImg = [UIImage imageWithCVMat:img_sobel];
-    
+
     //threshold image & Morphplogic operation close
     Mat img_threshold;
     img_threshold = detectRegions.getMorpholgyMat(img_sobel);
@@ -78,7 +78,6 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
     // for flood fill
     cv::Mat result;
     input_img.copyTo(result);
-    
     
     for(int i=0; i< rects.size(); i++) {
         
@@ -112,16 +111,16 @@ RotatedRect getOnePossiblePlateRegion(vector<RotatedRect> rects, float error);
             img_crop = detectRegions.getCroppedMat(img_rotated, minRect);
             watchTestImg = [UIImage imageWithCVMat:img_crop];
 
+            Mat img_resized;
+            img_resized = detectRegions.getResizedMat(img_crop, cv::Size(300,70));
+            watchTestImg = [UIImage imageWithCVMat:img_resized];
+
             Mat img_stickerRemoved;
             img_stickerRemoved = [StickerDetector removeStickerFromPlate:watchTestImg];
             watchTestImg = [UIImage imageWithCVMat:img_stickerRemoved];
 
-            Mat img_resized;
-            img_resized = detectRegions.getResizedMat(img_stickerRemoved, cv::Size(300,70));
-            watchTestImg = [UIImage imageWithCVMat:img_resized];
-
             //Equalize croped image
-            Mat img_grayResult = img_resized.clone();
+            Mat img_grayResult = img_stickerRemoved.clone();
 //            img_grayResult = detectRegions.getNormalisedGrayscaleMat(img_resized);
 //            watchTestImg = [UIImage imageWithCVMat:img_grayResult];
 

@@ -31,7 +31,7 @@
     UIImage *watchTestImg = nil;
 
 //    img_removedCircles =[StickerDetector removeStickerColoredRegionFromImage:img_gray];
-    OffsetImage(img_removedCircles, Scalar(255, 255, 255), 20, 20);
+//    OffsetImage(img_removedCircles, Scalar(255, 255, 255), 20, 20);
     watchTestImg = [UIImage imageWithCVMat:img_removedCircles];
 
     return img_removedCircles;
@@ -104,58 +104,6 @@ bool detectlargererCirlce(Vec3f circle) {
     return dest;
 }
 
-+ (void)blobDetection:(Mat)src {
-
-    UIImage *watchTestImg = nil;
-    watchTestImg = [UIImage imageWithCVMat:src];
-
-    // Setup SimpleBlobDetector parameters.
-    SimpleBlobDetector::Params params;
-
-    // Change thresholds
-    params.minThreshold = 10;
-    params.maxThreshold = 200;
-
-    // Filter by Area.
-    params.filterByArea = true;
-    params.minArea = 1500;
-
-    // Filter by Circularity
-    params.filterByCircularity = true;
-    params.minCircularity = 0.1;
-
-    // Filter by Convexity
-    params.filterByConvexity = true;
-    params.minConvexity = 0.87;
-
-    // Filter by Inertia
-    params.filterByInertia = true;
-    params.minInertiaRatio = 0.01;
-
-    // Storage for blobs
-    vector<KeyPoint> keypoints;
-
-#if CV_MAJOR_VERSION < 3   // If you are using OpenCV 2
-
-    // Set up detector with params
-    SimpleBlobDetector detector(params);
-
-    // Detect blobs
-    detector.detect( src, keypoints);
-#else
-
-    // Set up detector with params
-    Ptr<SimpleBlobDetector> detector = SimpleBlobDetector::create(params);
-
-    // Detect blobs
-    detector->detect( src, keypoints);
-#endif
-
-    Mat im_with_keypoints;
-    drawKeypoints( src, keypoints, im_with_keypoints, Scalar(0,0,255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
-    watchTestImg = [UIImage imageWithCVMat:src];
-}
-
 + (cv::Mat)removeStickerColoredRegionFromImage:(cv::Mat)src {
 
     //Expecting a Gray Scale Image Mat
@@ -166,22 +114,14 @@ bool detectlargererCirlce(Vec3f circle) {
 
     cv::Mat binaryMat;
     cv::Mat dest;
-    
-//    cv::Mat temp = cvCreateImage(img_gray.size(), 8, 1);
-//    temp.setTo(Scalar(255),dest);
 
     inRange(img_gray, Scalar(0), Scalar(80), binaryMat);
     binaryMat = 255 - binaryMat;
 
     UIImage *image =[UIImage imageWithCVMat:binaryMat];
 
-
     cv::cvtColor(binaryMat, dest, CV_GRAY2BGR);
     image =[UIImage imageWithCVMat:dest];
-
-//    Mat img_dst;
-//    threshold(img_gray, img_dst, 60, 255, THRESH_BINARY);
-//    UIImage *watchTest = [UIImage imageWithCVMat:img_dst];
 
     return dest;
 }
