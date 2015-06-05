@@ -19,10 +19,7 @@
 
     cv::Mat input_img = [plateImg CVMat];
     DetectRegions detectRegions;
-    detectRegions.setFilename("12");
-    detectRegions.saveRegions = YES;
-    detectRegions.showSteps = false;
-
+    
     // pre processing => image to gray scale
     cv::Mat img_gray = detectRegions.getGrayScaleMat(input_img);
 

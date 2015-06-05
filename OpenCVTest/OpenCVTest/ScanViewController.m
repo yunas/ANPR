@@ -365,14 +365,10 @@ typedef void(^FailureBlock) (NSError *error);
          NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageSampleBuffer];
          UIImage *image = [[UIImage alloc] initWithData:imageData];
 //        UIImageWriteToSavedPhotosAlbum(image , nil, nil, nil);
+//        image = [UIImage imageNamed:@"co_circle_close.JPG"];
+
         CGSize size = CGSizeMake(0.5*image.size.width, 0.5*image.size.height);
         image = [image scaleImageKeepingAspectRatiotoSize:size];
-//         image = [UIImage imageWithCGImage:image.CGImage scale:image.scale orientation:UIImageOrientationUp];
-//        UIImageWriteToSavedPhotosAlbum(image , nil, nil, nil);
-
-         UIImage *finalPhoto;
-         finalPhoto = [self cropImageAndRotate:image];
-         UIImage *scaledimage = [finalPhoto resizeImageToWidth:432];
 
         completion(image);
      }];
