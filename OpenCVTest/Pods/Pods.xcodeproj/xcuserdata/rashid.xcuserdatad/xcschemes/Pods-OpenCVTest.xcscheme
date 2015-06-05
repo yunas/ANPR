@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0510"
+   LastUpgradeVersion = "0640"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9AFA7A45EF7BD2CEA69BCDE9"
+               BlueprintIdentifier = "0B4D476678F16ECD91C4CDCF"
                BuildableName = "libPods-OpenCVTest.a"
                BlueprintName = "Pods-OpenCVTest"
                ReferencedContainer = "container:Pods.xcodeproj">
